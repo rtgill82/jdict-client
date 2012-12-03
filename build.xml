@@ -1,0 +1,83 @@
+<!-- TODO: CLEAN jreleaseinfo using unpackagemapper -->
+<project name="DictClient" default="dist" basedir=".">
+  <property name="project.version" value="0.0.1" />
+  <property name="project.package" value="org.lonestar.sdf.locke.libs.dict" />
+  <property name="jflags" value="" />
+
+  <property name="src.dir" location="src" />
+  <property name="test.dir" location="test" />
+  <property name="lib.dir" location="lib" />
+  <property name="build.dir" location="build" />
+  <property name="doc.dir" location="doc" />
+  <property name="dist.dir" location="dist" />
+
+  <taskdef name="jreleaseinfo"
+           classname="ch.oscg.jreleaseinfo.anttask.JReleaseInfoAntTask"
+           classpath="${lib.dir}/jreleaseinfo-1.3.0.jar" />
+  <jreleaseinfo targetDir="${src.dir}"
+                className="DictClientReleaseInfo"
+                packageName="${project.package}"
+                project="${ant.project.name}"
+                version="${project.version}" />
+
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${build.dir}" />
+  </target>
+
+  <target name="compile" depends="init"
+          description="compile the source">
+    <javac srcdir="${src.dir}" destdir="${build.dir}"
+           includeantruntime="false" />
+  </target>
+
+  <target name="compile-test" depends="compile"
+          description="compile JUnit tests">
+    <javac srcdir="${test.dir}" destdir="${build.dir}"
+           classpath="/usr/share/junit-4/lib/junit.jar"
+           includeantruntime="false" />
+  </target>
+
+  <target name="doc" description="generate library documentation">
+    <mkdir dir="${doc.dir}" />
+    <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
+  </target>
+
+  <target name="devdoc" description="generate development documentation">
+    <mkdir dir="${doc.dir}" />
+    <javadoc destdir="${doc.dir}" Package="package" Private="true">
+      <sourcepath>
+        <path location="${src.dir}" />
+        <path location="${test.dir}" />
+      </sourcepath>
+    </javadoc>
+  </target>
+
+  <target name="test" depends="compile-test" description="run unit tests">
+    <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+      <formatter type="plain" usefile="no" />
+      <classpath path="${build.dir}" />
+      <test name="org.lonestar.sdf.locke.libs.dict.DictBannerTest" />
+      <test name="org.lonestar.sdf.locke.libs.dict.DictionaryTest" />
+    </junit>
+  </target>
+
+  <target name="dist" depends="compile,doc"
+    description="create the distribution">
+    <mkdir dir="${dist.dir}/lib" />
+    <mkdir dir="${dist.dir}/doc" />
+    <jar jarfile="${dist.dir}/lib/DictClient-${project.version}.jar"
+         basedir="${build.dir}" />
+    <copy todir="${dist.dir}/${doc.dir}">
+      <fileset dir="${doc.dir}" />
+    </copy>
+  </target>
+
+  <target name="clean" description="clean up">
+    <delete dir="${build.dir}" />
+    <delete dir="${doc.dir}" />
+    <delete dir="${dist.dir}" />
+  </target>
+</project>
+
+<!-- vim:set expandtab shiftwidth=2 tabstop=2 softtabstop=2: -->

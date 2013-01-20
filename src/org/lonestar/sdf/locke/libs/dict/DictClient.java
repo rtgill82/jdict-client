@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 29 Dec 2012 10:24:55 PM PST
+ * Modified: Sun 20 Jan 2013 12:13:20 AM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -186,11 +186,7 @@ public class DictClient {
      */
     private void sendClient()
     {
-        _out.println(
-                "CLIENT  " +
-                DictClientReleaseInfo.getProject() + " " +
-                DictClientReleaseInfo.getVersion()
-            );
+        _out.println("CLIENT DictClient 0.0.1");
     }
 
     /**

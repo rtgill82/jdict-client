@@ -2,6 +2,7 @@
 <project name="DictClient" default="dist" basedir=".">
   <property name="project.version" value="0.0.1" />
   <property name="project.package" value="org.lonestar.sdf.locke.libs.dict" />
+  <property name="project.vendor" value="Robert Gill &lt;locke@sdf.lonestar.org&gt;" />
   <property name="jflags" value="" />
 
   <property name="src.dir" location="src" />
@@ -58,7 +59,19 @@
     <mkdir dir="${dist.dir}/lib" />
     <mkdir dir="${dist.dir}/doc" />
     <jar jarfile="${dist.dir}/lib/DictClient-${project.version}.jar"
-         basedir="${build.dir}" />
+         basedir="${build.dir}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <section name="${ant.project.name}">
+          <attribute name="Specification-Title" value="${ant.project.name}" />
+          <attribute name="Specification-Version" value="${project.version}" />
+          <attribute name="Specification-Vendor" value="${project.vendor}" />
+          <attribute name="Implementation-Title" value="${ant.project.name}" />
+          <attribute name="Implementation-Version" value="${project.version} ${TODAY}" />
+          <attribute name="Implementation-Vendor" value="${project.vendor}" />
+        </section>
+      </manifest>
+    </jar>
     <copy todir="${dist.dir}/${doc.dir}">
       <fileset dir="${doc.dir}" />
     </copy>

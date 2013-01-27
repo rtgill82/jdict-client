@@ -1,13 +1,13 @@
 <!--
   Created:  Sun 27 Jan 2013 12:25:01 AM PST
-  Modified: Sun 27 Jan 2013 03:15:32 AM PST
+  Modified: Sun 27 Jan 2013 02:37:05 PM PST
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.lonestar.sdf.locke.libs.dict</groupId>
-  <artifactId>dict-client</artifactId>
+  <artifactId>jdict-client</artifactId>
   <version>0.1.0</version>
   <packaging>jar</packaging>
 
@@ -15,7 +15,7 @@
     <vendor>Robert Gill &lt;locke@sdf.lonestar.org&gt;</vendor>
   </properties>
 
-  <name>DictClient</name>
+  <name>JDictClient</name>
   <url>http://locke.mdns.org</url>
   <inceptionYear>2013</inceptionYear>
 

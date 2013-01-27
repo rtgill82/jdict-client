@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 27 Jan 2013 01:02:33 AM PST
+ * Modified: Sun 27 Jan 2013 02:38:24 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -22,7 +22,7 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictClient {
+public class JDictClient {
     private static final int DEFAULT_PORT = 2628;
 
     private String _host = null;
@@ -41,12 +41,12 @@ public class DictClient {
     private String _connectionId = null;
 
     /**
-     * Construct a new DictClient.
+     * Construct a new JDictClient.
      *
      * @param host DICT host
      * @param port port number
      */
-    public DictClient(String host, int port)
+    public JDictClient(String host, int port)
     {
         ResourceBundle rb = ResourceBundle.getBundle("META-INF/library");
         libraryName = rb.getString("library.name");
@@ -58,29 +58,29 @@ public class DictClient {
     }
 
     /**
-     * Create a new DictClient object and connect to specified host.
+     * Create a new JDictClient object and connect to specified host.
      *
      * @param host DICT host to connect to
-     * @return new DictClient instance
+     * @return new JDictClient instance
      */
-    public static DictClient connect(String host)
+    public static JDictClient connect(String host)
         throws UnknownHostException, IOException
     {
-        DictClient dictClient = DictClient.connect(host, DEFAULT_PORT);
+        JDictClient dictClient = JDictClient.connect(host, DEFAULT_PORT);
         return dictClient;
     }
 
     /**
-     * Create a new DictClient object and connect to specified host and port.
+     * Create a new JDictClient object and connect to specified host and port.
      *
      * @param host DICT host to connect to
      * @param port port number to connect to
-     * @return new DictClient instance
+     * @return new JDictClient instance
      */
-    public static DictClient connect(String host, int port)
+    public static JDictClient connect(String host, int port)
         throws UnknownHostException, IOException
     {
-        DictClient dictClient = new DictClient(host, port);
+        JDictClient dictClient = new JDictClient(host, port);
         dictClient.connect();
         return dictClient;
     }

@@ -1,6 +1,6 @@
 /**
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sun 27 Jan 2013 03:29:50 AM PST
+ * Modified: Sun 27 Jan 2013 02:37:35 PM PST
  *
  */
 
@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Iterator;
 import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.DictClient;
+import org.lonestar.sdf.locke.libs.dict.JDictClient;
 import org.lonestar.sdf.locke.libs.dict.DictException;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
 public class Dict {
     public static void main(String[] args)
     {
-        DictClient dictClient;
+        JDictClient dictClient;
         List<Definition> definitions;
         Definition definition;
 
@@ -25,7 +25,7 @@ public class Dict {
             String word = args[0];
 
             try {
-                dictClient = DictClient.connect("test.dict.org");
+                dictClient = JDictClient.connect("test.dict.org");
                 definitions = dictClient.define(word);
                 dictClient.close();
 

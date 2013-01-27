@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 20 Jan 2013 12:13:20 AM PST
+ * Modified: Sun 27 Jan 2013 01:02:33 AM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.lonestar.sdf.locke.libs.dict.DictBanner;
 
@@ -26,6 +27,10 @@ public class DictClient {
 
     private String _host = null;
     private int _port = 0;
+
+    private String libraryName;
+    private String libraryVersion;
+    private String libraryVendor;
 
     private Socket _dictSocket = null;
     private PrintWriter _out = null;
@@ -43,6 +48,11 @@ public class DictClient {
      */
     public DictClient(String host, int port)
     {
+        ResourceBundle rb = ResourceBundle.getBundle("META-INF/library");
+        libraryName = rb.getString("library.name");
+        libraryVersion = rb.getString("library.version");
+        libraryVendor = rb.getString("library.vendor");
+
         _host = host;
         _port = port;
     }
@@ -186,7 +196,7 @@ public class DictClient {
      */
     private void sendClient()
     {
-        _out.println("CLIENT DictClient 0.0.1");
+        _out.println("CLIENT " + libraryName + " " + libraryVersion);
     }
 
     /**

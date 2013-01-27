@@ -1,6 +1,6 @@
 <!--
   Created:  Sun 27 Jan 2013 12:25:01 AM PST
-  Modified: Sun 27 Jan 2013 12:25:07 AM PST
+  Modified: Sun 27 Jan 2013 03:15:32 AM PST
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -28,6 +28,19 @@
     </dependency>
   </dependencies>
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.lonestar.sdf.locke.libs.dict.Dict</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>

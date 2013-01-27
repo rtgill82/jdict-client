@@ -14,7 +14,7 @@ package org.lonestar.sdf.locke.libs.dict;
 public class Dictionary extends Object {
     /** Name used to identify dictionary database */
     private String _database;
-    
+
     /** Long description of dictionary database */
     private String _description;
 

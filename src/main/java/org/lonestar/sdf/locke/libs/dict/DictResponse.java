@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Sun 27 Jan 2013 02:18:56 AM PST
+ * Modified: Sun 27 Jan 2013 03:09:38 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -94,6 +94,9 @@ public class DictResponse {
 
         /* SHOW STRATEGIES response */
         case 111:
+            break;
+
+        /* SHOW INFO response */
         case 112:
             _data = readDatabaseInfo(responseBuffer);
             _dataClass = String.class;

@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Sat 29 Dec 2012 10:25:13 PM PST
+ * Modified: Sun 27 Jan 2013 02:18:56 AM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -78,17 +78,21 @@ public class DictResponse {
         throws IOException
     {
         switch (_status) {
+
+        /* Connection banner */
         case 220:
             _data = DictBanner.parse(_message);
             _dataClass = DictBanner.class;
             break;
 
+        /* SHOW DATABASES response */
         case 110:
             _data = readDatabases(responseBuffer);
             _dataClass = List.class;
             readStatusLine(responseBuffer);
             break;
 
+        /* SHOW STRATEGIES response */
         case 111:
         case 112:
             _data = readDatabaseInfo(responseBuffer);
@@ -96,7 +100,11 @@ public class DictResponse {
             readStatusLine(responseBuffer);
             break;
 
+        /* HELP response */
         case 113:
+            break;
+
+        /* SHOW SERVER response */
         case 114:
             _data = readServerInfo(responseBuffer);
             _dataClass = String.class;
@@ -106,6 +114,7 @@ public class DictResponse {
         case 130:
             break;
 
+        /* DEFINE response; list of definitions follows */
         case 150:
             _data = new ArrayList();
             _dataClass = List.class;
@@ -116,6 +125,7 @@ public class DictResponse {
 
             break;
 
+        /* DEFINE response; definition text follows */
         case 151:
             ((ArrayList) _data).add(readDefinition(responseBuffer));
             if (readStatusLine(responseBuffer))
@@ -123,8 +133,8 @@ public class DictResponse {
 
             break;
 
+        /* MATCH response; list of matches follows */
         case 152:
-            // more data follows, read it
             break;
 
         default:

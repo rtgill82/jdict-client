@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Sun 27 Jan 2013 03:09:38 PM PST
+ * Modified: Sun 27 Jan 2013 05:31:58 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -94,27 +94,21 @@ public class DictResponse {
 
         /* SHOW STRATEGIES response */
         case 111:
+            /* Not implemented */
             break;
 
-        /* SHOW INFO response */
-        case 112:
-            _data = readDatabaseInfo(responseBuffer);
+        /* Information commands */
+        case 112: // SHOW INFO response
+        case 113: // HELP response *not implemented*
+        case 114: // SHOW SERVER response
+            _data = readInfo(responseBuffer);
             _dataClass = String.class;
             readStatusLine(responseBuffer);
             break;
 
-        /* HELP response */
-        case 113:
-            break;
-
-        /* SHOW SERVER response */
-        case 114:
-            _data = readServerInfo(responseBuffer);
-            _dataClass = String.class;
-            readStatusLine(responseBuffer);
-            break;
-
+        /* Authentication */
         case 130:
+            /* Not implemented */
             break;
 
         /* DEFINE response; list of definitions follows */
@@ -138,6 +132,7 @@ public class DictResponse {
 
         /* MATCH response; list of matches follows */
         case 152:
+            /* Not implemented */
             break;
 
         default:
@@ -254,7 +249,7 @@ public class DictResponse {
 
             definition = new Definition(word, dictionary, defstr);
         } else {
-            /* RAISE ERROR */
+            /* FIXME: RAISE ERROR */
         }
 
         return definition;
@@ -292,14 +287,17 @@ public class DictResponse {
     }
 
     /**
-     * Read database information returned by the SHOW INFO command.
+     * Read text returned by an information command.
      *
-     * @param responseBuffer the buffer from which to read the database
-     *                       information
+     * Information commands, such as SHOW INFO, HELP, and SHOW SERVER, return
+     * a long string of unstructured text. Read that text and return it as a
+     * String.
      *
-     * @return database information
+     * @param responseBuffer the buffer from which to read the information
+     *
+     * @return information string
      */
-    private String readDatabaseInfo(BufferedReader responseBuffer)
+    private String readInfo(BufferedReader responseBuffer)
         throws IOException
     {
         String info;
@@ -312,27 +310,5 @@ public class DictResponse {
         }
 
         return info;
-    }
-
-    /**
-     * Read server information returned by the SHOW SERVER command.
-     *
-     * @param responseBuffer the buffer from which to read the server
-     *                       information
-     *
-     * @return server information
-     */
-    private String readServerInfo(BufferedReader responseBuffer)
-        throws IOException
-    {
-        String serverInfo = "";
-
-        String line = responseBuffer.readLine();
-        while (!line.equals(".")) {
-            serverInfo += line;
-            line = responseBuffer.readLine();
-        }
-
-        return serverInfo;
     }
 }

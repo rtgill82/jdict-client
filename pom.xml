@@ -1,6 +1,6 @@
 <!--
   Created:  Sun 27 Jan 2013 12:25:01 AM PST
-  Modified: Sun 27 Jan 2013 09:43:06 PM PST
+  Modified: Mon 28 Jan 2013 12:27:56 AM PST
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -17,7 +17,7 @@
 
   <name>JDictClient</name>
   <url>http://locke.mdns.org</url>
-  <inceptionYear>2013</inceptionYear>
+  <inceptionYear>2012</inceptionYear>
 
   <dependencies>
     <dependency>

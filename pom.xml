@@ -1,6 +1,6 @@
 <!--
   Created:  Sun 27 Jan 2013 12:25:01 AM PST
-  Modified: Mon 28 Jan 2013 12:27:56 AM PST
+  Modified: Sat 02 Feb 2013 02:47:46 PM PST
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -13,6 +13,7 @@
 
   <properties>
     <vendor>Robert Gill &lt;locke@sdf.lonestar.org&gt;</vendor>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <name>JDictClient</name>

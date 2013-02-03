@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 02 Feb 2013 06:05:16 PM PST
+ * Modified: Sat 02 Feb 2013 06:13:42 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -150,6 +150,20 @@ public class JDictClient {
     {
         DictResponse resp;
         _out.println("SHOW SERVER");
+        resp = DictResponse.read(_in);
+        return (String) resp.getData();
+    }
+
+    /**
+     * Get summary of server commands.
+     *
+     * @return server help string
+     */
+    public String getHelp()
+        throws IOException
+    {
+        DictResponse resp;
+        _out.println("HELP");
         resp = DictResponse.read(_in);
         return (String) resp.getData();
     }

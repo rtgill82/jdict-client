@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 27 Jan 2013 02:38:24 PM PST
+ * Modified: Sat 02 Feb 2013 06:05:16 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -138,6 +138,20 @@ public class JDictClient {
             throw new DictException(_host, resp.getStatus(),
                     resp.getMessage());
         }
+    }
+
+    /**
+     * Get the server information as written by the database administrator.
+     *
+     * @return server information string
+     */
+    public String getServerInfo()
+        throws IOException
+    {
+        DictResponse resp;
+        _out.println("SHOW SERVER");
+        resp = DictResponse.read(_in);
+        return (String) resp.getData();
     }
 
     /**

@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 02 Feb 2013 06:13:42 PM PST
+ * Modified: Sat 02 Feb 2013 06:30:20 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -183,7 +183,23 @@ public class JDictClient {
     }
 
     /**
-     * Get detailed dictionary info from specified dictionary.
+     * Get detailed dictionary info for the specified dictionary.
+     *
+     * @param dictionary the dictionary for which to get information
+     *
+     * @return dictionary info string
+     */
+    public String getDictionaryInfo(String dictionary)
+        throws IOException
+    {
+        DictResponse resp;
+        _out.println("SHOW INFO " + dictionary);
+        resp = DictResponse.read(_in);
+        return (String) resp.getData();
+    }
+
+    /**
+     * Get detailed dictionary info for the specified dictionary.
      *
      * @param dictionary the dictionary for which to get information
      *
@@ -192,10 +208,10 @@ public class JDictClient {
     public Dictionary getDictionaryInfo(Dictionary dictionary)
         throws IOException
     {
-        DictResponse resp;
-        _out.println("SHOW INFO " + dictionary.getDatabase());
-        resp = DictResponse.read(_in);
-        dictionary.setDatabaseInfo((String) resp.getData());
+        String info;
+
+        info = getDictionaryInfo(dictionary.getDatabase());
+        dictionary.setDatabaseInfo(info);
         return dictionary;
     }
 

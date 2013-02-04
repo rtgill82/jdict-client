@@ -1,6 +1,6 @@
 /**
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 02 Feb 2013 06:30:20 PM PST
+ * Modified: Mon 04 Feb 2013 01:59:19 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;
@@ -48,7 +48,9 @@ public class JDictClient {
      */
     public JDictClient(String host, int port)
     {
-        ResourceBundle rb = ResourceBundle.getBundle("META-INF/library");
+        String packageName = this.getClass().getPackage().getName();
+        ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+
         libraryName = rb.getString("library.name");
         libraryVersion = rb.getString("library.version");
         libraryVendor = rb.getString("library.vendor");

@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Mon 04 Feb 2013 03:20:04 PM PST
+ * Modified: Mon 04 Feb 2013 06:15:04 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -248,7 +248,7 @@ public class JDictClient {
         DictResponse resp;
         List definitions;
 
-        _out.println("DEFINE * " + word);
+        _out.println("DEFINE * \"" + word + "\"");
         resp = DictResponse.read(_in);
         return (List<Definition>) resp.getData();
     }

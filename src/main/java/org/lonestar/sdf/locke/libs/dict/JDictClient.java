@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Mon 04 Feb 2013 06:15:04 PM PST
+ * Modified: Mon 04 Feb 2013 07:35:41 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 import org.lonestar.sdf.locke.libs.dict.DictBanner;
 
 /**
- * DICT dictionary client.
+ * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
@@ -42,12 +42,14 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
 public class JDictClient {
     private static final int DEFAULT_PORT = 2628;
 
+    private static String _clientString = null;
+
     private String _host = null;
     private int _port = 0;
 
-    private String libraryName;
-    private String libraryVersion;
-    private String libraryVendor;
+    private String _libraryName;
+    private String _libraryVersion;
+    private String _libraryVendor;
 
     private Socket _dictSocket = null;
     private PrintWriter _out = null;
@@ -68,9 +70,10 @@ public class JDictClient {
         String packageName = this.getClass().getPackage().getName();
         ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
 
-        libraryName = rb.getString("library.name");
-        libraryVersion = rb.getString("library.version");
-        libraryVendor = rb.getString("library.vendor");
+        _libraryName = rb.getString("library.name");
+        _libraryVersion = rb.getString("library.version");
+        _libraryVendor = rb.getString("library.vendor");
+        setClientString(_libraryName + " " + _libraryVersion);
 
         _host = host;
         _port = port;
@@ -102,6 +105,22 @@ public class JDictClient {
         JDictClient dictClient = new JDictClient(host, port);
         dictClient.connect();
         return dictClient;
+    }
+
+    /**
+     * Set the client string sent to the server.
+     *
+     * Identify the client to the server with the provided string. It is
+     * usually the application name and version number. This method must be
+     * called before any instances of the JDictClient class are created. If
+     * this method is not called, the library name and version will be used.
+     *
+     * @param clientString client string to send to DICT server
+     */
+    public static void setClientString(String clientString)
+    {
+        if (_clientString == null)
+            _clientString = clientString;
     }
 
     /**
@@ -259,7 +278,7 @@ public class JDictClient {
      */
     private void sendClient()
     {
-        _out.println("CLIENT " + libraryName + " " + libraryVersion);
+        _out.println("CLIENT " + _clientString);
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Mon 04 Feb 2013 03:16:10 PM PST
+ * Modified: Mon 04 Feb 2013 06:56:31 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -33,6 +33,12 @@ import org.lonestar.sdf.locke.libs.dict.JDictClient;
 import org.lonestar.sdf.locke.libs.dict.DictException;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 
+/**
+ * Simple command line program that uses features of the library.
+ *
+ * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
+ */
 public class Dict {
     private static void showHelp()
     {

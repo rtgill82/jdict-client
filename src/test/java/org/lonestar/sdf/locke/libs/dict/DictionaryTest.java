@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 22 Dec 2012 02:35:06 AM PST
- * Modified: Mon 04 Feb 2013 03:22:55 PM PST
+ * Modified: Mon 04 Feb 2013 07:57:07 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -32,8 +32,8 @@ import org.lonestar.sdf.locke.libs.dict.Dictionary;
  */
 public class DictionaryTest {
 
-    private final String DATABASE    = "foldoc";
-    private final String DESCRIPTION = "Online Dictionary of Computing";
+    private final String DATABASE    = "wn";
+    private final String DESCRIPTION = "WordNet (r) 3.0 (2006)";
 
 	/**
 	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#Dictionary(java.lang.String, java.lang.String)}.
@@ -71,6 +71,7 @@ public class DictionaryTest {
 
         dict1 = new Dictionary(DATABASE, DESCRIPTION);
         dict2 = dict1.clone();
+        assertNotSame(dict1, dict2);
         assertEquals(DATABASE, dict2.getDatabase());
         assertEquals(DESCRIPTION, dict2.getDescription());
         assertNull(dict2.getDatabaseInfo());

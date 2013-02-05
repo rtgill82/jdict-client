@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 29 Dec 2012 03:45:21 PM PST
- * Modified: Mon 04 Feb 2013 03:15:52 PM PST
+ * Modified: Mon 04 Feb 2013 08:08:43 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -80,6 +80,7 @@ public class Definition extends Object {
         return _definition;
     }
 
+    @Override
     public Definition clone()
     {
         Definition definition = new Definition(
@@ -91,6 +92,7 @@ public class Definition extends Object {
         return definition;
     }
 
+    @Override
     public String toString()
     {
         return _dictionary + "\n" + _definition;

@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:53:24 PM PST
- * Modified: Mon 04 Feb 2013 03:17:24 PM PST
+ * Modified: Mon 04 Feb 2013 08:09:10 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -91,6 +91,7 @@ class DictBanner {
         }
     }
 
+    @Override
     public String toString()
     {
         return message;

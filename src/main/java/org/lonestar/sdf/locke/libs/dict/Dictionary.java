@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Mon 04 Feb 2013 03:19:43 PM PST
+ * Modified: Mon 04 Feb 2013 08:09:50 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -89,6 +89,7 @@ public class Dictionary extends Object {
         _databaseInfo = databaseInfo;
     }
 
+    @Override
     public Dictionary clone()
     {
         Dictionary dict = new Dictionary(
@@ -100,6 +101,7 @@ public class Dictionary extends Object {
         return dict;
     }
 
+    @Override
     public String toString()
     {
         return _database + " \"" + _description + '"';

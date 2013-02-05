@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:00:55 PM PST
- * Modified: Mon 04 Feb 2013 03:17:44 PM PST
+ * Modified: Mon 04 Feb 2013 08:09:25 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -62,6 +62,7 @@ public class DictException extends ProtocolException {
         return _status;
     }
 
+    @Override
     public String getMessage()
     {
         return String.format("%s: %s", super.getMessage(), _message);

@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Mon 04 Feb 2013 08:09:50 PM PST
+ * Modified: Sat 16 Feb 2013 10:05:42 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -44,7 +44,7 @@ public class Dictionary extends Object {
      * @param database    the dictionary database name
      * @param description description of the dictionary database
      */
-    Dictionary(String database, String description)
+    public Dictionary(String database, String description)
     {
         super();
         _database = database;

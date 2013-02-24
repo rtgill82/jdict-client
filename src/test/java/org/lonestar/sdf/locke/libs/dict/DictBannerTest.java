@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 08 Dec 2012 03:18:30 AM PST
- * Modified: Mon 04 Feb 2013 03:22:28 PM PST
+ * Modified: Sat 23 Feb 2013 10:19:32 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -32,43 +32,43 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
  */
 public class DictBannerTest {
 
-    private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
-    private final String INVALID = "220 invalid banner";
+	private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
+	private final String INVALID = "220 invalid banner";
 
 	/**
 	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictBanner#DictBanner(java.lang.String)}.
 	 */
 	@Test
 	public void testDictBanner()
-    {
-        DictBanner banner = new DictBanner(BANNER);
-        assertEquals("dictd 1.12", banner.message);
-        assertEquals("100@dictd.org", banner.connectionId);
-        assertEquals(2, banner.capabilities.size());
-        assertEquals(true, banner.capabilities.contains("auth"));
-        assertEquals(true, banner.capabilities.contains("mime"));
-    }
+	{
+		DictBanner banner = new DictBanner(BANNER);
+		assertEquals("dictd 1.12", banner.message);
+		assertEquals("100@dictd.org", banner.connectionId);
+		assertEquals(2, banner.capabilities.size());
+		assertEquals(true, banner.capabilities.contains("auth"));
+		assertEquals(true, banner.capabilities.contains("mime"));
+	}
 
 	/**
 	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictBanner#parse(java.lang.String)}.
 	 */
-    @Test
-    public void testParse()
-    {
-        DictBanner banner = DictBanner.parse(BANNER);
-        assertNotNull(banner);
-    }
+	@Test
+	public void testParse()
+	{
+		DictBanner banner = DictBanner.parse(BANNER);
+		assertNotNull(banner);
+	}
 
-    /**
-     * Test parsing an invalid banner string.
-     *
-     * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictBanner#parse(java.lang.String)}
-     * while passing an invalid banner string.
-     */
-    @Test
-    public void testInvalidBanner()
-    {
-        DictBanner banner = DictBanner.parse(INVALID);
-        assertNull(banner);
-    }
+	/**
+	 * Test parsing an invalid banner string.
+	 *
+	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictBanner#parse(java.lang.String)}
+	 * while passing an invalid banner string.
+	 */
+	@Test
+	public void testInvalidBanner()
+	{
+		DictBanner banner = DictBanner.parse(INVALID);
+		assertNull(banner);
+	}
 }

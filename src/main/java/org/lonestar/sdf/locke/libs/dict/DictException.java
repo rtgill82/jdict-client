@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:00:55 PM PST
- * Modified: Mon 04 Feb 2013 08:09:25 PM PST
+ * Modified: Sat 23 Feb 2013 10:17:30 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -32,39 +32,39 @@ import java.net.ProtocolException;
  */
 public class DictException extends ProtocolException {
 
-    /** DICT protocol response status code */
-    private int _status = 0;
+	/** DICT protocol response status code */
+	private int _status = 0;
 
-    /** Entire DICT protocol response message */
-    private String _message = null;
+	/** Entire DICT protocol response message */
+	private String _message = null;
 
-    /**
-     * Construct a new DictException.
-     *
-     * @param host    the remote host name
-     * @param status  the status code returned
-     * @param message the entire response string
-     */
-    DictException(String host, int status, String message)
-    {
-        super(host);
-        _status  = status;
-        _message = message;
-    }
+	/**
+	 * Construct a new DictException.
+	 *
+	 * @param host    the remote host name
+	 * @param status  the status code returned
+	 * @param message the entire response string
+	 */
+	DictException(String host, int status, String message)
+	{
+		super(host);
+		_status  = status;
+		_message = message;
+	}
 
-    /**
-     * Returns the status code of this DictException
-     *
-     * @return the status code of this DictException instance.
-     */
-    public int getStatus()
-    {
-        return _status;
-    }
+	/**
+	 * Returns the status code of this DictException
+	 *
+	 * @return the status code of this DictException instance.
+	 */
+	public int getStatus()
+	{
+		return _status;
+	}
 
-    @Override
-    public String getMessage()
-    {
-        return String.format("%s: %s", super.getMessage(), _message);
-    }
+	@Override
+	public String getMessage()
+	{
+		return String.format("%s: %s", super.getMessage(), _message);
+	}
 }

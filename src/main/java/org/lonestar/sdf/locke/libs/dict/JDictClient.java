@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 23 Feb 2013 10:17:51 PM PST
+ * Modified: Fri 01 Mar 2013 09:34:28 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -268,6 +268,26 @@ public class JDictClient {
 		List definitions;
 
 		_out.println("DEFINE * \"" + word + "\"");
+		resp = DictResponse.read(_in);
+		return (List<Definition>) resp.getData();
+	}
+
+	/**
+	 * Get definition for word from DICT server.
+	 *
+	 * @param dictionary the dictionary in which to find the definition
+	 * @param word the word to define
+	 *
+	 * @return a list of definitions for word
+	 *
+	 */
+	public List<Definition> define(String dictionary, String word)
+		throws IOException
+	{
+		DictResponse resp;
+		List definitions;
+
+		_out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
 		resp = DictResponse.read(_in);
 		return (List<Definition>) resp.getData();
 	}

@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sat 23 Feb 2013 10:17:15 PM PST
+ * Modified: Fri 01 Mar 2013 09:41:03 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -47,6 +47,7 @@ public class Dict {
 		System.out.println("\t-port <port>\t\t\tserver port [default: 2628]");
 		System.out.println("\t-serverinfo\t\t\tshow server information");
 		System.out.println("\t-help\t\t\t\tshow server help");
+		System.out.println("\t-dictionary <dictionary>\tlook up word in <dictionary>");
 		System.out.println("\t-dictionaries\t\t\tlist dictionaries available");
 		System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
 	}
@@ -101,7 +102,12 @@ public class Dict {
 				Iterator words = ((ArrayList)opts.get("words")).iterator();
 				while(words.hasNext()) {
 					String word = (String)words.next();
-					definitions = dictClient.define(word);
+					if (opts.containsKey("dictionary")) {
+						String dictionary = (String)opts.get("dictionary");
+						definitions = dictClient.define(dictionary, word);
+					} else {
+						definitions = dictClient.define(word);
+					}
 					if (definitions != null) {
 						Iterator defs = definitions.iterator();
 						while (defs.hasNext()) {
@@ -139,6 +145,7 @@ public class Dict {
 
 					/* String options */
 					if (optname.equals("host")
+							|| optname.equals("dictionary")
 							|| optname.equals("dictionaryinfo")) {
 						opts.put(optname, args[++i]);
 

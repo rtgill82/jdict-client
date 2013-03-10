@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Mar 2013 04:18:51 PM PDT
+ * Modified: Sun 10 Mar 2013 04:59:02 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -237,6 +237,9 @@ public class JDictClient {
 	}
 
 	/**
+	 * Get list of available match strategies from the server.
+	 *
+	 * @return list of strategies
 	 *
 	 */
 	public List<Strategy> getStrategies()

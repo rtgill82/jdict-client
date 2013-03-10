@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Fri 01 Mar 2013 09:34:28 PM PST
+ * Modified: Sun 10 Mar 2013 04:18:51 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -234,6 +234,18 @@ public class JDictClient {
 		_out.println("SHOW INFO " + dictionary);
 		resp = DictResponse.read(_in);
 		return (String) resp.getData();
+	}
+
+	/**
+	 *
+	 */
+	public List<Strategy> getStrategies()
+		throws IOException
+	{
+		DictResponse resp;
+		_out.println("SHOW STRATEGIES");
+		resp = DictResponse.read(_in);
+		return (List<Strategy>) resp.getData();
 	}
 
 	/**

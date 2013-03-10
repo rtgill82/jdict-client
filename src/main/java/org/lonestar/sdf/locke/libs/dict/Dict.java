@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Fri 01 Mar 2013 09:41:03 PM PST
+ * Modified: Sun 10 Mar 2013 04:54:38 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -32,6 +32,7 @@ import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.JDictClient;
 import org.lonestar.sdf.locke.libs.dict.DictException;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
+import org.lonestar.sdf.locke.libs.dict.Strategy;
 
 /**
  * Simple command line program that uses features of the library.
@@ -50,6 +51,7 @@ public class Dict {
 		System.out.println("\t-dictionary <dictionary>\tlook up word in <dictionary>");
 		System.out.println("\t-dictionaries\t\t\tlist dictionaries available");
 		System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
+		System.out.println("\t-strategies\t\t\tlist strategies available");
 	}
 
 	public static void main(String[] args)
@@ -57,6 +59,7 @@ public class Dict {
 		JDictClient dictClient;
 		List<Definition> definitions;
 		List<Dictionary> dictionaries;
+		List<Strategy> strategies;
 		Definition definition;
 		String info;
 		Hashtable opts;
@@ -97,6 +100,19 @@ public class Dict {
 					}
 				} else {
 					System.out.println("No dictionaries found.");
+				}
+			} else if (opts.containsKey("strategies")) {
+				strategies = dictClient.getStrategies();
+				dictClient.close();
+
+				if (strategies != null) {
+					Iterator itr = strategies.iterator();
+					while (itr.hasNext()) {
+						Strategy strategy = (Strategy)itr.next();
+						System.out.println(strategy);
+					}
+				} else {
+					System.out.println("No strategies found.");
 				}
 			} else if (opts.containsKey("words")) {
 				Iterator words = ((ArrayList)opts.get("words")).iterator();
@@ -156,7 +172,8 @@ public class Dict {
 						/* Flag options */
 					} else if (optname.equals("serverinfo")
 							|| optname.equals("help")
-							|| optname.equals("dictionaries")) {
+							|| optname.equals("dictionaries")
+							|| optname.equals("strategies")) {
 						opts.put(optname, true);
 							}
 				} else {

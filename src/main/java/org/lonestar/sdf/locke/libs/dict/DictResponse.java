@@ -24,8 +24,10 @@ package org.lonestar.sdf.locke.libs.dict;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,14 +42,11 @@ import org.lonestar.sdf.locke.libs.dict.Strategy;
  *
  */
 public class DictResponse {
-	/** REGEX matches a single line returned by the SHOW DATABASES command */
-	private static final String DATABASE_REGEX   = "^([a-zA-Z_0-9-]+) \"(.+)\"$";
+	/** REGEX matches a single line matching 'key "value"' */
+	private static final String DICTITEM_REGEX   = "^([a-zA-Z_0-9-]+) \"(.+)\"$";
 
 	/** REGEX matches a 151 status line preceeding definition text */
 	private static final String DEFINITION_REGEX = "^151 \"(.+)\" ([a-zA-Z_0-9-]+) \"(.+)\"$";
-
-	/** REGEX matches a single line returned by the SHOW STRATEGIES command */
-	private static final String STRATEGY_REGEX   = DATABASE_REGEX;
 
 	/** Response status code */
 	private int _status;
@@ -69,7 +68,8 @@ public class DictResponse {
 	 * @return new DictResponse
 	 */
 	static DictResponse read(BufferedReader responseBuffer)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		return new DictResponse(responseBuffer);
 	}
@@ -80,7 +80,8 @@ public class DictResponse {
 	 * @param responseBuffer buffer with response data from the DICT server
 	 */
 	DictResponse(BufferedReader responseBuffer)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		_status = 0;
 		_message = null;
@@ -96,7 +97,8 @@ public class DictResponse {
 	 * @param responseBuffer buffer with response data from the DICT server
 	 */
 	private void parseResponse(BufferedReader responseBuffer)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		switch (_status) {
 
@@ -108,14 +110,14 @@ public class DictResponse {
 
 		/* SHOW DATABASES response */
 		case 110:
-			_data = readDatabases(responseBuffer);
+			_data = readDictItems(responseBuffer, Dictionary.class);
 			_dataClass = List.class;
 			readStatusLine(responseBuffer);
 			break;
 
 		/* SHOW STRATEGIES response */
 		case 111:
-			_data = readStrategies(responseBuffer);
+			_data = readDictItems(responseBuffer, Strategy.class);
 			_dataClass = List.class;
 			readStatusLine(responseBuffer);
 			break;
@@ -280,60 +282,43 @@ public class DictResponse {
 	}
 
 	/**
-	 * Read dictionary databases returned by the SHOW DATABASES command.
+	 * Read items returned by commands such as SHOW DATABASES and SHOW
+	 * STRATEGIES.
 	 *
-	 * @param responseBuffer the buffer from which to read the database list
+	 * This also includes matches returned by the MATCH command.
 	 *
-	 * @return list of dictionary databases
+	 * @param responseBuffer the buffer from which to read the list of items
+	 *
+	 * @return list of DictItems
 	 */
-	private List readDatabases(BufferedReader responseBuffer)
-		throws IOException
+	private List<DictItem> readDictItems(
+			BufferedReader responseBuffer,
+			Class cl
+		)
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		Matcher matcher;
-		String database;
-		String description;
-		ArrayList<Dictionary> arrayList = new ArrayList();
+		String key;
+		String value;
 
-		Pattern pattern = Pattern.compile(DATABASE_REGEX);
-		String line = responseBuffer.readLine();
-		while (!line.equals(".")) {
-			matcher = pattern.matcher(line);
-
-			if (matcher.find()) {
-				database = line.substring(matcher.start(1), matcher.end(1));
-				description = line.substring(matcher.start(2), matcher.end(2));
-				arrayList.add(new Dictionary(database, description));
-			}
-			line = responseBuffer.readLine();
+		Constructor con = null;
+		if (DictItem.class.isAssignableFrom(cl)) {
+			con = cl.getConstructor(String.class, String.class);
+		} else {
+			throw new NoSuchMethodException();
 		}
 
-		return arrayList;
-	}
-
-	/**
-	 * Read match strategies returned by the SHOW STRATEGIES command.
-	 *
-	 * @param responseBuffer the buffer from which to read the strategy list
-	 *
-	 * @return list of match strategies
-	 */
-	private List readStrategies(BufferedReader responseBuffer)
-		throws IOException
-	{
-		Matcher matcher;
-		String name;
-		String description;
-		ArrayList<Strategy> arrayList = new ArrayList();
-
-		Pattern pattern = Pattern.compile(STRATEGY_REGEX);
+		ArrayList<DictItem> arrayList = new ArrayList();
+		Pattern pattern = Pattern.compile(DICTITEM_REGEX);
 		String line = responseBuffer.readLine();
 		while (!line.equals(".")) {
 			matcher = pattern.matcher(line);
 
 			if (matcher.find()) {
-				name = line.substring(matcher.start(1), matcher.end(1));
-				description = line.substring(matcher.start(2), matcher.end(2));
-				arrayList.add(new Strategy(name, description));
+				key = line.substring(matcher.start(1), matcher.end(1));
+				value = line.substring(matcher.start(2), matcher.end(2));
+				arrayList.add((DictItem) con.newInstance(key, value));
 			}
 			line = responseBuffer.readLine();
 		}

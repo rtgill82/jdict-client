@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sun 10 Mar 2013 04:54:38 PM PDT
+ * Modified: Sun 10 Mar 2013 11:13:43 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -23,6 +23,7 @@
 package org.lonestar.sdf.locke.libs.dict;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -55,6 +56,8 @@ public class Dict {
 	}
 
 	public static void main(String[] args)
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		JDictClient dictClient;
 		List<Definition> definitions;

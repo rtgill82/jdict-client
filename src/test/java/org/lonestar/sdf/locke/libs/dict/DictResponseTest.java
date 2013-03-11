@@ -1,6 +1,6 @@
 /*
  * Created:  Mon 10 Dec 2012 01:09:20 AM PST
- * Modified: Sat 23 Feb 2013 10:19:35 PM PST
+ * Modified: Sun 10 Mar 2013 11:17:44 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,7 +28,9 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 import org.lonestar.sdf.locke.libs.dict.DictResponse;
 
 /**
@@ -67,6 +69,8 @@ public class DictResponseTest {
 	 */
 	@Test
 	public void testDictResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		BufferedReader buf_reader = stringBuffer("250 ok");
 		try {
@@ -84,6 +88,8 @@ public class DictResponseTest {
 	 */
 	@Test
 	public void testDatabaseResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		BufferedReader buf_reader = stringBuffer(DATABASES);
 		try {
@@ -101,6 +107,8 @@ public class DictResponseTest {
 	 */
 	@Test
 	public void testDatabaseInfoResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		BufferedReader buf_reader = stringBuffer(DATABASE_INFO);
 		try {
@@ -118,6 +126,8 @@ public class DictResponseTest {
 	 */
 	@Test
 	public void testServerInfoResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		BufferedReader buf_reader = stringBuffer(SERVER_INFO);
 		try {
@@ -135,6 +145,8 @@ public class DictResponseTest {
 	 */
 	@Test
 	public void testDefineResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		BufferedReader buf_reader = stringBuffer(DEFINITION);
 		try {

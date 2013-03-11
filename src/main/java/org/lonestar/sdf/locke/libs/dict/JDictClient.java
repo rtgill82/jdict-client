@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Mar 2013 05:01:36 PM PDT
+ * Modified: Sun 10 Mar 2013 11:11:44 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -23,9 +23,10 @@
 package org.lonestar.sdf.locke.libs.dict;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.util.Iterator;
 import java.util.List;
@@ -86,7 +87,9 @@ public class JDictClient {
 	 * @return new JDictClient instance
 	 */
 	public static JDictClient connect(String host)
-		throws UnknownHostException, IOException
+		throws UnknownHostException, IOException, NoSuchMethodException,
+						  InstantiationException, IllegalAccessException,
+						  InvocationTargetException
 	{
 		JDictClient dictClient = JDictClient.connect(host, DEFAULT_PORT);
 		return dictClient;
@@ -100,7 +103,9 @@ public class JDictClient {
 	 * @return new JDictClient instance
 	 */
 	public static JDictClient connect(String host, int port)
-		throws UnknownHostException, IOException
+		throws UnknownHostException, IOException, NoSuchMethodException,
+						  InstantiationException, IllegalAccessException,
+						  InvocationTargetException
 	{
 		JDictClient dictClient = new JDictClient(host, port);
 		dictClient.connect();
@@ -130,7 +135,9 @@ public class JDictClient {
 	 * connection to the server previously specified.
 	 */
 	public void connect()
-		throws UnknownHostException, IOException, DictException
+		throws UnknownHostException, IOException, DictException,
+						  NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 
@@ -160,7 +167,9 @@ public class JDictClient {
 	 *
 	 */
 	public void close()
-		throws DictException, IOException
+		throws DictException, IOException, NoSuchMethodException,
+						  InstantiationException, IllegalAccessException,
+						  InvocationTargetException
 	{
 		DictResponse resp;
 
@@ -184,7 +193,8 @@ public class JDictClient {
 	 * @return server information string
 	 */
 	public String getServerInfo()
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		_out.println("SHOW SERVER");
@@ -198,7 +208,8 @@ public class JDictClient {
 	 * @return server help string
 	 */
 	public String getHelp()
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		_out.println("HELP");
@@ -212,7 +223,8 @@ public class JDictClient {
 	 * @return list of dictionaries
 	 */
 	public List<Dictionary> getDictionaries()
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		_out.println("SHOW DATABASES");
@@ -228,7 +240,8 @@ public class JDictClient {
 	 * @return dictionary info string
 	 */
 	public String getDictionaryInfo(String dictionary)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		_out.println("SHOW INFO " + dictionary);
@@ -244,7 +257,8 @@ public class JDictClient {
 	 * @return same dictionary instance with detailed info set
 	 */
 	public Dictionary getDictionaryInfo(Dictionary dictionary)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		String info;
 
@@ -260,7 +274,8 @@ public class JDictClient {
 	 *
 	 */
 	public List<Strategy> getStrategies()
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		_out.println("SHOW STRATEGIES");
@@ -277,7 +292,8 @@ public class JDictClient {
 	 *
 	 */
 	public List<Definition> define(String word)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		List definitions;
@@ -297,7 +313,8 @@ public class JDictClient {
 	 *
 	 */
 	public List<Definition> define(String dictionary, String word)
-		throws IOException
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
 	{
 		DictResponse resp;
 		List definitions;

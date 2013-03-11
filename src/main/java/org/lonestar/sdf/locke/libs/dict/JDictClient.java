@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Mar 2013 04:59:02 PM PDT
+ * Modified: Sun 10 Mar 2013 05:01:36 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -237,21 +237,6 @@ public class JDictClient {
 	}
 
 	/**
-	 * Get list of available match strategies from the server.
-	 *
-	 * @return list of strategies
-	 *
-	 */
-	public List<Strategy> getStrategies()
-		throws IOException
-	{
-		DictResponse resp;
-		_out.println("SHOW STRATEGIES");
-		resp = DictResponse.read(_in);
-		return (List<Strategy>) resp.getData();
-	}
-
-	/**
 	 * Get detailed dictionary info for the specified dictionary.
 	 *
 	 * @param dictionary the dictionary for which to get information
@@ -266,6 +251,21 @@ public class JDictClient {
 		info = getDictionaryInfo(dictionary.getDatabase());
 		dictionary.setDatabaseInfo(info);
 		return dictionary;
+	}
+
+	/**
+	 * Get list of available match strategies from the server.
+	 *
+	 * @return list of strategies
+	 *
+	 */
+	public List<Strategy> getStrategies()
+		throws IOException
+	{
+		DictResponse resp;
+		_out.println("SHOW STRATEGIES");
+		resp = DictResponse.read(_in);
+		return (List<Strategy>) resp.getData();
 	}
 
 	/**

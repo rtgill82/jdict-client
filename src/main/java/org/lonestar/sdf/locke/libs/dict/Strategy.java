@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Mar 2013 04:19:18 PM PDT
- * Modified: Sun 10 Mar 2013 04:24:16 PM PDT
+ * Modified: Sun 10 Mar 2013 06:06:16 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,13 +28,7 @@ package org.lonestar.sdf.locke.libs.dict;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Strategy extends Object {
-	/** Name used to identify match strategy */
-	private String _name;
-
-	/** Long description of match strategy */
-	private String _description;
-
+public class Strategy extends DictItem {
 	/**
 	 * Construct a new Strategy.
 	 *
@@ -43,43 +37,49 @@ public class Strategy extends Object {
 	 */
 	public Strategy(String name, String description)
 	{
-		super();
-		_name = name;
-		_description = description;
+		super(name, description);
+	}
+
+	/**
+	 * Construct a new Strategy from a DictItem.
+	 *
+	 * @param dictItem the DictItem to convert into a Strategy
+	 */
+	public Strategy(DictItem dictItem)
+	{
+		super(dictItem.getKey(), dictItem.getValue());
 	}
 
 	/**
 	 * Get match strategy name.
 	 *
+	 * An alias for getKey().
+	 *
 	 */
 	public String getName()
 	{
-		return _name;
+		return getKey();
 	}
 
 	/**
 	 * Get match strategy description.
 	 *
+	 * An alias for getValue().
+	 *
 	 */
 	public String getDescription()
 	{
-		return _description;
+		return getValue();
 	}
 
 	@Override
 	public Strategy clone()
 	{
 		Strategy strat = new Strategy(
-				this.getName(),
-				this.getDescription()
+				this.getKey(),
+				this.getValue()
 			);
 
 		return strat;
-	}
-
-	@Override
-	public String toString()
-	{
-		return _name + " \"" + _description + '"';
 	}
 }

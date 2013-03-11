@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Mar 2013 04:31:32 PM PDT
- * Modified: Sun 10 Mar 2013 04:34:37 PM PDT
+ * Modified: Sun 10 Mar 2013 05:59:23 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -24,6 +24,7 @@ package org.lonestar.sdf.locke.libs.dict;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.lonestar.sdf.locke.libs.dict.DictItem;
 import org.lonestar.sdf.locke.libs.dict.Strategy;
 
 /**
@@ -42,6 +43,18 @@ public class StrategyTest {
 	public void testStrategy()
 	{
 		Strategy strat = new Strategy(NAME, DESCRIPTION);
+		assertEquals(NAME, strat.getName());
+		assertEquals(DESCRIPTION, strat.getDescription());
+	}
+
+	/**
+	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.Strategy#Strategy(org.lonestar.sdf.locke.libs.dict.DictItem)}.
+	 */
+	@Test
+	public void testConvertDictItem()
+	{
+		DictItem item = new DictItem(NAME, DESCRIPTION);
+		Strategy strat = new Strategy(item);
 		assertEquals(NAME, strat.getName());
 		assertEquals(DESCRIPTION, strat.getDescription());
 	}

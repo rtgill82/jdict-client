@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 22 Dec 2012 02:35:06 AM PST
- * Modified: Sat 23 Feb 2013 10:19:40 PM PST
+ * Modified: Sun 10 Mar 2013 06:09:44 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -47,6 +47,18 @@ public class DictionaryTest {
 		assertNull(dict.getDatabaseInfo());
 	}
 
+	/**
+	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#Dictionary(org.lonestar.sdf.locke.libs.dict.DictItem)}.
+	 */
+	@Test
+	public void testConvertDictItem()
+	{
+		DictItem item = new DictItem(DATABASE, DESCRIPTION);
+		Dictionary dict = new Dictionary(item);
+		assertEquals(DATABASE, dict.getDatabase());
+		assertEquals(DESCRIPTION, dict.getDescription());
+		assertNull(dict.getDatabaseInfo());
+	}
 
 	/**
 	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#setDatabaseInfo(java.lang.String)}.

@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Sat 23 Feb 2013 10:17:45 PM PST
+ * Modified: Sun 10 Mar 2013 06:07:04 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,13 +28,7 @@ package org.lonestar.sdf.locke.libs.dict;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Dictionary extends Object {
-	/** Name used to identify dictionary database */
-	private String _database;
-
-	/** Long description of dictionary database */
-	private String _description;
-
+public class Dictionary extends DictItem {
 	/** Database source, copyright and licensing information */
 	private String _databaseInfo;
 
@@ -46,10 +40,18 @@ public class Dictionary extends Object {
 	 */
 	public Dictionary(String database, String description)
 	{
-		super();
-		_database = database;
-		_description = description;
+		super(database, description);
 		_databaseInfo = null;
+	}
+
+	/**
+	 * Construct a new Dictionary from a DictItem.
+	 *
+	 * @param dictItem the DictItem to convert into a Dictionary
+	 */
+	public Dictionary(DictItem dictItem)
+	{
+		super(dictItem.getKey(), dictItem.getValue());
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class Dictionary extends Object {
 	 */
 	public String getDatabase()
 	{
-		return _database;
+		return getKey();
 	}
 
 	/**
@@ -67,7 +69,7 @@ public class Dictionary extends Object {
 	 */
 	public String getDescription()
 	{
-		return _description;
+		return getValue();
 	}
 
 	/**
@@ -93,17 +95,11 @@ public class Dictionary extends Object {
 	public Dictionary clone()
 	{
 		Dictionary dict = new Dictionary(
-				this.getDatabase(),
-				this.getDescription()
+				this.getKey(),
+				this.getValue()
 			);
 		dict.setDatabaseInfo(this.getDatabaseInfo());
 
 		return dict;
-	}
-
-	@Override
-	public String toString()
-	{
-		return _database + " \"" + _description + '"';
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Mar 2013 11:11:44 PM PDT
+ * Modified: Sat 16 Mar 2013 05:48:47 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -322,6 +322,26 @@ public class JDictClient {
 		_out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
 		resp = DictResponse.read(_in);
 		return (List<Definition>) resp.getData();
+	}
+
+	/**
+	 * Match word using requested strategy.
+	 *
+	 * @param word the word to match
+	 * @param strategy the strategy to use for matching
+	 *
+	 * @return a list of matching words and the dictionaries they are found in
+	 *
+	 */
+	public List<Match> match(String strategy, String word)
+		throws IOException, NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
+	{
+		DictResponse resp;
+
+		_out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
+		resp = DictResponse.read(_in);
+		return (List<Match>) resp.getData();
 	}
 
 	/**

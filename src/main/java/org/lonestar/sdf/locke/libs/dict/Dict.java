@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sun 10 Mar 2013 11:13:43 PM PDT
+ * Modified: Sat 16 Mar 2013 05:50:36 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -30,9 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
 import org.lonestar.sdf.locke.libs.dict.DictException;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
+import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import org.lonestar.sdf.locke.libs.dict.Match;
 import org.lonestar.sdf.locke.libs.dict.Strategy;
 
 /**
@@ -53,6 +54,7 @@ public class Dict {
 		System.out.println("\t-dictionaries\t\t\tlist dictionaries available");
 		System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
 		System.out.println("\t-strategies\t\t\tlist strategies available");
+		System.out.println("\t-match <strategy>\ttry to match word using strategy");
 	}
 
 	public static void main(String[] args)
@@ -60,12 +62,15 @@ public class Dict {
 						  IllegalAccessException, InvocationTargetException
 	{
 		JDictClient dictClient;
-		List<Definition> definitions;
-		List<Dictionary> dictionaries;
-		List<Strategy> strategies;
-		Definition definition;
 		String info;
 		Hashtable opts;
+
+		List<Dictionary> dictionaries = null;
+		List<Strategy> strategies = null ;
+		List<Definition> definitions = null;
+		List<Match> matches = null;
+		Definition definition = null;
+		Match match = null;
 
 		if (args.length == 0) {
 			showHelp();
@@ -124,13 +129,22 @@ public class Dict {
 					if (opts.containsKey("dictionary")) {
 						String dictionary = (String)opts.get("dictionary");
 						definitions = dictClient.define(dictionary, word);
+					} else if (opts.containsKey("match")) {
+						String strategy = (String)opts.get("match");
+						matches = dictClient.match(strategy, word);
 					} else {
 						definitions = dictClient.define(word);
 					}
-					if (definitions != null) {
-						Iterator defs = definitions.iterator();
-						while (defs.hasNext()) {
-							definition = (Definition) defs.next();
+					if (matches != null) {
+						Iterator itr = matches.iterator();
+						while (itr.hasNext()) {
+							match = (Match) itr.next();
+							System.out.println(match);
+						}
+					} else if (definitions != null) {
+						Iterator itr = definitions.iterator();
+						while (itr.hasNext()) {
+							definition = (Definition) itr.next();
 							System.out.println(definition);
 						}
 					} else {
@@ -165,7 +179,8 @@ public class Dict {
 					/* String options */
 					if (optname.equals("host")
 							|| optname.equals("dictionary")
-							|| optname.equals("dictionaryinfo")) {
+							|| optname.equals("dictionaryinfo")
+							|| optname.equals("match")) {
 						opts.put(optname, args[++i]);
 
 						/* Integer options */

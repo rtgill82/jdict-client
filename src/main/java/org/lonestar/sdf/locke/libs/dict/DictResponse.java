@@ -157,7 +157,9 @@ public class DictResponse {
 
 		/* MATCH response; list of matches follows */
 		case 152:
-			/* Not implemented */
+			_data = readDictItems(responseBuffer, Match.class);
+			_dataClass = List.class;
+			readStatusLine(responseBuffer);
 			break;
 
 		default:

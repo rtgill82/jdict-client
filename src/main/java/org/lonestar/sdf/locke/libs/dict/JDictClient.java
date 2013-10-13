@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 16 Mar 2013 05:48:47 PM PDT
+ * Modified: Tue 02 Jul 2013 08:36:11 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -47,6 +47,7 @@ public class JDictClient {
 
 	private String _host = null;
 	private int _port = 0;
+    private DictResponse _resp;
 
 	private String _libraryName;
 	private String _libraryVersion;
@@ -147,12 +148,16 @@ public class JDictClient {
 			_in  = new BufferedReader(new InputStreamReader(
 						_dictSocket.getInputStream()));
 
-			resp = DictResponse.read(_in);
-			if (resp.getStatus() != 220 || resp.getData() == null) {
-				throw new DictException(_host, resp.getStatus(),
-						"Connection failed: " + resp.getMessage());
+            // Save connect response so it can be requested by applications
+            // using this library.
+			_resp = DictResponse.read(_in);
+			if (_resp.getStatus() != 220 || _resp.getData() == null) {
+				throw new DictException(_host, _resp.getStatus(),
+						"Connection failed: " + _resp.getMessage());
 			}
 
+            // I don't think anyone should care about the sendClient()
+            // response.
 			sendClient();
 			resp = DictResponse.read(_in);
 			if (resp.getStatus() != 250) {
@@ -171,20 +176,41 @@ public class JDictClient {
 						  InstantiationException, IllegalAccessException,
 						  InvocationTargetException
 	{
-		DictResponse resp;
-
 		quit();
-		resp = DictResponse.read(_in);
+		_resp = DictResponse.read(_in);
 
 		_dictSocket.close();
 		_dictSocket = null;
 		_in = null;
 		_out = null;
 
-		if (resp.getStatus() != 221) {
-			throw new DictException(_host, resp.getStatus(),
-					resp.getMessage());
+		if (_resp.getStatus() != 221) {
+			throw new DictException(_host, _resp.getStatus(),
+					_resp.getMessage());
 		}
+	}
+
+    /**
+     * Get the response for the last command sent.
+     *
+     * It's overwritten by subsequent commands.
+     *
+     * @return the response for the last command.
+     */
+    public DictResponse getResponse()
+    {
+        return _resp;
+    }
+
+	/**
+	 * Send client information to DICT server.
+	 *
+     * This method is called by the connect() method. It's not necessary to use
+     * it in normal practice.
+	 */
+	private void sendClient()
+	{
+		_out.println("CLIENT " + _clientString);
 	}
 
 	/**
@@ -196,10 +222,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		_out.println("SHOW SERVER");
-		resp = DictResponse.read(_in);
-		return (String) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (String) _resp.getData();
 	}
 
 	/**
@@ -211,10 +236,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		_out.println("HELP");
-		resp = DictResponse.read(_in);
-		return (String) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (String) _resp.getData();
 	}
 
 	/**
@@ -226,10 +250,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		_out.println("SHOW DATABASES");
-		resp = DictResponse.read(_in);
-		return (List<Dictionary>) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (List<Dictionary>) _resp.getData();
 	}
 
 	/**
@@ -243,10 +266,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		_out.println("SHOW INFO " + dictionary);
-		resp = DictResponse.read(_in);
-		return (String) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (String) _resp.getData();
 	}
 
 	/**
@@ -277,10 +299,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		_out.println("SHOW STRATEGIES");
-		resp = DictResponse.read(_in);
-		return (List<Strategy>) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (List<Strategy>) _resp.getData();
 	}
 
 	/**
@@ -295,12 +316,11 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		List definitions;
 
 		_out.println("DEFINE * \"" + word + "\"");
-		resp = DictResponse.read(_in);
-		return (List<Definition>) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (List<Definition>) _resp.getData();
 	}
 
 	/**
@@ -316,12 +336,11 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
 		List definitions;
 
 		_out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
-		resp = DictResponse.read(_in);
-		return (List<Definition>) resp.getData();
+		_resp = DictResponse.read(_in);
+		return (List<Definition>) _resp.getData();
 	}
 
 	/**
@@ -337,20 +356,9 @@ public class JDictClient {
 		throws IOException, NoSuchMethodException, InstantiationException,
 						  IllegalAccessException, InvocationTargetException
 	{
-		DictResponse resp;
-
 		_out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
-		resp = DictResponse.read(_in);
-		return (List<Match>) resp.getData();
-	}
-
-	/**
-	 * Send client information to DICT server.
-	 *
-	 */
-	private void sendClient()
-	{
-		_out.println("CLIENT " + _clientString);
+		_resp = DictResponse.read(_in);
+		return (List<Match>) _resp.getData();
 	}
 
 	/**

@@ -1,5 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
+ * Modified: Tue 02 Jul 2013 08:24:39 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -17,7 +18,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with JDictClient.
  * If not, see <http://www.gnu.org/licenses/>.
- * Modified: Sun 27 Jan 2013 05:31:58 PM PST
  *
  */
 package org.lonestar.sdf.locke.libs.dict;

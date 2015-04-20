@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Tue 02 Jul 2013 08:36:11 PM PDT
+ * Modified: Sun 19 Apr 2015 09:56:23 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -43,15 +43,14 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
 public class JDictClient {
 	private static final int DEFAULT_PORT = 2628;
 
-	private static String _clientString = null;
+	private String _clientString = null;
+	private String _libraryName = null;
+	private String _libraryVendor = null;
+	private String _libraryVersion = null;
 
 	private String _host = null;
 	private int _port = 0;
     private DictResponse _resp;
-
-	private String _libraryName;
-	private String _libraryVersion;
-	private String _libraryVendor;
 
 	private Socket _dictSocket = null;
 	private PrintWriter _out = null;
@@ -114,22 +113,6 @@ public class JDictClient {
 	}
 
 	/**
-	 * Set the client string sent to the server.
-	 *
-	 * Identify the client to the server with the provided string. It is
-	 * usually the application name and version number. This method must be
-	 * called before any instances of the JDictClient class are created. If
-	 * this method is not called, the library name and version will be used.
-	 *
-	 * @param clientString client string to send to DICT server
-	 */
-	public static void setClientString(String clientString)
-	{
-		if (_clientString == null)
-			_clientString = clientString;
-	}
-
-	/**
 	 * Open connection to the DICT server.
 	 *
 	 * If this instance is not currently connected, attempt to open a
@@ -188,6 +171,52 @@ public class JDictClient {
 			throw new DictException(_host, _resp.getStatus(),
 					_resp.getMessage());
 		}
+	}
+
+	/**
+	 * Get library name.
+	 *
+	 * @return library name String
+	 */
+	public String getLibraryName()
+	{
+		return _libraryName;
+	}
+
+	/**
+	 * Get library version.
+	 *
+	 * @return library version String
+	 */
+	public String getLibraryVersion()
+	{
+		return _libraryVersion;
+	}
+
+	/**
+	 * Get library developer/vendor name.
+	 *
+	 * @return library vendor String
+	 */
+	public String getLibraryVendor()
+	{
+		return _libraryVendor;
+	}
+
+	/**
+	 * Set the client string sent to the server.
+	 *
+	 * Identify the client to the server with the provided string. It is
+	 * usually the application name and version number. This method must be
+	 * called before any instances of the JDictClient class are created. If
+	 * this method is not called, the library name and version will be used.
+	 *
+	 * @param clientString client string to send to DICT server
+	 */
+	public void setClientString(String clientString)
+	{
+		if (_clientString == null)
+			_clientString = clientString;
 	}
 
     /**

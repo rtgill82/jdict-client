@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:53:24 PM PST
- * Modified: Sat 23 Feb 2013 10:17:24 PM PST
+ * Modified: Sun 19 Apr 2015 11:51:53 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -36,7 +36,10 @@ class DictBanner {
 	/** Regex used to match DICT protocol banner */
 	private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> <(.*)>$";
 
-	/** Entire DICT protocol banner message */
+    /** Entire DICT protocol banner */
+    public final String banner;
+
+	/** DICT protocol banner message */
 	public final String message;
 
 	/** Array of capabilities the remote DICT server supports */
@@ -75,6 +78,7 @@ class DictBanner {
 		Matcher matcher = pattern.matcher(banner);
 
 		if (matcher.find()) {
+            this.banner = banner;
 			message = banner.substring(matcher.start(1), matcher.end(1));
 			connectionId = banner.substring(matcher.start(4), matcher.end(4));
 
@@ -85,6 +89,7 @@ class DictBanner {
 				capabilities.add(caparray[i]);
 		} else {
 			// can only be assigned once, yet still need to be assigned
+            this.banner = null;
 			message = null;
 			capabilities = null;
 			connectionId = null;
@@ -94,6 +99,6 @@ class DictBanner {
 	@Override
 	public String toString()
 	{
-		return message;
+		return banner;
 	}
 }

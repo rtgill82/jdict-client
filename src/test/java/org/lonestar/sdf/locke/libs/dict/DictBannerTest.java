@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 08 Dec 2012 03:18:30 AM PST
- * Modified: Sat 23 Feb 2013 10:19:32 PM PST
+ * Modified: Sun 19 Apr 2015 11:47:48 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -71,4 +71,14 @@ public class DictBannerTest {
 		DictBanner banner = DictBanner.parse(INVALID);
 		assertNull(banner);
 	}
+
+	/**
+	 * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictBanner#toString()}.
+	 */
+    @Test
+    public void testBannerToString()
+    {
+        DictBanner banner = DictBanner.parse(BANNER);
+        assertEquals(BANNER, banner.toString());
+    }
 }

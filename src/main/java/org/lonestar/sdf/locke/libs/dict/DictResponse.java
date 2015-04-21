@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Tue 02 Jul 2013 08:24:39 PM PDT
+ * Modified: Mon 20 Apr 2015 07:20:45 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -124,7 +124,7 @@ public class DictResponse {
 
 		/* Information commands */
 		case 112: // SHOW INFO response
-		case 113: // HELP response *not implemented*
+		case 113: // HELP response
 		case 114: // SHOW SERVER response
 			_data = readInfo(responseBuffer);
 			_dataClass = String.class;

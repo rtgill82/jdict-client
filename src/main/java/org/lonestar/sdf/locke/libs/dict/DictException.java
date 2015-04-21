@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:00:55 PM PST
- * Modified: Sat 23 Feb 2013 10:17:30 PM PST
+ * Modified: Mon 20 Apr 2015 07:47:23 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -52,8 +52,18 @@ public class DictException extends ProtocolException {
 		_message = message;
 	}
 
+    /**
+     * Returns the remote host name where the exception occurred.
+     *
+     * @return the host name name of this DictException instance.
+     */
+    public String getHost()
+    {
+        return super.getMessage();
+    }
+
 	/**
-	 * Returns the status code of this DictException
+	 * Returns the status code of this DictException.
 	 *
 	 * @return the status code of this DictException instance.
 	 */

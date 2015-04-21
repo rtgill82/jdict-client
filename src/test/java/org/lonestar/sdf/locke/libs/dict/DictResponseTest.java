@@ -1,6 +1,6 @@
 /*
  * Created:  Mon 10 Dec 2012 01:09:20 AM PST
- * Modified: Sun 10 Mar 2013 11:17:44 PM PDT
+ * Modified: Mon 20 Apr 2015 07:23:58 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -45,6 +45,18 @@ public class DictResponseTest {
 		"foldoc \"The Free On-line Dictionary of Computing (26 July 2010)\"" +
 		"\n.\n250 ok";
 
+    /* SHOW STRATEGIES response */
+    private final String STRATEGIES =
+        "111 1 strategies present\n" +
+        "exact \"Match headwords exactly\"" +
+        "\n.\n250 ok";
+
+    /* SHOW HELP response */
+    private final String HELP =
+        "113 help text follows\n" +
+        "DEFINE database word         -- look up word in database\n" +
+        "\n.\n250 ok";
+
 	/* SHOW INFO response */
 	private final String DATABASE_INFO =
 		"112 database information follows\n" +
@@ -63,6 +75,13 @@ public class DictResponseTest {
 		"151 \"word\" database \"Database Description\"\n" +
 		"This word is defined as a word with meaning.\n" +
 		"\n.\n250 ok";
+
+    /* MATCH response */
+    private final String MATCH =
+        "152 21 matches found\n" +
+        "wn \"cat\"" +
+        "wn \"cat and mouse\"" +
+        "\n.\n250 ok [d/m/c = 0/1/323; 0.000r 0.000u 0.000s]";
 
 	/**
 	 * Test reading of successful status.
@@ -101,6 +120,45 @@ public class DictResponseTest {
 			fail("IOException: " + e.getMessage());
 		}
 	}
+
+    /**
+     * Test reading of SHOW STRATEGIES response.
+     */
+    @Test
+    public void testStrategiesResponse()
+        throws NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        BufferedReader buf_reader = stringBuffer(STRATEGIES);
+        try {
+            DictResponse resp = DictResponse.read(buf_reader);
+            assertEquals(250, resp.getStatus());
+            assertEquals(List.class, resp.getDataClass());
+            assertNotNull(resp.getData());
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test reading of HELP response.
+     */
+	@Test
+	public void testHelpResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
+	{
+		BufferedReader buf_reader = stringBuffer(DATABASE_INFO);
+		try {
+			DictResponse resp = DictResponse.read(buf_reader);
+			assertEquals(250, resp.getStatus());
+			assertEquals(String.class, resp.getDataClass());
+			assertNotNull(resp.getData());
+		} catch (IOException e) {
+			fail("IOException: " + e.getMessage());
+		}
+	}
+
 
 	/**
 	 * Test reading of SHOW INFO response.
@@ -141,7 +199,7 @@ public class DictResponseTest {
 	}
 
 	/**
-	 * Test DEFINE response
+	 * Test reading of DEFINE response.
 	 */
 	@Test
 	public void testDefineResponse()
@@ -159,6 +217,28 @@ public class DictResponseTest {
 		}
 	}
 
+    /**
+     * Test reading of MATCH response.
+     */
+    @Test
+    public void testMatchResponse()
+		throws NoSuchMethodException, InstantiationException,
+						  IllegalAccessException, InvocationTargetException
+    {
+		BufferedReader buf_reader = stringBuffer(MATCH);
+		try {
+			DictResponse resp = DictResponse.read(buf_reader);
+			assertEquals(250, resp.getStatus());
+			assertEquals(List.class, resp.getDataClass());
+			assertNotNull(resp.getData());
+		} catch (IOException e) {
+			fail("IOException: " + e.getMessage());
+		}
+    }
+
+    /**
+     * Create buffered reader for String.
+     */
 	private BufferedReader stringBuffer(String str)
 	{
 		StringReader sreader = new StringReader(str);

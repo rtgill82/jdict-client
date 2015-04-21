@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Mar 2013 05:24:43 PM PDT
- * Modified: Sun 10 Mar 2013 05:44:52 PM PDT
+ * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -39,65 +39,65 @@ package org.lonestar.sdf.locke.libs.dict;
  *
  */
 public class DictItem extends Object {
-	/** Key used to identify the item */
-	private String _key;
+    /** Key used to identify the item */
+    private String _key;
 
-	/** Value of the item (often an item description) */
-	private String _value;
+    /** Value of the item (often an item description) */
+    private String _value;
 
-	/**
-	 * Construct a new DictItem.
-	 *
-	 * @param key   the key identifying the item.
-	 * @param value the value of the item (often an item description).
-	 */
-	public DictItem(String key, String value)
-	{
-		super();
-		_key = key;
-		_value = value;
-	}
+    /**
+     * Construct a new DictItem.
+     *
+     * @param key   the key identifying the item.
+     * @param value the value of the item (often an item description).
+     */
+    public DictItem(String key, String value)
+    {
+        super();
+        _key = key;
+        _value = value;
+    }
 
-	/**
-	 * Get the item key.
-	 *
-	 */
-	public String getKey()
-	{
-		return _key;
-	}
+    /**
+     * Get the item key.
+     *
+     */
+    public String getKey()
+    {
+        return _key;
+    }
 
-	/**
-	 * Get the item value.
-	 *
-	 */
-	public String getValue()
-	{
-		return _value;
-	}
+    /**
+     * Get the item value.
+     *
+     */
+    public String getValue()
+    {
+        return _value;
+    }
 
-	/**
-	 * Creates and returns a copy of this object.
-	 *
-	 */
-	@Override
-	public DictItem clone()
-	{
-		DictItem item = new DictItem(
-				this.getKey(),
-				this.getValue()
-			);
+    /**
+     * Creates and returns a copy of this object.
+     *
+     */
+    @Override
+    public DictItem clone()
+    {
+        DictItem item = new DictItem(
+                this.getKey(),
+                this.getValue()
+            );
 
-		return item;
-	}
+        return item;
+    }
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 */
-	@Override
-	public String toString()
-	{
-		return _key + " \"" + _value + '"';
-	}
+    /**
+     * Returns a string representation of the object.
+     *
+     */
+    @Override
+    public String toString()
+    {
+        return _key + " \"" + _value + '"';
+    }
 }

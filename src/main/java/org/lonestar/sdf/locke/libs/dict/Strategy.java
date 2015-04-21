@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Mar 2013 04:19:18 PM PDT
- * Modified: Sun 10 Mar 2013 06:06:16 PM PDT
+ * Modified: Mon 20 Apr 2015 08:04:38 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -29,57 +29,57 @@ package org.lonestar.sdf.locke.libs.dict;
  *
  */
 public class Strategy extends DictItem {
-	/**
-	 * Construct a new Strategy.
-	 *
-	 * @param name        the match strategy name
-	 * @param description description of the match strategy
-	 */
-	public Strategy(String name, String description)
-	{
-		super(name, description);
-	}
+    /**
+     * Construct a new Strategy.
+     *
+     * @param name        the match strategy name
+     * @param description description of the match strategy
+     */
+    public Strategy(String name, String description)
+    {
+        super(name, description);
+    }
 
-	/**
-	 * Construct a new Strategy from a DictItem.
-	 *
-	 * @param dictItem the DictItem to convert into a Strategy
-	 */
-	public Strategy(DictItem dictItem)
-	{
-		super(dictItem.getKey(), dictItem.getValue());
-	}
+    /**
+     * Construct a new Strategy from a DictItem.
+     *
+     * @param dictItem the DictItem to convert into a Strategy
+     */
+    public Strategy(DictItem dictItem)
+    {
+        super(dictItem.getKey(), dictItem.getValue());
+    }
 
-	/**
-	 * Get match strategy name.
-	 *
-	 * An alias for getKey().
-	 *
-	 */
-	public String getName()
-	{
-		return getKey();
-	}
+    /**
+     * Get match strategy name.
+     *
+     * An alias for getKey().
+     *
+     */
+    public String getName()
+    {
+        return getKey();
+    }
 
-	/**
-	 * Get match strategy description.
-	 *
-	 * An alias for getValue().
-	 *
-	 */
-	public String getDescription()
-	{
-		return getValue();
-	}
+    /**
+     * Get match strategy description.
+     *
+     * An alias for getValue().
+     *
+     */
+    public String getDescription()
+    {
+        return getValue();
+    }
 
-	@Override
-	public Strategy clone()
-	{
-		Strategy strat = new Strategy(
-				this.getKey(),
-				this.getValue()
-			);
+    @Override
+    public Strategy clone()
+    {
+        Strategy strat = new Strategy(
+                this.getKey(),
+                this.getValue()
+            );
 
-		return strat;
-	}
+        return strat;
+    }
 }

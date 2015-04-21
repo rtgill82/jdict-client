@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:00:55 PM PST
- * Modified: Mon 20 Apr 2015 07:47:23 PM PDT
+ * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -32,25 +32,25 @@ import java.net.ProtocolException;
  */
 public class DictException extends ProtocolException {
 
-	/** DICT protocol response status code */
-	private int _status = 0;
+    /** DICT protocol response status code */
+    private int _status = 0;
 
-	/** Entire DICT protocol response message */
-	private String _message = null;
+    /** Entire DICT protocol response message */
+    private String _message = null;
 
-	/**
-	 * Construct a new DictException.
-	 *
-	 * @param host    the remote host name
-	 * @param status  the status code returned
-	 * @param message the entire response string
-	 */
-	DictException(String host, int status, String message)
-	{
-		super(host);
-		_status  = status;
-		_message = message;
-	}
+    /**
+     * Construct a new DictException.
+     *
+     * @param host    the remote host name
+     * @param status  the status code returned
+     * @param message the entire response string
+     */
+    DictException(String host, int status, String message)
+    {
+        super(host);
+        _status  = status;
+        _message = message;
+    }
 
     /**
      * Returns the remote host name where the exception occurred.
@@ -62,19 +62,19 @@ public class DictException extends ProtocolException {
         return super.getMessage();
     }
 
-	/**
-	 * Returns the status code of this DictException.
-	 *
-	 * @return the status code of this DictException instance.
-	 */
-	public int getStatus()
-	{
-		return _status;
-	}
+    /**
+     * Returns the status code of this DictException.
+     *
+     * @return the status code of this DictException instance.
+     */
+    public int getStatus()
+    {
+        return _status;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return String.format("%s: %s", super.getMessage(), _message);
-	}
+    @Override
+    public String getMessage()
+    {
+        return String.format("%s: %s", super.getMessage(), _message);
+    }
 }

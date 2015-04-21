@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:53:24 PM PST
- * Modified: Sun 19 Apr 2015 11:51:53 PM PDT
+ * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -33,72 +33,72 @@ import java.util.regex.Pattern;
  *
  */
 class DictBanner {
-	/** Regex used to match DICT protocol banner */
-	private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> <(.*)>$";
+    /** Regex used to match DICT protocol banner */
+    private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> <(.*)>$";
 
     /** Entire DICT protocol banner */
     public final String banner;
 
-	/** DICT protocol banner message */
-	public final String message;
+    /** DICT protocol banner message */
+    public final String message;
 
-	/** Array of capabilities the remote DICT server supports */
-	public final ArrayList<String> capabilities;
+    /** Array of capabilities the remote DICT server supports */
+    public final ArrayList<String> capabilities;
 
-	/** The remote DICT server's connection ID for this session */
-	public final String connectionId;
+    /** The remote DICT server's connection ID for this session */
+    public final String connectionId;
 
-	/**
-	 * Parse DICT protocol banner string
-	 *
-	 * @param banner  the banner string returned by the remote DICT server
-	 * @return        a new DictBanner object or null
-	 */
-	static DictBanner parse(String banner)
-	{
-		DictBanner dictBanner;
+    /**
+     * Parse DICT protocol banner string
+     *
+     * @param banner  the banner string returned by the remote DICT server
+     * @return        a new DictBanner object or null
+     */
+    static DictBanner parse(String banner)
+    {
+        DictBanner dictBanner;
 
-		dictBanner = new DictBanner(banner);
-		if (dictBanner.connectionId == null)
-			return null;
-		else
-			return dictBanner;
-	}
+        dictBanner = new DictBanner(banner);
+        if (dictBanner.connectionId == null)
+            return null;
+        else
+            return dictBanner;
+    }
 
-	/**
-	 * Construct a new DictBanner.
-	 *
-	 * @param banner  the banner string returned by the remote DICT server
-	 */
-	DictBanner(String banner)
-	{
-		String capstring = null;
-		String[] caparray = null;
-		Pattern pattern = Pattern.compile(BANNER_REGEX);
-		Matcher matcher = pattern.matcher(banner);
+    /**
+     * Construct a new DictBanner.
+     *
+     * @param banner  the banner string returned by the remote DICT server
+     */
+    DictBanner(String banner)
+    {
+        String capstring = null;
+        String[] caparray = null;
+        Pattern pattern = Pattern.compile(BANNER_REGEX);
+        Matcher matcher = pattern.matcher(banner);
 
-		if (matcher.find()) {
+        if (matcher.find()) {
             this.banner = banner;
-			message = banner.substring(matcher.start(1), matcher.end(1));
-			connectionId = banner.substring(matcher.start(4), matcher.end(4));
+            message = banner.substring(matcher.start(1), matcher.end(1));
+            connectionId = banner.substring(matcher.start(4), matcher.end(4));
 
-			capabilities = new ArrayList<String>();
-			capstring = banner.substring(matcher.start(2), matcher.end(2));
-			caparray = capstring.split("\\.");
-			for (int i = 0; i < caparray.length; i++)
-				capabilities.add(caparray[i]);
-		} else {
-			// can only be assigned once, yet still need to be assigned
+            capabilities = new ArrayList<String>();
+            capstring = banner.substring(matcher.start(2), matcher.end(2));
+            caparray = capstring.split("\\.");
+            for (int i = 0; i < caparray.length; i++)
+                capabilities.add(caparray[i]);
+        } else {
+            // can only be assigned once, yet still need to be assigned
             this.banner = null;
-			message = null;
-			capabilities = null;
-			connectionId = null;
-		}
-	}
+            message = null;
+            capabilities = null;
+            connectionId = null;
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		return banner;
-	}
+    @Override
+    public String toString()
+    {
+        return banner;
+    }
 }

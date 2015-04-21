@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 19 Apr 2015 09:56:23 PM PDT
+ * Modified: Mon 20 Apr 2015 08:04:38 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -41,183 +41,183 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
  *
  */
 public class JDictClient {
-	private static final int DEFAULT_PORT = 2628;
+    private static final int DEFAULT_PORT = 2628;
 
-	private String _clientString = null;
-	private String _libraryName = null;
-	private String _libraryVendor = null;
-	private String _libraryVersion = null;
+    private String _clientString = null;
+    private String _libraryName = null;
+    private String _libraryVendor = null;
+    private String _libraryVersion = null;
 
-	private String _host = null;
-	private int _port = 0;
+    private String _host = null;
+    private int _port = 0;
     private DictResponse _resp;
 
-	private Socket _dictSocket = null;
-	private PrintWriter _out = null;
-	private BufferedReader _in = null;
+    private Socket _dictSocket = null;
+    private PrintWriter _out = null;
+    private BufferedReader _in = null;
 
-	private String _serverInfo = null;
-	private String _capabilities = null;
-	private String _connectionId = null;
+    private String _serverInfo = null;
+    private String _capabilities = null;
+    private String _connectionId = null;
 
-	/**
-	 * Construct a new JDictClient.
-	 *
-	 * @param host DICT host
-	 * @param port port number
-	 */
-	public JDictClient(String host, int port)
-	{
-		String packageName = this.getClass().getPackage().getName();
-		ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+    /**
+     * Construct a new JDictClient.
+     *
+     * @param host DICT host
+     * @param port port number
+     */
+    public JDictClient(String host, int port)
+    {
+        String packageName = this.getClass().getPackage().getName();
+        ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
 
-		_libraryName = rb.getString("library.name");
-		_libraryVersion = rb.getString("library.version");
-		_libraryVendor = rb.getString("library.vendor");
-		setClientString(_libraryName + " " + _libraryVersion);
+        _libraryName = rb.getString("library.name");
+        _libraryVersion = rb.getString("library.version");
+        _libraryVendor = rb.getString("library.vendor");
+        setClientString(_libraryName + " " + _libraryVersion);
 
-		_host = host;
-		_port = port;
-	}
+        _host = host;
+        _port = port;
+    }
 
-	/**
-	 * Create a new JDictClient object and connect to specified host.
-	 *
-	 * @param host DICT host to connect to
-	 * @return new JDictClient instance
-	 */
-	public static JDictClient connect(String host)
-		throws UnknownHostException, IOException, NoSuchMethodException,
-						  InstantiationException, IllegalAccessException,
-						  InvocationTargetException
-	{
-		JDictClient dictClient = JDictClient.connect(host, DEFAULT_PORT);
-		return dictClient;
-	}
+    /**
+     * Create a new JDictClient object and connect to specified host.
+     *
+     * @param host DICT host to connect to
+     * @return new JDictClient instance
+     */
+    public static JDictClient connect(String host)
+        throws UnknownHostException, IOException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
+    {
+        JDictClient dictClient = JDictClient.connect(host, DEFAULT_PORT);
+        return dictClient;
+    }
 
-	/**
-	 * Create a new JDictClient object and connect to specified host and port.
-	 *
-	 * @param host DICT host to connect to
-	 * @param port port number to connect to
-	 * @return new JDictClient instance
-	 */
-	public static JDictClient connect(String host, int port)
-		throws UnknownHostException, IOException, NoSuchMethodException,
-						  InstantiationException, IllegalAccessException,
-						  InvocationTargetException
-	{
-		JDictClient dictClient = new JDictClient(host, port);
-		dictClient.connect();
-		return dictClient;
-	}
+    /**
+     * Create a new JDictClient object and connect to specified host and port.
+     *
+     * @param host DICT host to connect to
+     * @param port port number to connect to
+     * @return new JDictClient instance
+     */
+    public static JDictClient connect(String host, int port)
+        throws UnknownHostException, IOException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
+    {
+        JDictClient dictClient = new JDictClient(host, port);
+        dictClient.connect();
+        return dictClient;
+    }
 
-	/**
-	 * Open connection to the DICT server.
-	 *
-	 * If this instance is not currently connected, attempt to open a
-	 * connection to the server previously specified.
-	 */
-	public void connect()
-		throws UnknownHostException, IOException, DictException,
-						  NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		DictResponse resp;
+    /**
+     * Open connection to the DICT server.
+     *
+     * If this instance is not currently connected, attempt to open a
+     * connection to the server previously specified.
+     */
+    public void connect()
+        throws UnknownHostException, IOException, DictException,
+                          NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        DictResponse resp;
 
-		if (_dictSocket == null) {
-			_dictSocket = new Socket(_host, _port);
-			_out = new PrintWriter(_dictSocket.getOutputStream(), true);
-			_in  = new BufferedReader(new InputStreamReader(
-						_dictSocket.getInputStream()));
+        if (_dictSocket == null) {
+            _dictSocket = new Socket(_host, _port);
+            _out = new PrintWriter(_dictSocket.getOutputStream(), true);
+            _in  = new BufferedReader(new InputStreamReader(
+                        _dictSocket.getInputStream()));
 
             // Save connect response so it can be requested by applications
             // using this library.
-			_resp = DictResponse.read(_in);
-			if (_resp.getStatus() != 220 || _resp.getData() == null) {
-				throw new DictException(_host, _resp.getStatus(),
-						"Connection failed: " + _resp.getMessage());
-			}
+            _resp = DictResponse.read(_in);
+            if (_resp.getStatus() != 220 || _resp.getData() == null) {
+                throw new DictException(_host, _resp.getStatus(),
+                        "Connection failed: " + _resp.getMessage());
+            }
 
             // I don't think anyone should care about the sendClient()
             // response.
-			sendClient();
-			resp = DictResponse.read(_in);
-			if (resp.getStatus() != 250) {
-				throw new DictException(_host, resp.getStatus(),
-						resp.getMessage());
-			}
-		}
-	}
+            sendClient();
+            resp = DictResponse.read(_in);
+            if (resp.getStatus() != 250) {
+                throw new DictException(_host, resp.getStatus(),
+                        resp.getMessage());
+            }
+        }
+    }
 
-	/**
-	 * Close connection to the DICT server.
-	 *
-	 */
-	public void close()
-		throws DictException, IOException, NoSuchMethodException,
-						  InstantiationException, IllegalAccessException,
-						  InvocationTargetException
-	{
-		quit();
-		_resp = DictResponse.read(_in);
+    /**
+     * Close connection to the DICT server.
+     *
+     */
+    public void close()
+        throws DictException, IOException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
+    {
+        quit();
+        _resp = DictResponse.read(_in);
 
-		_dictSocket.close();
-		_dictSocket = null;
-		_in = null;
-		_out = null;
+        _dictSocket.close();
+        _dictSocket = null;
+        _in = null;
+        _out = null;
 
-		if (_resp.getStatus() != 221) {
-			throw new DictException(_host, _resp.getStatus(),
-					_resp.getMessage());
-		}
-	}
+        if (_resp.getStatus() != 221) {
+            throw new DictException(_host, _resp.getStatus(),
+                    _resp.getMessage());
+        }
+    }
 
-	/**
-	 * Get library name.
-	 *
-	 * @return library name String
-	 */
-	public String getLibraryName()
-	{
-		return _libraryName;
-	}
+    /**
+     * Get library name.
+     *
+     * @return library name String
+     */
+    public String getLibraryName()
+    {
+        return _libraryName;
+    }
 
-	/**
-	 * Get library version.
-	 *
-	 * @return library version String
-	 */
-	public String getLibraryVersion()
-	{
-		return _libraryVersion;
-	}
+    /**
+     * Get library version.
+     *
+     * @return library version String
+     */
+    public String getLibraryVersion()
+    {
+        return _libraryVersion;
+    }
 
-	/**
-	 * Get library developer/vendor name.
-	 *
-	 * @return library vendor String
-	 */
-	public String getLibraryVendor()
-	{
-		return _libraryVendor;
-	}
+    /**
+     * Get library developer/vendor name.
+     *
+     * @return library vendor String
+     */
+    public String getLibraryVendor()
+    {
+        return _libraryVendor;
+    }
 
-	/**
-	 * Set the client string sent to the server.
-	 *
-	 * Identify the client to the server with the provided string. It is
-	 * usually the application name and version number. This method must be
-	 * called before any instances of the JDictClient class are created. If
-	 * this method is not called, the library name and version will be used.
-	 *
-	 * @param clientString client string to send to DICT server
-	 */
-	public void setClientString(String clientString)
-	{
-		if (_clientString == null)
-			_clientString = clientString;
-	}
+    /**
+     * Set the client string sent to the server.
+     *
+     * Identify the client to the server with the provided string. It is
+     * usually the application name and version number. This method must be
+     * called before any instances of the JDictClient class are created. If
+     * this method is not called, the library name and version will be used.
+     *
+     * @param clientString client string to send to DICT server
+     */
+    public void setClientString(String clientString)
+    {
+        if (_clientString == null)
+            _clientString = clientString;
+    }
 
     /**
      * Get the response for the last command sent.
@@ -231,171 +231,171 @@ public class JDictClient {
         return _resp;
     }
 
-	/**
-	 * Send client information to DICT server.
-	 *
+    /**
+     * Send client information to DICT server.
+     *
      * This method is called by the connect() method. It's not necessary to use
      * it in normal practice.
-	 */
-	private void sendClient()
-	{
-		_out.println("CLIENT " + _clientString);
-	}
+     */
+    private void sendClient()
+    {
+        _out.println("CLIENT " + _clientString);
+    }
 
-	/**
-	 * Get the server information as written by the database administrator.
-	 *
-	 * @return server information string
-	 */
-	public String getServerInfo()
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("SHOW SERVER");
-		_resp = DictResponse.read(_in);
-		return (String) _resp.getData();
-	}
+    /**
+     * Get the server information as written by the database administrator.
+     *
+     * @return server information string
+     */
+    public String getServerInfo()
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("SHOW SERVER");
+        _resp = DictResponse.read(_in);
+        return (String) _resp.getData();
+    }
 
-	/**
-	 * Get summary of server commands.
-	 *
-	 * @return server help string
-	 */
-	public String getHelp()
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("HELP");
-		_resp = DictResponse.read(_in);
-		return (String) _resp.getData();
-	}
+    /**
+     * Get summary of server commands.
+     *
+     * @return server help string
+     */
+    public String getHelp()
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("HELP");
+        _resp = DictResponse.read(_in);
+        return (String) _resp.getData();
+    }
 
-	/**
-	 * Get list of available dictionary databases from the server.
-	 *
-	 * @return list of dictionaries
-	 */
-	public List<Dictionary> getDictionaries()
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("SHOW DATABASES");
-		_resp = DictResponse.read(_in);
-		return (List<Dictionary>) _resp.getData();
-	}
+    /**
+     * Get list of available dictionary databases from the server.
+     *
+     * @return list of dictionaries
+     */
+    public List<Dictionary> getDictionaries()
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("SHOW DATABASES");
+        _resp = DictResponse.read(_in);
+        return (List<Dictionary>) _resp.getData();
+    }
 
-	/**
-	 * Get detailed dictionary info for the specified dictionary.
-	 *
-	 * @param dictionary the dictionary for which to get information
-	 *
-	 * @return dictionary info string
-	 */
-	public String getDictionaryInfo(String dictionary)
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("SHOW INFO " + dictionary);
-		_resp = DictResponse.read(_in);
-		return (String) _resp.getData();
-	}
+    /**
+     * Get detailed dictionary info for the specified dictionary.
+     *
+     * @param dictionary the dictionary for which to get information
+     *
+     * @return dictionary info string
+     */
+    public String getDictionaryInfo(String dictionary)
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("SHOW INFO " + dictionary);
+        _resp = DictResponse.read(_in);
+        return (String) _resp.getData();
+    }
 
-	/**
-	 * Get detailed dictionary info for the specified dictionary.
-	 *
-	 * @param dictionary the dictionary for which to get information
-	 *
-	 * @return same dictionary instance with detailed info set
-	 */
-	public Dictionary getDictionaryInfo(Dictionary dictionary)
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		String info;
+    /**
+     * Get detailed dictionary info for the specified dictionary.
+     *
+     * @param dictionary the dictionary for which to get information
+     *
+     * @return same dictionary instance with detailed info set
+     */
+    public Dictionary getDictionaryInfo(Dictionary dictionary)
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        String info;
 
-		info = getDictionaryInfo(dictionary.getDatabase());
-		dictionary.setDatabaseInfo(info);
-		return dictionary;
-	}
+        info = getDictionaryInfo(dictionary.getDatabase());
+        dictionary.setDatabaseInfo(info);
+        return dictionary;
+    }
 
-	/**
-	 * Get list of available match strategies from the server.
-	 *
-	 * @return list of strategies
-	 *
-	 */
-	public List<Strategy> getStrategies()
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("SHOW STRATEGIES");
-		_resp = DictResponse.read(_in);
-		return (List<Strategy>) _resp.getData();
-	}
+    /**
+     * Get list of available match strategies from the server.
+     *
+     * @return list of strategies
+     *
+     */
+    public List<Strategy> getStrategies()
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("SHOW STRATEGIES");
+        _resp = DictResponse.read(_in);
+        return (List<Strategy>) _resp.getData();
+    }
 
-	/**
-	 * Get definition for word from DICT server.
-	 *
-	 * @param word the word to define
-	 *
-	 * @return a list of definitions for word
-	 *
-	 */
-	public List<Definition> define(String word)
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		List definitions;
+    /**
+     * Get definition for word from DICT server.
+     *
+     * @param word the word to define
+     *
+     * @return a list of definitions for word
+     *
+     */
+    public List<Definition> define(String word)
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        List definitions;
 
-		_out.println("DEFINE * \"" + word + "\"");
-		_resp = DictResponse.read(_in);
-		return (List<Definition>) _resp.getData();
-	}
+        _out.println("DEFINE * \"" + word + "\"");
+        _resp = DictResponse.read(_in);
+        return (List<Definition>) _resp.getData();
+    }
 
-	/**
-	 * Get definition for word from DICT server.
-	 *
-	 * @param dictionary the dictionary in which to find the definition
-	 * @param word the word to define
-	 *
-	 * @return a list of definitions for word
-	 *
-	 */
-	public List<Definition> define(String dictionary, String word)
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		List definitions;
+    /**
+     * Get definition for word from DICT server.
+     *
+     * @param dictionary the dictionary in which to find the definition
+     * @param word the word to define
+     *
+     * @return a list of definitions for word
+     *
+     */
+    public List<Definition> define(String dictionary, String word)
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        List definitions;
 
-		_out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
-		_resp = DictResponse.read(_in);
-		return (List<Definition>) _resp.getData();
-	}
+        _out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
+        _resp = DictResponse.read(_in);
+        return (List<Definition>) _resp.getData();
+    }
 
-	/**
-	 * Match word using requested strategy.
-	 *
-	 * @param word the word to match
-	 * @param strategy the strategy to use for matching
-	 *
-	 * @return a list of matching words and the dictionaries they are found in
-	 *
-	 */
-	public List<Match> match(String strategy, String word)
-		throws IOException, NoSuchMethodException, InstantiationException,
-						  IllegalAccessException, InvocationTargetException
-	{
-		_out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
-		_resp = DictResponse.read(_in);
-		return (List<Match>) _resp.getData();
-	}
+    /**
+     * Match word using requested strategy.
+     *
+     * @param word the word to match
+     * @param strategy the strategy to use for matching
+     *
+     * @return a list of matching words and the dictionaries they are found in
+     *
+     */
+    public List<Match> match(String strategy, String word)
+        throws IOException, NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        _out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
+        _resp = DictResponse.read(_in);
+        return (List<Match>) _resp.getData();
+    }
 
-	/**
-	 * Send QUIT command to server.
-	 *
-	 */
-	private void quit()
-	{
-		_out.println("QUIT");
-	}
+    /**
+     * Send QUIT command to server.
+     *
+     */
+    private void quit()
+    {
+        _out.println("QUIT");
+    }
 }

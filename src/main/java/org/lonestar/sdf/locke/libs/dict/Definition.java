@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 29 Dec 2012 03:45:21 PM PST
- * Modified: Sat 23 Feb 2013 10:16:34 PM PST
+ * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -29,72 +29,72 @@ package org.lonestar.sdf.locke.libs.dict;
  *
  */
 public class Definition extends Object {
-	/** The word being defined */
-	private String _word;
+    /** The word being defined */
+    private String _word;
 
-	/** The dictionary database the definition was retrieved from */
-	private Dictionary _dictionary;
+    /** The dictionary database the definition was retrieved from */
+    private Dictionary _dictionary;
 
-	/** The definition provided dictionary */
-	private String _definition;
+    /** The definition provided dictionary */
+    private String _definition;
 
-	/**
-	 * Construct a new Definition.
-	 *
-	 * @param word       the word being defined
-	 * @param dictionary the dictionary the definition was retrieved from
-	 * @param definition the definition provided by dictionary
-	 */
-	Definition(String word, Dictionary dictionary, String definition)
-	{
-		super();
-		_word = word;
-		_dictionary = dictionary;
-		_definition = definition;
-	}
+    /**
+     * Construct a new Definition.
+     *
+     * @param word       the word being defined
+     * @param dictionary the dictionary the definition was retrieved from
+     * @param definition the definition provided by dictionary
+     */
+    Definition(String word, Dictionary dictionary, String definition)
+    {
+        super();
+        _word = word;
+        _dictionary = dictionary;
+        _definition = definition;
+    }
 
-	/**
-	 * Get defined word.
-	 *
-	 */
-	public String getWord()
-	{
-		return _word;
-	}
+    /**
+     * Get defined word.
+     *
+     */
+    public String getWord()
+    {
+        return _word;
+    }
 
-	/**
-	 * Get dictionary that defined the word.
-	 *
-	 */
-	public Dictionary getDictionary()
-	{
-		return _dictionary;
-	}
+    /**
+     * Get dictionary that defined the word.
+     *
+     */
+    public Dictionary getDictionary()
+    {
+        return _dictionary;
+    }
 
-	/**
-	 * Get word definition.
-	 *
-	 */
-	public String getDefinition()
-	{
-		return _definition;
-	}
+    /**
+     * Get word definition.
+     *
+     */
+    public String getDefinition()
+    {
+        return _definition;
+    }
 
-	@Override
-	public Definition clone()
-	{
-		Definition definition = new Definition(
-				this.getWord(),
-				this.getDictionary(),
-				this.getDefinition()
-			);
+    @Override
+    public Definition clone()
+    {
+        Definition definition = new Definition(
+                this.getWord(),
+                this.getDictionary(),
+                this.getDefinition()
+            );
 
-		return definition;
-	}
+        return definition;
+    }
 
-	@Override
-	public String toString()
-	{
-		return _dictionary + "\n" + _definition;
-	}
+    @Override
+    public String toString()
+    {
+        return _dictionary + "\n" + _definition;
+    }
 }

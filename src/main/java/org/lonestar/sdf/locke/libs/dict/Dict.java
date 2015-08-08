@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Fri 07 Aug 2015 05:37:27 PM PDT
+ * Modified: Fri 07 Aug 2015 09:12:57 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -46,6 +46,7 @@ public class Dict {
     private static void showHelp()
     {
         System.out.println("Usage: Dict [options] [word]\n");
+        System.out.println("\t-version\t\t\tDisplay program/library version");
         System.out.println("\t-host <server>\t\t\tDICT server [default: test.dict.org]");
         System.out.println("\t-port <port>\t\t\tserver port [default: 2628]");
         System.out.println("\t-serverinfo\t\t\tshow server information");
@@ -55,6 +56,12 @@ public class Dict {
         System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
         System.out.println("\t-strategies\t\t\tlist strategies available");
         System.out.println("\t-match <strategy>\t\ttry to match word using strategy");
+    }
+
+    private static void showVersion()
+    {
+        JDictClient dictClient = new JDictClient("", 0);
+        System.out.printf("%s %s\n", dictClient.getLibraryName(), dictClient.getLibraryVersion());
     }
 
     public static void main(String[] args)
@@ -80,6 +87,11 @@ public class Dict {
         opts = parseOptions(args);
 
         try {
+            if (opts.containsKey("version")) {
+                    showVersion();
+                    return;
+            }
+
             dictClient = JDictClient.connect(
                     (String) opts.get("host"),
                     (Integer) opts.get("port")
@@ -188,7 +200,8 @@ public class Dict {
                         opts.put(optname, Integer.parseInt(args[++i]));
 
                         /* Flag options */
-                    } else if (optname.equals("serverinfo")
+                    } else if  (optname.equals("version")
+                            || optname.equals("serverinfo")
                             || optname.equals("help")
                             || optname.equals("dictionaries")
                             || optname.equals("strategies")) {

@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
+ * Modified: Fri 07 Aug 2015 05:37:27 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -54,7 +54,7 @@ public class Dict {
         System.out.println("\t-dictionaries\t\t\tlist dictionaries available");
         System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
         System.out.println("\t-strategies\t\t\tlist strategies available");
-        System.out.println("\t-match <strategy>\ttry to match word using strategy");
+        System.out.println("\t-match <strategy>\t\ttry to match word using strategy");
     }
 
     public static void main(String[] args)

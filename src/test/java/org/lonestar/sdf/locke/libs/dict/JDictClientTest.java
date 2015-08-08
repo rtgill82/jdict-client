@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 19 Apr 2015 08:56:55 PM PDT
- * Modified: Mon 20 Apr 2015 08:03:48 PM PDT
+ * Modified: Fri 07 Aug 2015 09:59:35 PM PDT
  * Copyright © 2015 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -53,8 +53,7 @@ public class JDictClientTest {
     @Test
     public void testLibraryName()
     {
-        JDictClient jdictclient = new JDictClient(null, 0);
-        assertEquals(LIBRARY_NAME, jdictclient.getLibraryName());
+        assertEquals(LIBRARY_NAME, JDictClient.getLibraryName());
     }
 
     /**
@@ -63,8 +62,7 @@ public class JDictClientTest {
     @Test
     public void testLibraryVersion()
     {
-        JDictClient jdictclient = new JDictClient(null, 0);
-        assertEquals(LIBRARY_VERSION, jdictclient.getLibraryVersion());
+        assertEquals(LIBRARY_VERSION, JDictClient.getLibraryVersion());
     }
 
     /**
@@ -73,7 +71,6 @@ public class JDictClientTest {
     @Test
     public void testLibraryVendor()
     {
-        JDictClient jdictclient = new JDictClient(null, 0);
-        assertEquals(LIBRARY_VENDOR, jdictclient.getLibraryVendor());
+        assertEquals(LIBRARY_VENDOR, JDictClient.getLibraryVendor());
     }
 }

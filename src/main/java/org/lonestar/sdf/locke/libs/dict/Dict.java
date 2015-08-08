@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Fri 07 Aug 2015 09:12:57 PM PDT
+ * Modified: Fri 07 Aug 2015 10:01:45 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -60,8 +60,7 @@ public class Dict {
 
     private static void showVersion()
     {
-        JDictClient dictClient = new JDictClient("", 0);
-        System.out.printf("%s %s\n", dictClient.getLibraryName(), dictClient.getLibraryVersion());
+        System.out.printf("%s %s\n", JDictClient.getLibraryName(), JDictClient.getLibraryVersion());
     }
 
     public static void main(String[] args)

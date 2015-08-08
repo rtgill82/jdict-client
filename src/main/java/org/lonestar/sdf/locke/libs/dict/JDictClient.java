@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Mon 20 Apr 2015 08:04:38 PM PDT
+ * Modified: Fri 07 Aug 2015 10:10:41 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -43,11 +43,11 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
 public class JDictClient {
     private static final int DEFAULT_PORT = 2628;
 
-    private String _clientString = null;
-    private String _libraryName = null;
-    private String _libraryVendor = null;
-    private String _libraryVersion = null;
+    private static String _libraryName = null;
+    private static String _libraryVendor = null;
+    private static String _libraryVersion = null;
 
+    private String _clientString = null;
     private String _host = null;
     private int _port = 0;
     private DictResponse _resp;
@@ -68,13 +68,7 @@ public class JDictClient {
      */
     public JDictClient(String host, int port)
     {
-        String packageName = this.getClass().getPackage().getName();
-        ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-
-        _libraryName = rb.getString("library.name");
-        _libraryVersion = rb.getString("library.version");
-        _libraryVendor = rb.getString("library.vendor");
-        setClientString(_libraryName + " " + _libraryVersion);
+        setClientString(getLibraryName() + " " + getLibraryVersion());
 
         _host = host;
         _port = port;
@@ -178,8 +172,13 @@ public class JDictClient {
      *
      * @return library name String
      */
-    public String getLibraryName()
+    public static String getLibraryName()
     {
+        if (_libraryName == null) {
+            String packageName = JDictClient.class.getPackage().getName();
+            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+            _libraryName = rb.getString("library.name");
+        }
         return _libraryName;
     }
 
@@ -188,8 +187,13 @@ public class JDictClient {
      *
      * @return library version String
      */
-    public String getLibraryVersion()
+    public static String getLibraryVersion()
     {
+        if (_libraryVersion == null) {
+            String packageName = JDictClient.class.getPackage().getName();
+            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+            _libraryVersion = rb.getString("library.version");
+        }
         return _libraryVersion;
     }
 
@@ -198,8 +202,13 @@ public class JDictClient {
      *
      * @return library vendor String
      */
-    public String getLibraryVendor()
+    public static String getLibraryVendor()
     {
+        if (_libraryVendor == null) {
+            String packageName = JDictClient.class.getPackage().getName();
+            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+            _libraryVendor = rb.getString("library.vendor");
+        }
         return _libraryVendor;
     }
 

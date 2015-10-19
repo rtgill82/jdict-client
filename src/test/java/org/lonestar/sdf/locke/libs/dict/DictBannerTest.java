@@ -1,6 +1,6 @@
 /*
  * Created:  Sat 08 Dec 2012 03:18:30 AM PST
- * Modified: Mon 20 Apr 2015 08:03:47 PM PDT
+ * Modified: Sun 18 Oct 2015 05:31:52 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -43,7 +43,7 @@ public class DictBannerTest {
     {
         DictBanner banner = new DictBanner(BANNER);
         assertEquals("dictd 1.12", banner.message);
-        assertEquals("100@dictd.org", banner.connectionId);
+        assertEquals("<100@dictd.org>", banner.connectionId);
         assertEquals(2, banner.capabilities.size());
         assertEquals(true, banner.capabilities.contains("auth"));
         assertEquals(true, banner.capabilities.contains("mime"));

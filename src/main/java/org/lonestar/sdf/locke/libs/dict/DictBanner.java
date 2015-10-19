@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:53:24 PM PST
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
+ * Modified: Sun 18 Oct 2015 05:32:25 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 class DictBanner {
     /** Regex used to match DICT protocol banner */
-    private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> <(.*)>$";
+    private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
 
     /** Entire DICT protocol banner */
     public final String banner;

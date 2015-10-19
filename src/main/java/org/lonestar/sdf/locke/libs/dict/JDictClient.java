@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Fri 07 Aug 2015 10:10:41 PM PDT
+ * Modified: Sun 18 Oct 2015 05:05:07 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -50,6 +50,7 @@ public class JDictClient {
     private String _clientString = null;
     private String _host = null;
     private int _port = 0;
+    private DictBanner _banner = null;
     private DictResponse _resp;
 
     private Socket _dictSocket = null;
@@ -128,6 +129,7 @@ public class JDictClient {
             // Save connect response so it can be requested by applications
             // using this library.
             _resp = DictResponse.read(_in);
+            _banner = (DictBanner) _resp.getData();
             if (_resp.getStatus() != 220 || _resp.getData() == null) {
                 throw new DictException(_host, _resp.getStatus(),
                         "Connection failed: " + _resp.getMessage());
@@ -160,6 +162,7 @@ public class JDictClient {
         _dictSocket = null;
         _in = null;
         _out = null;
+        _banner = null;
 
         if (_resp.getStatus() != 221) {
             throw new DictException(_host, _resp.getStatus(),
@@ -249,6 +252,16 @@ public class JDictClient {
     private void sendClient()
     {
         _out.println("CLIENT " + _clientString);
+    }
+
+    /**
+     * Get the connection banner for the currently connected server.
+     *
+     * @return DictBanner or null if not connected
+     */
+    public DictBanner getBanner()
+    {
+        return _banner;
     }
 
     /**

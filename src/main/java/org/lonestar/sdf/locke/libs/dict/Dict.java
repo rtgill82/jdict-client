@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Fri 07 Aug 2015 10:01:45 PM PDT
+ * Modified: Sun 18 Oct 2015 05:03:26 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -49,6 +49,7 @@ public class Dict {
         System.out.println("\t-version\t\t\tDisplay program/library version");
         System.out.println("\t-host <server>\t\t\tDICT server [default: test.dict.org]");
         System.out.println("\t-port <port>\t\t\tserver port [default: 2628]");
+        System.out.println("\t-banner\t\t\t\tshow connection banner");
         System.out.println("\t-serverinfo\t\t\tshow server information");
         System.out.println("\t-help\t\t\t\tshow server help");
         System.out.println("\t-dictionary <dictionary>\tlook up word in <dictionary>");
@@ -98,6 +99,9 @@ public class Dict {
 
             if (opts.containsKey("help")) {
                 System.out.println(dictClient.getHelp());
+                dictClient.close();
+            } else if (opts.containsKey("banner")) {
+                System.out.println(dictClient.getBanner());
                 dictClient.close();
             } else if (opts.containsKey("serverinfo")) {
                 System.out.println(dictClient.getServerInfo());
@@ -200,6 +204,7 @@ public class Dict {
 
                         /* Flag options */
                     } else if  (optname.equals("version")
+                            || optname.equals("banner")
                             || optname.equals("serverinfo")
                             || optname.equals("help")
                             || optname.equals("dictionaries")

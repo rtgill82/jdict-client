@@ -1,7 +1,8 @@
 <!--
 	Created:  Sun 27 Jan 2013 12:25:01 AM PST
-	Modified: Sat 24 Oct 2015 04:57:18 PM PDT
+	Modified: Sat 24 Oct 2015 04:59:23 PM PDT
 -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -73,3 +74,5 @@
 		</plugins>
 	</reporting>
 </project>
+
+<!-- vim: set noexpandtab: -->

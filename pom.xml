@@ -1,6 +1,6 @@
 <!--
 	Created:  Sun 27 Jan 2013 12:25:01 AM PST
-	Modified: Mon 20 Apr 2015 11:26:05 PM PDT
+	Modified: Sat 24 Oct 2015 04:57:18 PM PDT
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -40,6 +40,14 @@
 							<mainClass>org.lonestar.sdf.locke.libs.dict.Dict</mainClass>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<debug>false</debug>
 				</configuration>
 			</plugin>
 		</plugins>

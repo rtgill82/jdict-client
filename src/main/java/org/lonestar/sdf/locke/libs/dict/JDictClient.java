@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 18 Oct 2015 05:05:07 PM PDT
+ * Modified: Sat 24 Oct 2015 04:28:42 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -23,14 +23,18 @@
 package org.lonestar.sdf.locke.libs.dict;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import org.lonestar.sdf.locke.libs.dict.DictBanner;
 
@@ -290,6 +294,33 @@ public class JDictClient {
         _out.println("HELP");
         _resp = DictResponse.read(_in);
         return (String) _resp.getData();
+    }
+
+    /**
+     * Authenticate with the server.
+     *
+     * @param username authenticate with username
+     * @param secret authenticate with password
+     *
+     * @return true on success, false on failure
+     */
+    public boolean authenticate(String username, String secret)
+        throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
+    {
+        boolean rv = false;
+
+        MessageDigest authdigest = MessageDigest.getInstance("MD5");
+        String authstring = _banner.connectionId + secret;
+        authdigest.update(authstring.getBytes(Charset.forName("UTF-8")));
+        String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
+        _out.println("AUTH " + username + " " + md5str);
+
+        _resp = DictResponse.read(_in);
+        if (_resp.getStatus() == 230) rv = true;
+
+        return rv;
     }
 
     /**

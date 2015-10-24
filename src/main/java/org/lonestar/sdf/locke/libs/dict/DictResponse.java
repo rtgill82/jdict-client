@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
+ * Modified: Tue 20 Oct 2015 03:05:11 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -131,11 +131,6 @@ public class DictResponse {
             readStatusLine(responseBuffer);
             break;
 
-        /* Authentication */
-        case 130:
-            /* Not implemented */
-            break;
-
         /* DEFINE response; list of definitions follows */
         case 150:
             _data = new ArrayList();
@@ -160,6 +155,11 @@ public class DictResponse {
             _data = readDictItems(responseBuffer, Match.class);
             _dataClass = List.class;
             readStatusLine(responseBuffer);
+            break;
+
+        /* The following cases return DictResponse with no further processing. */
+        case 230: /* AUTH success */
+        case 531: /* AUTH failure */
             break;
 
         default:

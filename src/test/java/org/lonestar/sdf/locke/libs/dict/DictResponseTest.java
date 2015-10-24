@@ -1,6 +1,6 @@
 /*
  * Created:  Mon 10 Dec 2012 01:09:20 AM PST
- * Modified: Mon 20 Apr 2015 08:03:48 PM PDT
+ * Modified: Mon 19 Oct 2015 12:23:20 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -82,6 +82,12 @@ public class DictResponseTest {
         "wn \"cat\"" +
         "wn \"cat and mouse\"" +
         "\n.\n250 ok [d/m/c = 0/1/323; 0.000r 0.000u 0.000s]";
+
+    /* AUTH success response */
+    private final String AUTH_SUCCESS = "230 Authentication Successful\n";
+
+    /* AUTH fail response */
+    private final String AUTH_FAIL = "531 Access denied\n";
 
     /**
      * Test reading of successful status.
@@ -231,6 +237,40 @@ public class DictResponseTest {
             assertEquals(250, resp.getStatus());
             assertEquals(List.class, resp.getDataClass());
             assertNotNull(resp.getData());
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test reading of successful AUTH response.
+     */
+    @Test
+    public void testAuthSuccess()
+        throws NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        BufferedReader buf_reader = stringBuffer(AUTH_SUCCESS);
+        try {
+            DictResponse resp = DictResponse.read(buf_reader);
+            assertEquals(230, resp.getStatus());
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test reading of failed AUTH response.
+     */
+    @Test
+    public void testAuthFail()
+        throws NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
+    {
+        BufferedReader buf_reader = stringBuffer(AUTH_FAIL);
+        try {
+            DictResponse resp = DictResponse.read(buf_reader);
+            assertEquals(531, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }

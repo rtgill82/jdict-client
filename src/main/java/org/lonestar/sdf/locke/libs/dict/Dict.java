@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sun 18 Oct 2015 05:03:26 PM PDT
+ * Modified: Mon 19 Oct 2015 01:21:59 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -46,9 +46,14 @@ public class Dict {
     private static void showHelp()
     {
         System.out.println("Usage: Dict [options] [word]\n");
+        System.out.println("General Options");
         System.out.println("\t-version\t\t\tDisplay program/library version");
         System.out.println("\t-host <server>\t\t\tDICT server [default: test.dict.org]");
         System.out.println("\t-port <port>\t\t\tserver port [default: 2628]");
+        System.out.println("\t-username <username>\t\tprovide username for authentication");
+        System.out.println("\t-secret <password>\t\tprovide password for authentication");
+
+        System.out.println("\nServer Commands");
         System.out.println("\t-banner\t\t\t\tshow connection banner");
         System.out.println("\t-serverinfo\t\t\tshow server information");
         System.out.println("\t-help\t\t\t\tshow server help");
@@ -96,6 +101,17 @@ public class Dict {
                     (String) opts.get("host"),
                     (Integer) opts.get("port")
                 );
+
+            if (opts.containsKey("username") && opts.containsKey("secret")) {
+                boolean rv = dictClient.authenticate(
+                        (String) opts.get("username"),
+                        (String) opts.get("secret")
+                    );
+                if (rv == false)
+                    System.out.println("Authentication failed.");
+                else
+                    System.out.println("Authentication success.");
+            }
 
             if (opts.containsKey("help")) {
                 System.out.println(dictClient.getHelp());
@@ -172,7 +188,7 @@ public class Dict {
                 return;
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -193,6 +209,8 @@ public class Dict {
 
                     /* String options */
                     if (optname.equals("host")
+                            || optname.equals("username")
+                            || optname.equals("secret")
                             || optname.equals("dictionary")
                             || optname.equals("dictionaryinfo")
                             || optname.equals("match")) {

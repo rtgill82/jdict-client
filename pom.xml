@@ -1,6 +1,6 @@
 <!--
 	Created:  Sun 27 Jan 2013 12:25:01 AM PST
-	Modified: Sat 24 Oct 2015 05:00:21 PM PDT
+	Modified: Sun 08 Nov 2015 06:55:51 PM PST
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -9,7 +9,7 @@
 
 	<groupId>org.lonestar.sdf.locke.libs.dict</groupId>
 	<artifactId>jdict-client</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<packaging>jar</packaging>
 
 	<properties>

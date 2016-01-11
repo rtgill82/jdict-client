@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 08 Nov 2015 06:54:44 PM PST
+ * Modified: Sun 10 Jan 2016 05:51:55 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -155,9 +155,9 @@ public class JDictClient {
      *
      */
     public void close()
-        throws DictException, IOException, NoSuchMethodException,
-                          InstantiationException, IllegalAccessException,
-                          InvocationTargetException
+        throws DictConnectionException, DictException, IOException,
+                          NoSuchMethodException, InstantiationException,
+                          IllegalAccessException, InvocationTargetException
     {
         quit();
         _resp = DictResponse.read(_in);

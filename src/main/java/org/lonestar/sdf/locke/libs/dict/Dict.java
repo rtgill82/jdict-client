@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Mon 19 Oct 2015 01:21:59 PM PDT
+ * Modified: Sun 10 Jan 2016 08:41:47 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -115,22 +115,16 @@ public class Dict {
 
             if (opts.containsKey("help")) {
                 System.out.println(dictClient.getHelp());
-                dictClient.close();
             } else if (opts.containsKey("banner")) {
                 System.out.println(dictClient.getBanner());
-                dictClient.close();
             } else if (opts.containsKey("serverinfo")) {
                 System.out.println(dictClient.getServerInfo());
-                dictClient.close();
             } else if (opts.containsKey("dictionaryinfo")) {
                 String dictionary;
                 dictionary = (String)opts.get("dictionaryinfo");
                 System.out.println(dictClient.getDictionaryInfo(dictionary));
-                dictClient.close();
             } else if (opts.containsKey("dictionaries")) {
                 dictionaries = dictClient.getDictionaries();
-                dictClient.close();
-
                 if (dictionaries != null) {
                     Iterator itr = dictionaries.iterator();
                     while (itr.hasNext()) {
@@ -142,8 +136,6 @@ public class Dict {
                 }
             } else if (opts.containsKey("strategies")) {
                 strategies = dictClient.getStrategies();
-                dictClient.close();
-
                 if (strategies != null) {
                     Iterator itr = strategies.iterator();
                     while (itr.hasNext()) {
@@ -182,10 +174,18 @@ public class Dict {
                         System.out.println(word + ": No definitions found.");
                     }
                 }
-                dictClient.close();
             } else {
                 showHelp();
                 return;
+            }
+
+            System.out.flush();
+
+            /* Some servers disconnect you after the command is complete. */
+            try {
+                dictClient.close();
+            } catch (DictConnectionException e) {
+                System.out.println(e.getMessage());
             }
 
         } catch (Exception e) {

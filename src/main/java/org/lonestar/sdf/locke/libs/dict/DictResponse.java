@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Tue 20 Oct 2015 03:05:11 PM PDT
+ * Modified: Sun 10 Jan 2016 05:49:46 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import org.lonestar.sdf.locke.libs.dict.Definition;
 import org.lonestar.sdf.locke.libs.dict.Dictionary;
 import org.lonestar.sdf.locke.libs.dict.Strategy;
+import org.lonestar.sdf.locke.libs.dict.DictConnectionException;
 
 /**
  * Parses and returns a DICT protocol response.
@@ -225,7 +226,7 @@ public class DictResponse {
      * @return true if a status line was successfully read
      */
     private boolean readStatusLine(BufferedReader responseBuffer)
-        throws IOException
+        throws DictConnectionException, IOException
     {
         String line;
 
@@ -233,11 +234,11 @@ public class DictResponse {
 
         try {
             line = responseBuffer.readLine();
+            if (line == null) throw new DictConnectionException();
             _status = Integer.parseInt(line.substring(0, 3));
             _message = line;
 
             return true;
-
         } catch (NumberFormatException e) {
             responseBuffer.reset();
             return false;

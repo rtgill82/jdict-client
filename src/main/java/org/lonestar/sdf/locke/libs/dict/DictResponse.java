@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Sun 10 Jan 2016 10:25:53 PM PST
+ * Modified: Sun 10 Jan 2016 11:30:34 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -47,7 +47,7 @@ public class DictResponse {
     private static final String DICTITEM_REGEX   = "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
     /** REGEX matches a 151 status line preceeding definition text */
-    private static final String DEFINITION_REGEX = "^151 \"(.+)\" ([a-zA-Z_0-9-]+) \"(.+)\"$";
+    private static final String DEFINITION_REGEX = "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
     /** Response status code */
     private int _status;

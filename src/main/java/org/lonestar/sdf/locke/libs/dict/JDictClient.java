@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sat 24 Oct 2015 04:28:42 PM PDT
+ * Modified: Sun 08 Nov 2015 06:54:44 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -45,7 +45,7 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
  *
  */
 public class JDictClient {
-    private static final int DEFAULT_PORT = 2628;
+    public static final int DEFAULT_PORT = 2628;
 
     private static String _libraryName = null;
     private static String _libraryVendor = null;

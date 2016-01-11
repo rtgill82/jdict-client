@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Jan 2016 05:51:55 PM PST
+ * Modified: Sun 10 Jan 2016 10:56:26 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -153,14 +153,25 @@ public class JDictClient {
     /**
      * Close connection to the DICT server.
      *
+     * @return true if successful, false if closed by remote
      */
-    public void close()
-        throws DictConnectionException, DictException, IOException,
-                          NoSuchMethodException, InstantiationException,
-                          IllegalAccessException, InvocationTargetException
+    public boolean close()
+        throws DictException, IOException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
     {
-        quit();
-        _resp = DictResponse.read(_in);
+        boolean rv = true;
+
+        try {
+            quit();
+            _resp = DictResponse.read(_in);
+            if (_resp.getStatus() != 221) {
+                throw new DictException(_host, _resp.getStatus(),
+                        _resp.getMessage());
+            }
+        } catch (DictConnectionException e) {
+            rv = false;
+        }
 
         _dictSocket.close();
         _dictSocket = null;
@@ -168,10 +179,7 @@ public class JDictClient {
         _out = null;
         _banner = null;
 
-        if (_resp.getStatus() != 221) {
-            throw new DictException(_host, _resp.getStatus(),
-                    _resp.getMessage());
-        }
+        return rv;
     }
 
     /**

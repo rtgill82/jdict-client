@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Sun 10 Jan 2016 08:41:47 PM PST
+ * Modified: Sun 10 Jan 2016 10:59:05 PM PST
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -180,13 +180,7 @@ public class Dict {
             }
 
             System.out.flush();
-
-            /* Some servers disconnect you after the command is complete. */
-            try {
-                dictClient.close();
-            } catch (DictConnectionException e) {
-                System.out.println(e.getMessage());
-            }
+            dictClient.close();
 
         } catch (Exception e) {
             e.printStackTrace();

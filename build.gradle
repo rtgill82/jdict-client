@@ -1,0 +1,33 @@
+/*
+ * Created:  Sun 12 Jun 2016 04:43:58 PM PDT
+ * Modified: Sun 12 Jun 2016 06:09:53 PM PDT
+ *
+ */
+
+import org.apache.tools.ant.filters.*
+
+apply plugin: 'java'
+
+version  '0.2.1'
+group    'org.lonestar.sdf.locke.libs.dict'
+project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
+
+processResources {
+  filter ReplaceTokens, tokens: [
+    'library.name': project.property('name'),
+    'library.version': project.property('version'),
+    'library.vendor': project.property('vendor')
+  ]
+}
+
+jar {
+  baseName 'jdict-client'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile group: 'junit', name: 'junit', version: '4.8.2'
+}

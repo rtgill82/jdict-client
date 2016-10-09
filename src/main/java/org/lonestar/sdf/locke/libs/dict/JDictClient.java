@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 10 Jan 2016 10:56:26 PM PST
+ * Modified: Sun 09 Oct 2016 03:23:11 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -45,7 +45,8 @@ import org.lonestar.sdf.locke.libs.dict.DictBanner;
  *
  */
 public class JDictClient {
-    public static final int DEFAULT_PORT = 2628;
+    public static final int DEFAULT_PORT    = 2628;
+    public static final int DEFAULT_TIMEOUT = 10000;
 
     private static String _libraryName = null;
     private static String _libraryVendor = null;
@@ -54,6 +55,7 @@ public class JDictClient {
     private String _clientString = null;
     private String _host = null;
     private int _port = 0;
+    private int _timeout = 0;
     private DictBanner _banner = null;
     private DictResponse _resp;
 
@@ -71,12 +73,13 @@ public class JDictClient {
      * @param host DICT host
      * @param port port number
      */
-    public JDictClient(String host, int port)
+    public JDictClient(String host, int port, int timeout)
     {
         setClientString(getLibraryName() + " " + getLibraryVersion());
 
         _host = host;
         _port = port;
+        _timeout = timeout;
     }
 
     /**
@@ -90,7 +93,8 @@ public class JDictClient {
                           InstantiationException, IllegalAccessException,
                           InvocationTargetException
     {
-        JDictClient dictClient = JDictClient.connect(host, DEFAULT_PORT);
+        JDictClient dictClient =
+            JDictClient.connect(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
         return dictClient;
     }
 
@@ -106,7 +110,17 @@ public class JDictClient {
                           InstantiationException, IllegalAccessException,
                           InvocationTargetException
     {
-        JDictClient dictClient = new JDictClient(host, port);
+        JDictClient dictClient = new JDictClient(host, port, DEFAULT_TIMEOUT);
+        dictClient.connect();
+        return dictClient;
+    }
+
+    public static JDictClient connect(String host, int port, int timeout)
+        throws UnknownHostException, IOException, NoSuchMethodException,
+                          InstantiationException, IllegalAccessException,
+                          InvocationTargetException
+    {
+        JDictClient dictClient = new JDictClient(host, port, timeout);
         dictClient.connect();
         return dictClient;
     }
@@ -125,7 +139,8 @@ public class JDictClient {
         DictResponse resp;
 
         if (_dictSocket == null) {
-            _dictSocket = new Socket(_host, _port);
+            _dictSocket = new Socket();
+            _dictSocket.connect(new InetSocketAddress(_host, _port), _timeout);
             _out = new PrintWriter(_dictSocket.getOutputStream(), true);
             _in  = new BufferedReader(new InputStreamReader(
                         _dictSocket.getInputStream()));

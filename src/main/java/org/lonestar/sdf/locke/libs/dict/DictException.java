@@ -1,7 +1,7 @@
 /*
  * Created:  Sun 02 Dec 2012 06:00:55 PM PST
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:06:45 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -33,10 +33,10 @@ import java.net.ProtocolException;
 public class DictException extends ProtocolException {
 
     /** DICT protocol response status code */
-    private int _status = 0;
+    private int status;
 
     /** Entire DICT protocol response message */
-    private String _message = null;
+    private String message;
 
     /**
      * Construct a new DictException.
@@ -48,8 +48,8 @@ public class DictException extends ProtocolException {
     DictException(String host, int status, String message)
     {
         super(host);
-        _status  = status;
-        _message = message;
+        this.status  = status;
+        this.message = message;
     }
 
     /**
@@ -69,12 +69,12 @@ public class DictException extends ProtocolException {
      */
     public int getStatus()
     {
-        return _status;
+        return status;
     }
 
     @Override
     public String getMessage()
     {
-        return String.format("%s: %s", super.getMessage(), _message);
+        return String.format("%s: %s", super.getMessage(), message);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Sun 09 Oct 2016 03:23:11 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:21:41 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -48,24 +48,24 @@ public class JDictClient {
     public static final int DEFAULT_PORT    = 2628;
     public static final int DEFAULT_TIMEOUT = 10000;
 
-    private static String _libraryName = null;
-    private static String _libraryVendor = null;
-    private static String _libraryVersion = null;
+    private static String libraryName;
+    private static String libraryVendor;
+    private static String libraryVersion;
 
-    private String _clientString = null;
-    private String _host = null;
-    private int _port = 0;
-    private int _timeout = 0;
-    private DictBanner _banner = null;
-    private DictResponse _resp;
+    private String clientString;
+    private String host;
+    private int port;
+    private int timeout;
+    private DictBanner banner;
+    private DictResponse resp;
 
-    private Socket _dictSocket = null;
-    private PrintWriter _out = null;
-    private BufferedReader _in = null;
+    private Socket dictSocket;
+    private PrintWriter out;
+    private BufferedReader in;
 
-    private String _serverInfo = null;
-    private String _capabilities = null;
-    private String _connectionId = null;
+    private String serverInfo;
+    private String capabilities;
+    private String connectionId;
 
     /**
      * Construct a new JDictClient.
@@ -77,9 +77,9 @@ public class JDictClient {
     {
         setClientString(getLibraryName() + " " + getLibraryVersion());
 
-        _host = host;
-        _port = port;
-        _timeout = timeout;
+        this.host = host;
+        this.port = port;
+        this.timeout = timeout;
     }
 
     /**
@@ -138,28 +138,28 @@ public class JDictClient {
     {
         DictResponse resp;
 
-        if (_dictSocket == null) {
-            _dictSocket = new Socket();
-            _dictSocket.connect(new InetSocketAddress(_host, _port), _timeout);
-            _out = new PrintWriter(_dictSocket.getOutputStream(), true);
-            _in  = new BufferedReader(new InputStreamReader(
-                        _dictSocket.getInputStream()));
+        if (dictSocket == null) {
+            dictSocket = new Socket();
+            dictSocket.connect(new InetSocketAddress(host, port), timeout);
+            out = new PrintWriter(dictSocket.getOutputStream(), true);
+            in  = new BufferedReader(new InputStreamReader(
+                        dictSocket.getInputStream()));
 
             // Save connect response so it can be requested by applications
             // using this library.
-            _resp = DictResponse.read(_in);
-            _banner = (DictBanner) _resp.getData();
-            if (_resp.getStatus() != 220 || _resp.getData() == null) {
-                throw new DictException(_host, _resp.getStatus(),
-                        "Connection failed: " + _resp.getMessage());
+            resp = DictResponse.read(in);
+            banner = (DictBanner) resp.getData();
+            if (resp.getStatus() != 220 || resp.getData() == null) {
+                throw new DictException(host, resp.getStatus(),
+                        "Connection failed: " + resp.getMessage());
             }
 
             // I don't think anyone should care about the sendClient()
             // response.
             sendClient();
-            resp = DictResponse.read(_in);
+            resp = DictResponse.read(in);
             if (resp.getStatus() != 250) {
-                throw new DictException(_host, resp.getStatus(),
+                throw new DictException(host, resp.getStatus(),
                         resp.getMessage());
             }
         }
@@ -179,20 +179,20 @@ public class JDictClient {
 
         try {
             quit();
-            _resp = DictResponse.read(_in);
-            if (_resp.getStatus() != 221) {
-                throw new DictException(_host, _resp.getStatus(),
-                        _resp.getMessage());
+            resp = DictResponse.read(in);
+            if (resp.getStatus() != 221) {
+                throw new DictException(host, resp.getStatus(),
+                        resp.getMessage());
             }
         } catch (DictConnectionException e) {
             rv = false;
         }
 
-        _dictSocket.close();
-        _dictSocket = null;
-        _in = null;
-        _out = null;
-        _banner = null;
+        dictSocket.close();
+        dictSocket = null;
+        in = null;
+        out = null;
+        banner = null;
 
         return rv;
     }
@@ -204,12 +204,12 @@ public class JDictClient {
      */
     public static String getLibraryName()
     {
-        if (_libraryName == null) {
+        if (libraryName == null) {
             String packageName = JDictClient.class.getPackage().getName();
             ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            _libraryName = rb.getString("library.name");
+            libraryName = rb.getString("library.name");
         }
-        return _libraryName;
+        return libraryName;
     }
 
     /**
@@ -219,12 +219,12 @@ public class JDictClient {
      */
     public static String getLibraryVersion()
     {
-        if (_libraryVersion == null) {
+        if (libraryVersion == null) {
             String packageName = JDictClient.class.getPackage().getName();
             ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            _libraryVersion = rb.getString("library.version");
+            libraryVersion = rb.getString("library.version");
         }
-        return _libraryVersion;
+        return libraryVersion;
     }
 
     /**
@@ -234,12 +234,12 @@ public class JDictClient {
      */
     public static String getLibraryVendor()
     {
-        if (_libraryVendor == null) {
+        if (libraryVendor == null) {
             String packageName = JDictClient.class.getPackage().getName();
             ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            _libraryVendor = rb.getString("library.vendor");
+            libraryVendor = rb.getString("library.vendor");
         }
-        return _libraryVendor;
+        return libraryVendor;
     }
 
     /**
@@ -254,8 +254,8 @@ public class JDictClient {
      */
     public void setClientString(String clientString)
     {
-        if (_clientString == null)
-            _clientString = clientString;
+        if (clientString == null)
+            clientString = clientString;
     }
 
     /**
@@ -267,7 +267,7 @@ public class JDictClient {
      */
     public DictResponse getResponse()
     {
-        return _resp;
+        return resp;
     }
 
     /**
@@ -278,7 +278,7 @@ public class JDictClient {
      */
     private void sendClient()
     {
-        _out.println("CLIENT " + _clientString);
+        out.println("CLIENT " + clientString);
     }
 
     /**
@@ -288,7 +288,7 @@ public class JDictClient {
      */
     public DictBanner getBanner()
     {
-        return _banner;
+        return banner;
     }
 
     /**
@@ -300,9 +300,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("SHOW SERVER");
-        _resp = DictResponse.read(_in);
-        return (String) _resp.getData();
+        out.println("SHOW SERVER");
+        resp = DictResponse.read(in);
+        return (String) resp.getData();
     }
 
     /**
@@ -314,9 +314,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("HELP");
-        _resp = DictResponse.read(_in);
-        return (String) _resp.getData();
+        out.println("HELP");
+        resp = DictResponse.read(in);
+        return (String) resp.getData();
     }
 
     /**
@@ -335,13 +335,13 @@ public class JDictClient {
         boolean rv = false;
 
         MessageDigest authdigest = MessageDigest.getInstance("MD5");
-        String authstring = _banner.connectionId + secret;
+        String authstring = banner.connectionId + secret;
         authdigest.update(authstring.getBytes(Charset.forName("UTF-8")));
         String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
-        _out.println("AUTH " + username + " " + md5str);
+        out.println("AUTH " + username + " " + md5str);
 
-        _resp = DictResponse.read(_in);
-        if (_resp.getStatus() == 230) rv = true;
+        resp = DictResponse.read(in);
+        if (resp.getStatus() == 230) rv = true;
 
         return rv;
     }
@@ -355,9 +355,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("SHOW DATABASES");
-        _resp = DictResponse.read(_in);
-        return (List<Dictionary>) _resp.getData();
+        out.println("SHOW DATABASES");
+        resp = DictResponse.read(in);
+        return (List<Dictionary>) resp.getData();
     }
 
     /**
@@ -371,9 +371,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("SHOW INFO " + dictionary);
-        _resp = DictResponse.read(_in);
-        return (String) _resp.getData();
+        out.println("SHOW INFO " + dictionary);
+        resp = DictResponse.read(in);
+        return (String) resp.getData();
     }
 
     /**
@@ -404,9 +404,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("SHOW STRATEGIES");
-        _resp = DictResponse.read(_in);
-        return (List<Strategy>) _resp.getData();
+        out.println("SHOW STRATEGIES");
+        resp = DictResponse.read(in);
+        return (List<Strategy>) resp.getData();
     }
 
     /**
@@ -423,9 +423,9 @@ public class JDictClient {
     {
         List definitions;
 
-        _out.println("DEFINE * \"" + word + "\"");
-        _resp = DictResponse.read(_in);
-        return (List<Definition>) _resp.getData();
+        out.println("DEFINE * \"" + word + "\"");
+        resp = DictResponse.read(in);
+        return (List<Definition>) resp.getData();
     }
 
     /**
@@ -443,9 +443,9 @@ public class JDictClient {
     {
         List definitions;
 
-        _out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
-        _resp = DictResponse.read(_in);
-        return (List<Definition>) _resp.getData();
+        out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
+        resp = DictResponse.read(in);
+        return (List<Definition>) resp.getData();
     }
 
     /**
@@ -461,9 +461,9 @@ public class JDictClient {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
-        _resp = DictResponse.read(_in);
-        return (List<Match>) _resp.getData();
+        out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
+        resp = DictResponse.read(in);
+        return (List<Match>) resp.getData();
     }
 
     /**
@@ -472,6 +472,6 @@ public class JDictClient {
      */
     private void quit()
     {
-        _out.println("QUIT");
+        out.println("QUIT");
     }
 }

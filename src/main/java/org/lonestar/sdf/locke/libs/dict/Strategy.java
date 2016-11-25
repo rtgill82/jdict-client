@@ -1,7 +1,7 @@
 /*
  * Created:  Sun 10 Mar 2013 04:19:18 PM PDT
- * Modified: Mon 20 Apr 2015 08:04:38 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:17:31 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -76,8 +76,8 @@ public class Strategy extends DictItem {
     public Strategy clone()
     {
         Strategy strat = new Strategy(
-                this.getKey(),
-                this.getValue()
+                getKey(),
+                getValue()
             );
 
         return strat;

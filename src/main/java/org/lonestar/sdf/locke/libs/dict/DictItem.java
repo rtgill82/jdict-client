@@ -1,7 +1,7 @@
 /*
  * Created:  Sun 10 Mar 2013 05:24:43 PM PDT
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:08:56 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -40,10 +40,10 @@ package org.lonestar.sdf.locke.libs.dict;
  */
 public class DictItem extends Object {
     /** Key used to identify the item */
-    private String _key;
+    private String key;
 
     /** Value of the item (often an item description) */
-    private String _value;
+    private String value;
 
     /**
      * Construct a new DictItem.
@@ -54,8 +54,8 @@ public class DictItem extends Object {
     public DictItem(String key, String value)
     {
         super();
-        _key = key;
-        _value = value;
+        this.key = key;
+        this.value = value;
     }
 
     /**
@@ -64,7 +64,7 @@ public class DictItem extends Object {
      */
     public String getKey()
     {
-        return _key;
+        return key;
     }
 
     /**
@@ -73,7 +73,7 @@ public class DictItem extends Object {
      */
     public String getValue()
     {
-        return _value;
+        return value;
     }
 
     /**
@@ -84,8 +84,8 @@ public class DictItem extends Object {
     public DictItem clone()
     {
         DictItem item = new DictItem(
-                this.getKey(),
-                this.getValue()
+                getKey(),
+                getValue()
             );
 
         return item;
@@ -98,6 +98,6 @@ public class DictItem extends Object {
     @Override
     public String toString()
     {
-        return _key + " \"" + _value + '"';
+        return key + " \"" + value + '"';
     }
 }

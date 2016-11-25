@@ -1,7 +1,7 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Sun 10 Jan 2016 11:30:34 PM PST
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:22:25 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -50,16 +50,16 @@ public class DictResponse {
     private static final String DEFINITION_REGEX = "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
     /** Response status code */
-    private int _status;
+    private int status;
 
     /** Response message */
-    private String _message;
+    private String message;
 
     /** Class containing response data */
-    private Class _dataClass;
+    private Class dataClass;
 
     /** Data returned in response, if any */
-    private Object _data;
+    private Object data;
 
     /**
      * Read response data from response buffer.
@@ -84,10 +84,6 @@ public class DictResponse {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        _status = 0;
-        _message = null;
-        _dataClass = null;
-        _data = null;
         readStatusLine(responseBuffer);
         parseResponse(responseBuffer);
     }
@@ -101,25 +97,25 @@ public class DictResponse {
         throws IOException, NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        switch (_status) {
+        switch (status) {
 
         /* Connection banner */
         case 220:
-            _data = DictBanner.parse(_message);
-            _dataClass = DictBanner.class;
+            data = DictBanner.parse(message);
+            dataClass = DictBanner.class;
             break;
 
         /* SHOW DATABASES response */
         case 110:
-            _data = readDictItems(responseBuffer, Dictionary.class);
-            _dataClass = List.class;
+            data = readDictItems(responseBuffer, Dictionary.class);
+            dataClass = List.class;
             readStatusLine(responseBuffer);
             break;
 
         /* SHOW STRATEGIES response */
         case 111:
-            _data = readDictItems(responseBuffer, Strategy.class);
-            _dataClass = List.class;
+            data = readDictItems(responseBuffer, Strategy.class);
+            dataClass = List.class;
             readStatusLine(responseBuffer);
             break;
 
@@ -127,15 +123,15 @@ public class DictResponse {
         case 112: // SHOW INFO response
         case 113: // HELP response
         case 114: // SHOW SERVER response
-            _data = readInfo(responseBuffer);
-            _dataClass = String.class;
+            data = readInfo(responseBuffer);
+            dataClass = String.class;
             readStatusLine(responseBuffer);
             break;
 
         /* DEFINE response; list of definitions follows */
         case 150:
-            _data = new ArrayList();
-            _dataClass = List.class;
+            data = new ArrayList();
+            dataClass = List.class;
 
             /* Followed immediately by a 151 response */
             if (readStatusLine(responseBuffer))
@@ -145,7 +141,7 @@ public class DictResponse {
 
         /* DEFINE response; definition text follows */
         case 151:
-            ((ArrayList) _data).add(readDefinition(responseBuffer));
+            ((ArrayList) data).add(readDefinition(responseBuffer));
             if (readStatusLine(responseBuffer))
                 parseResponse(responseBuffer);
 
@@ -153,8 +149,8 @@ public class DictResponse {
 
         /* MATCH response; list of matches follows */
         case 152:
-            _data = readDictItems(responseBuffer, Match.class);
-            _dataClass = List.class;
+            data = readDictItems(responseBuffer, Match.class);
+            dataClass = List.class;
             readStatusLine(responseBuffer);
             break;
 
@@ -175,7 +171,7 @@ public class DictResponse {
      */
     int getStatus()
     {
-        return _status;
+        return status;
     }
 
     /**
@@ -185,7 +181,7 @@ public class DictResponse {
      */
     String getMessage()
     {
-        return _message;
+        return message;
     }
 
     /**
@@ -195,7 +191,7 @@ public class DictResponse {
      */
     Class getDataClass()
     {
-        return _dataClass;
+        return dataClass;
     }
 
     /**
@@ -205,19 +201,19 @@ public class DictResponse {
      */
     Object getData()
     {
-        return _data;
+        return data;
     }
 
     @Override
     public String toString()
     {
-        return _message;
+        return message;
     }
 
     /**
      * Read status code and message from a line in the buffer.
      *
-     * If the line is a status line, _status and _message are set and the
+     * If the line is a status line, status and message are set and the
      * method returns true.  If the line is not a status line, the buffer is
      * reset and the method returns false.
      *
@@ -235,8 +231,8 @@ public class DictResponse {
         try {
             line = responseBuffer.readLine();
             if (line == null) throw new DictConnectionException();
-            _status = Integer.parseInt(line.substring(0, 3));
-            _message = line;
+            status = Integer.parseInt(line.substring(0, 3));
+            message = line;
 
             return true;
         } catch (NumberFormatException e) {
@@ -261,12 +257,12 @@ public class DictResponse {
         Pattern pattern = Pattern.compile(DEFINITION_REGEX);
         Definition definition = null;
 
-        matcher = pattern.matcher(_message);
+        matcher = pattern.matcher(message);
 
         if (matcher.find()) {
-            String word = _message.substring(matcher.start(1), matcher.end(1));
-            String dict = _message.substring(matcher.start(2), matcher.end(2));
-            String desc = _message.substring(matcher.start(3), matcher.end(3));
+            String word = message.substring(matcher.start(1), matcher.end(1));
+            String dict = message.substring(matcher.start(2), matcher.end(2));
+            String desc = message.substring(matcher.start(3), matcher.end(3));
             Dictionary dictionary = new Dictionary(dict, desc);
 
             String defstr = new String();

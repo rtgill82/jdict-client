@@ -1,7 +1,7 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Sat 15 Oct 2016 04:03:52 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:25:07 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -30,7 +30,7 @@ package org.lonestar.sdf.locke.libs.dict;
  */
 public class Dictionary extends DictItem {
     /** Database source, copyright and licensing information */
-    private String _databaseInfo;
+    private String databaseInfo;
 
     /**
      * Construct a new Dictionary.
@@ -41,7 +41,6 @@ public class Dictionary extends DictItem {
     public Dictionary(String database, String description)
     {
         super(database, description);
-        _databaseInfo = null;
     }
 
     /**
@@ -54,7 +53,7 @@ public class Dictionary extends DictItem {
     public Dictionary(String database, String description, String databaseInfo)
     {
         super(database, description);
-        _databaseInfo = databaseInfo;
+        this.databaseInfo = databaseInfo;
     }
 
     /**
@@ -92,7 +91,7 @@ public class Dictionary extends DictItem {
      */
     public String getDatabaseInfo()
     {
-        return _databaseInfo;
+        return databaseInfo;
     }
 
     /**
@@ -101,15 +100,15 @@ public class Dictionary extends DictItem {
      */
     void setDatabaseInfo(String databaseInfo)
     {
-        _databaseInfo = databaseInfo;
+        this.databaseInfo = databaseInfo;
     }
 
     @Override
     public Dictionary clone()
     {
         Dictionary dict = new Dictionary(
-                this.getKey(),
-                this.getValue()
+                getKey(),
+                getValue()
             );
         dict.setDatabaseInfo(this.getDatabaseInfo());
 

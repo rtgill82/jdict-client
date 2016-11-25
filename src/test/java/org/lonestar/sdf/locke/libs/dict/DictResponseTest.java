@@ -1,7 +1,7 @@
 /*
  * Created:  Mon 10 Dec 2012 01:09:20 AM PST
- * Modified: Mon 19 Oct 2015 12:23:20 PM PDT
- * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
+ * Modified: Fri 25 Nov 2016 03:29:19 PM PST
+ * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -97,9 +97,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer("250 ok");
+        BufferedReader bufReader = stringBuffer("250 ok");
         try {
-            DictResponse resp = new DictResponse(buf_reader);
+            DictResponse resp = new DictResponse(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
             assertNull(resp.getData());
@@ -116,9 +116,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(DATABASES);
+        BufferedReader bufReader = stringBuffer(DATABASES);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(List.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -135,9 +135,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(STRATEGIES);
+        BufferedReader bufReader = stringBuffer(STRATEGIES);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(List.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -154,9 +154,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(DATABASE_INFO);
+        BufferedReader bufReader = stringBuffer(DATABASE_INFO);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(String.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -174,9 +174,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(DATABASE_INFO);
+        BufferedReader bufReader = stringBuffer(DATABASE_INFO);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(String.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -193,9 +193,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(SERVER_INFO);
+        BufferedReader bufReader = stringBuffer(SERVER_INFO);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(String.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -212,9 +212,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(DEFINITION);
+        BufferedReader bufReader = stringBuffer(DEFINITION);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(List.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -231,9 +231,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(MATCH);
+        BufferedReader bufReader = stringBuffer(MATCH);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals(List.class, resp.getDataClass());
             assertNotNull(resp.getData());
@@ -250,9 +250,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(AUTH_SUCCESS);
+        BufferedReader bufReader = stringBuffer(AUTH_SUCCESS);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(230, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
@@ -267,9 +267,9 @@ public class DictResponseTest {
         throws NoSuchMethodException, InstantiationException,
                           IllegalAccessException, InvocationTargetException
     {
-        BufferedReader buf_reader = stringBuffer(AUTH_FAIL);
+        BufferedReader bufReader = stringBuffer(AUTH_FAIL);
         try {
-            DictResponse resp = DictResponse.read(buf_reader);
+            DictResponse resp = DictResponse.read(bufReader);
             assertEquals(531, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());

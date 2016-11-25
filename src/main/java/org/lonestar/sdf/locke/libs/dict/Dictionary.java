@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Mon 20 Apr 2015 08:04:37 PM PDT
+ * Modified: Sat 15 Oct 2016 04:03:52 PM PDT
  * Copyright © 2013 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -42,6 +42,19 @@ public class Dictionary extends DictItem {
     {
         super(database, description);
         _databaseInfo = null;
+    }
+
+    /**
+     * Construct a new Dictionary with Database Info.
+     *
+     * @param database     the dictionary database name
+     * @param description  description of the dictionary database
+     * @param databaseInfo string describing full database information
+     */
+    public Dictionary(String database, String description, String databaseInfo)
+    {
+        super(database, description);
+        _databaseInfo = databaseInfo;
     }
 
     /**

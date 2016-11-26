@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Fri 25 Nov 2016 03:22:25 PM PST
+ * Modified: Fri 25 Nov 2016 04:12:20 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -42,312 +42,324 @@ import org.lonestar.sdf.locke.libs.dict.DictConnectionException;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictResponse {
-    /** REGEX matches a single line matching 'key "value"' */
-    private static final String DICTITEM_REGEX   = "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
+public class DictResponse
+{
+  /** REGEX matches a single line matching 'key "value"' */
+  private static final String DICTITEM_REGEX =
+    "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
-    /** REGEX matches a 151 status line preceeding definition text */
-    private static final String DEFINITION_REGEX = "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
+  /** REGEX matches a 151 status line preceeding definition text */
+  private static final String DEFINITION_REGEX =
+    "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
-    /** Response status code */
-    private int status;
+  /** Response status code */
+  private int status;
 
-    /** Response message */
-    private String message;
+  /** Response message */
+  private String message;
 
-    /** Class containing response data */
-    private Class dataClass;
+  /** Class containing response data */
+  private Class dataClass;
 
-    /** Data returned in response, if any */
-    private Object data;
+  /** Data returned in response, if any */
+  private Object data;
 
-    /**
-     * Read response data from response buffer.
-     *
-     * @param responseBuffer buffer with response data from the DICT server
-     *
-     * @return new DictResponse
-     */
-    static DictResponse read(BufferedReader responseBuffer)
-        throws IOException, NoSuchMethodException, InstantiationException,
-                          IllegalAccessException, InvocationTargetException
-    {
-        return new DictResponse(responseBuffer);
-    }
+  /**
+   * Read response data from response buffer.
+   *
+   * @param responseBuffer buffer with response data from the DICT server
+   *
+   * @return new DictResponse
+   */
+  static DictResponse read(BufferedReader responseBuffer)
+    throws IOException, NoSuchMethodException, InstantiationException,
+           IllegalAccessException, InvocationTargetException
+  {
+    return new DictResponse(responseBuffer);
+  }
 
-    /**
-     * Construct a new DictResponse.
-     *
-     * @param responseBuffer buffer with response data from the DICT server
-     */
-    DictResponse(BufferedReader responseBuffer)
-        throws IOException, NoSuchMethodException, InstantiationException,
-                          IllegalAccessException, InvocationTargetException
-    {
+  /**
+   * Construct a new DictResponse.
+   *
+   * @param responseBuffer buffer with response data from the DICT server
+   */
+  DictResponse(BufferedReader responseBuffer)
+    throws IOException, NoSuchMethodException, InstantiationException,
+           IllegalAccessException, InvocationTargetException
+  {
+    readStatusLine(responseBuffer);
+    parseResponse(responseBuffer);
+  }
+
+  /**
+   * Check status set by readStatusLine and parse response data.
+   *
+   * @param responseBuffer buffer with response data from the DICT server
+   */
+  private void parseResponse(BufferedReader responseBuffer)
+    throws IOException, NoSuchMethodException, InstantiationException,
+           IllegalAccessException, InvocationTargetException
+  {
+    switch (status)
+      {
+      /* Connection banner */
+      case 220:
+        data = DictBanner.parse(message);
+        dataClass = DictBanner.class;
+        break;
+
+      /* SHOW DATABASES response */
+      case 110:
+        data = readDictItems(responseBuffer, Dictionary.class);
+        dataClass = List.class;
         readStatusLine(responseBuffer);
-        parseResponse(responseBuffer);
-    }
+        break;
 
-    /**
-     * Check status set by readStatusLine and parse response data.
-     *
-     * @param responseBuffer buffer with response data from the DICT server
-     */
-    private void parseResponse(BufferedReader responseBuffer)
-        throws IOException, NoSuchMethodException, InstantiationException,
-                          IllegalAccessException, InvocationTargetException
-    {
-        switch (status) {
+      /* SHOW STRATEGIES response */
+      case 111:
+        data = readDictItems(responseBuffer, Strategy.class);
+        dataClass = List.class;
+        readStatusLine(responseBuffer);
+        break;
 
-        /* Connection banner */
-        case 220:
-            data = DictBanner.parse(message);
-            dataClass = DictBanner.class;
-            break;
+      /* Information commands */
+      case 112: // SHOW INFO response
+      case 113: // HELP response
+      case 114: // SHOW SERVER response
+        data = readInfo(responseBuffer);
+        dataClass = String.class;
+        readStatusLine(responseBuffer);
+        break;
 
-        /* SHOW DATABASES response */
-        case 110:
-            data = readDictItems(responseBuffer, Dictionary.class);
-            dataClass = List.class;
-            readStatusLine(responseBuffer);
-            break;
+      /* DEFINE response; list of definitions follows */
+      case 150:
+        data = new ArrayList();
+        dataClass = List.class;
 
-        /* SHOW STRATEGIES response */
-        case 111:
-            data = readDictItems(responseBuffer, Strategy.class);
-            dataClass = List.class;
-            readStatusLine(responseBuffer);
-            break;
+        /* Followed immediately by a 151 response */
+        if (readStatusLine(responseBuffer))
+          parseResponse(responseBuffer);
 
-        /* Information commands */
-        case 112: // SHOW INFO response
-        case 113: // HELP response
-        case 114: // SHOW SERVER response
-            data = readInfo(responseBuffer);
-            dataClass = String.class;
-            readStatusLine(responseBuffer);
-            break;
+        break;
 
-        /* DEFINE response; list of definitions follows */
-        case 150:
-            data = new ArrayList();
-            dataClass = List.class;
+      /* DEFINE response; definition text follows */
+      case 151:
+        ((ArrayList) data).add(readDefinition(responseBuffer));
+        if (readStatusLine(responseBuffer))
+          parseResponse(responseBuffer);
 
-            /* Followed immediately by a 151 response */
-            if (readStatusLine(responseBuffer))
-                parseResponse(responseBuffer);
+        break;
 
-            break;
+      /* MATCH response; list of matches follows */
+      case 152:
+        data = readDictItems(responseBuffer, Match.class);
+        dataClass = List.class;
+        readStatusLine(responseBuffer);
+        break;
 
-        /* DEFINE response; definition text follows */
-        case 151:
-            ((ArrayList) data).add(readDefinition(responseBuffer));
-            if (readStatusLine(responseBuffer))
-                parseResponse(responseBuffer);
+      /* The following cases return DictResponse with no further processing. */
+      case 230: /* AUTH success */
+      case 531: /* AUTH failure */
+        break;
 
-            break;
+      default:
+        // nothing
+      }
+  }
 
-        /* MATCH response; list of matches follows */
-        case 152:
-            data = readDictItems(responseBuffer, Match.class);
-            dataClass = List.class;
-            readStatusLine(responseBuffer);
-            break;
+  /**
+   * Get the response status code from the last command.
+   *
+   * @return DICT response status code.
+   */
+  int getStatus()
+  {
+    return status;
+  }
 
-        /* The following cases return DictResponse with no further processing. */
-        case 230: /* AUTH success */
-        case 531: /* AUTH failure */
-            break;
+  /**
+   * Get the full response string from the last command.
+   *
+   * @return full response string.
+   */
+  String getMessage()
+  {
+    return message;
+  }
 
-        default:
-            // nothing
-        }
-    }
+  /**
+   * Get data type of response data.
+   *
+   * @return class of data returned by getData()
+   */
+  Class getDataClass()
+  {
+    return dataClass;
+  }
 
-    /**
-     * Get the response status code from the last command.
-     *
-     * @return DICT response status code.
-     */
-    int getStatus()
-    {
-        return status;
-    }
+  /**
+   * Get response data returned by the last command.
+   *
+   * @return response data of type returned by getDataClass()
+   */
+  Object getData()
+  {
+    return data;
+  }
 
-    /**
-     * Get the full response string from the last command.
-     *
-     * @return full response string.
-     */
-    String getMessage()
-    {
-        return message;
-    }
+  @Override
+  public String toString()
+  {
+    return message;
+  }
 
-    /**
-     * Get data type of response data.
-     *
-     * @return class of data returned by getData()
-     */
-    Class getDataClass()
-    {
-        return dataClass;
-    }
+  /**
+   * Read status code and message from a line in the buffer.
+   *
+   * If the line is a status line, status and message are set and the
+   * method returns true.  If the line is not a status line, the buffer is
+   * reset and the method returns false.
+   *
+   * @param responseBuffer the buffer from which to read the status line
+   *
+   * @return true if a status line was successfully read
+   */
+  private boolean readStatusLine(BufferedReader responseBuffer)
+    throws DictConnectionException, IOException
+  {
+    String line;
 
-    /**
-     * Get response data returned by the last command.
-     *
-     * @return response data of type returned by getDataClass()
-     */
-    Object getData()
-    {
-        return data;
-    }
+    responseBuffer.mark(512);
 
-    @Override
-    public String toString()
-    {
-        return message;
-    }
+    try
+      {
+        line = responseBuffer.readLine();
+        if (line == null) throw new DictConnectionException();
+        status = Integer.parseInt(line.substring(0, 3));
+        message = line;
+        return true;
+      }
+    catch (NumberFormatException e)
+      {
+        responseBuffer.reset();
+        return false;
+      }
+  }
 
-    /**
-     * Read status code and message from a line in the buffer.
-     *
-     * If the line is a status line, status and message are set and the
-     * method returns true.  If the line is not a status line, the buffer is
-     * reset and the method returns false.
-     *
-     * @param responseBuffer the buffer from which to read the status line
-     *
-     * @return true if a status line was successfully read
-     */
-    private boolean readStatusLine(BufferedReader responseBuffer)
-        throws DictConnectionException, IOException
-    {
-        String line;
+  /**
+   * Read a definition returned by the DEFINE command.
+   *
+   * Reads a single definition returned by the DEFINE command following a 151 response.
+   *
+   * @param responseBuffer the buffer from which to read the definition
+   *
+   * @return dictionary Definition
+   */
+  private Definition readDefinition(BufferedReader responseBuffer)
+    throws IOException
+  {
+    Matcher matcher;
+    Pattern pattern = Pattern.compile(DEFINITION_REGEX);
+    Definition definition = null;
 
-        responseBuffer.mark(512);
+    matcher = pattern.matcher(message);
 
-        try {
-            line = responseBuffer.readLine();
-            if (line == null) throw new DictConnectionException();
-            status = Integer.parseInt(line.substring(0, 3));
-            message = line;
+    if (matcher.find())
+      {
+        String word = message.substring(matcher.start(1), matcher.end(1));
+        String dict = message.substring(matcher.start(2), matcher.end(2));
+        String desc = message.substring(matcher.start(3), matcher.end(3));
+        Dictionary dictionary = new Dictionary(dict, desc);
 
-            return true;
-        } catch (NumberFormatException e) {
-            responseBuffer.reset();
-            return false;
-        }
-    }
-
-    /**
-     * Read a definition returned by the DEFINE command.
-     *
-     * Reads a single definition returned by the DEFINE command following a 151 response.
-     *
-     * @param responseBuffer the buffer from which to read the definition
-     *
-     * @return dictionary Definition
-     */
-    private Definition readDefinition(BufferedReader responseBuffer)
-        throws IOException
-    {
-        Matcher matcher;
-        Pattern pattern = Pattern.compile(DEFINITION_REGEX);
-        Definition definition = null;
-
-        matcher = pattern.matcher(message);
-
-        if (matcher.find()) {
-            String word = message.substring(matcher.start(1), matcher.end(1));
-            String dict = message.substring(matcher.start(2), matcher.end(2));
-            String desc = message.substring(matcher.start(3), matcher.end(3));
-            Dictionary dictionary = new Dictionary(dict, desc);
-
-            String defstr = new String();
-            String line = responseBuffer.readLine();
-            while (!line.equals(".")) {
-                defstr += line + "\n";
-                line = responseBuffer.readLine();
-            }
-
-            definition = new Definition(word, dictionary, defstr);
-        } else {
-            /* FIXME: RAISE ERROR */
-        }
-
-        return definition;
-    }
-
-    /**
-     * Read items returned by commands such as SHOW DATABASES and SHOW
-     * STRATEGIES.
-     *
-     * This also includes matches returned by the MATCH command.
-     *
-     * @param responseBuffer the buffer from which to read the list of items
-     *
-     * @return list of DictItems
-     */
-    private List<DictItem> readDictItems(
-            BufferedReader responseBuffer,
-            Class cl
-        )
-        throws IOException, NoSuchMethodException, InstantiationException,
-                          IllegalAccessException, InvocationTargetException
-    {
-        Matcher matcher;
-        String key;
-        String value;
-
-        Constructor con = null;
-        if (DictItem.class.isAssignableFrom(cl)) {
-            con = cl.getConstructor(String.class, String.class);
-        } else {
-            throw new NoSuchMethodException();
-        }
-
-        ArrayList<DictItem> arrayList = new ArrayList();
-        Pattern pattern = Pattern.compile(DICTITEM_REGEX);
+        String defstr = new String();
         String line = responseBuffer.readLine();
-        while (!line.equals(".")) {
-            matcher = pattern.matcher(line);
-
-            if (matcher.find()) {
-                key = line.substring(matcher.start(1), matcher.end(1));
-                value = line.substring(matcher.start(2), matcher.end(2));
-                arrayList.add((DictItem) con.newInstance(key, value));
-            }
+        while (!line.equals("."))
+          {
+            defstr += line + "\n";
             line = responseBuffer.readLine();
-        }
+          }
 
-        return arrayList;
-    }
+        definition = new Definition(word, dictionary, defstr);
+      }
+    else
+      {
+        /* FIXME: RAISE ERROR */
+      }
 
-    /**
-     * Read text returned by an information command.
-     *
-     * Information commands, such as SHOW INFO, HELP, and SHOW SERVER, return
-     * a long string of unstructured text. Read that text and return it as a
-     * String.
-     *
-     * @param responseBuffer the buffer from which to read the information
-     *
-     * @return information string
-     */
-    private String readInfo(BufferedReader responseBuffer)
-        throws IOException
-    {
-        String info;
+    return definition;
+  }
 
-        info = new String();
-        String line = responseBuffer.readLine();
-        while (!line.equals(".")) {
-            info += line + "\n";
-            line = responseBuffer.readLine();
-        }
+  /**
+   * Read items returned by commands such as SHOW DATABASES and SHOW
+   * STRATEGIES.
+   *
+   * This also includes matches returned by the MATCH command.
+   *
+   * @param responseBuffer the buffer from which to read the list of items
+   *
+   * @return list of DictItems
+   */
+  private List<DictItem> readDictItems(BufferedReader responseBuffer, Class cl)
+    throws IOException, NoSuchMethodException, InstantiationException,
+           IllegalAccessException, InvocationTargetException
+  {
+    Matcher matcher;
+    String key;
+    String value;
 
-        return info;
-    }
+    Constructor con = null;
+    if (DictItem.class.isAssignableFrom(cl))
+      {
+        con = cl.getConstructor(String.class, String.class);
+      }
+    else
+      {
+        throw new NoSuchMethodException();
+      }
+
+    ArrayList<DictItem> arrayList = new ArrayList();
+    Pattern pattern = Pattern.compile(DICTITEM_REGEX);
+    String line = responseBuffer.readLine();
+    while (!line.equals("."))
+      {
+        matcher = pattern.matcher(line);
+
+        if (matcher.find())
+          {
+            key = line.substring(matcher.start(1), matcher.end(1));
+            value = line.substring(matcher.start(2), matcher.end(2));
+            arrayList.add((DictItem) con.newInstance(key, value));
+          }
+        line = responseBuffer.readLine();
+      }
+
+    return arrayList;
+  }
+
+  /**
+   * Read text returned by an information command.
+   *
+   * Information commands, such as SHOW INFO, HELP, and SHOW SERVER, return
+   * a long string of unstructured text. Read that text and return it as a
+   * String.
+   *
+   * @param responseBuffer the buffer from which to read the information
+   *
+   * @return information string
+   */
+  private String readInfo(BufferedReader responseBuffer)
+    throws IOException
+  {
+    String info;
+
+    info = new String();
+    String line = responseBuffer.readLine();
+    while (!line.equals("."))
+      {
+        info += line + "\n";
+        line = responseBuffer.readLine();
+      }
+
+    return info;
+  }
 }

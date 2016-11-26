@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Jan 2016 05:27:45 PM PST
- * Modified: Fri 25 Nov 2016 03:03:44 PM PST
+ * Modified: Fri 25 Nov 2016 04:06:07 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -30,25 +30,27 @@ import java.io.IOException;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictConnectionException extends IOException {
-    private static final String MESSAGE = "The connection has been closed by the remote host.";
+public class DictConnectionException extends IOException
+{
+  private static final String MESSAGE =
+    "The connection has been closed by the remote host.";
 
-    /**
-     * Construct a new DictConnectionException.
-     *
-     */
-    DictConnectionException()
-    {
-        super(MESSAGE);
-    }
+  /**
+   * Construct a new DictConnectionException.
+   *
+   */
+  DictConnectionException()
+  {
+    super(MESSAGE);
+  }
 
-    /**
-     * Construct a new DictConnectionException with message.
-     *
-     * @param message the custom exception message
-     */
-    DictConnectionException(String message)
-    {
-        super(message);
-    }
+  /**
+   * Construct a new DictConnectionException with message.
+   *
+   * @param message the custom exception message
+   */
+  DictConnectionException(String message)
+  {
+    super(message);
+  }
 }

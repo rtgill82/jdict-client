@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 06:48:16 PM PST
- * Modified: Fri 25 Nov 2016 03:12:05 PM PST
+ * Modified: Fri 25 Nov 2016 04:13:24 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,17 +28,17 @@ package org.lonestar.sdf.locke.libs.dict;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictSyntaxException extends DictException {
-
-    /**
-     * Construct a new DictSyntaxException.
-     *
-     * @param host    the remote host name
-     * @param status  the status code returned
-     * @param message the entire response string
-     */
-    DictSyntaxException(String host, int status, String message)
-    {
-        super(host, status, message);
-    }
+public class DictSyntaxException extends DictException
+{
+  /**
+   * Construct a new DictSyntaxException.
+   *
+   * @param host    the remote host name
+   * @param status  the status code returned
+   * @param message the entire response string
+   */
+  DictSyntaxException(String host, int status, String message)
+  {
+    super(host, status, message);
+  }
 }

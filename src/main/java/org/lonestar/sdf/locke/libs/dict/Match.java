@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 10 Mar 2013 04:19:18 PM PDT
- * Modified: Fri 25 Nov 2016 03:17:05 PM PST
+ * Modified: Fri 25 Nov 2016 04:17:46 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,58 +28,59 @@ package org.lonestar.sdf.locke.libs.dict;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Match extends DictItem {
-    /**
-     * Construct a new Match.
-     *
-     * @param dictionary the dictionary the match was found in
-     * @param word       the word matching the query
-     */
-    public Match(String dictionary, String word)
-    {
-        super(dictionary, word);
-    }
+public class Match extends DictItem
+{
+  /**
+   * Construct a new Match.
+   *
+   * @param dictionary the dictionary the match was found in
+   * @param word       the word matching the query
+   */
+  public Match(String dictionary, String word)
+  {
+    super(dictionary, word);
+  }
 
-    /**
-     * Construct a new Match from a DictItem.
-     *
-     * @param dictItem the DictItem to convert into a Match
-     */
-    public Match(DictItem dictItem)
-    {
-        super(dictItem.getKey(), dictItem.getValue());
-    }
+  /**
+   * Construct a new Match from a DictItem.
+   *
+   * @param dictItem the DictItem to convert into a Match
+   */
+  public Match(DictItem dictItem)
+  {
+    super(dictItem.getKey(), dictItem.getValue());
+  }
 
-    /**
-     * Get match dictionary name
-     *
-     * An alias for getKey().
-     *
-     */
-    public String getDictionary()
-    {
-        return getKey();
-    }
+  /**
+   * Get match dictionary name
+   *
+   * An alias for getKey().
+   *
+   */
+  public String getDictionary()
+  {
+    return getKey();
+  }
 
-    /**
-     * Get matching word
-     *
-     * An alias for getValue().
-     *
-     */
-    public String getWord()
-    {
-        return getValue();
-    }
+  /**
+   * Get matching word
+   *
+   * An alias for getValue().
+   *
+   */
+  public String getWord()
+  {
+    return getValue();
+  }
 
-    @Override
-    public Match clone()
-    {
-        Match match = new Match(
-                getKey(),
-                getValue()
-            );
+  @Override
+  public Match clone()
+  {
+    Match match = new Match(
+      getKey(),
+      getValue()
+    );
 
-        return match;
-    }
+    return match;
+  }
 }

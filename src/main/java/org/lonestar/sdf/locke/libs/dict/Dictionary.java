@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:34:24 PM PST
- * Modified: Fri 25 Nov 2016 03:25:07 PM PST
+ * Modified: Fri 25 Nov 2016 04:07:54 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -28,90 +28,91 @@ package org.lonestar.sdf.locke.libs.dict;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Dictionary extends DictItem {
-    /** Database source, copyright and licensing information */
-    private String databaseInfo;
+public class Dictionary extends DictItem
+{
+  /** Database source, copyright and licensing information */
+  private String databaseInfo;
 
-    /**
-     * Construct a new Dictionary.
-     *
-     * @param database    the dictionary database name
-     * @param description description of the dictionary database
-     */
-    public Dictionary(String database, String description)
-    {
-        super(database, description);
-    }
+  /**
+   * Construct a new Dictionary.
+   *
+   * @param database    the dictionary database name
+   * @param description description of the dictionary database
+   */
+  public Dictionary(String database, String description)
+  {
+    super(database, description);
+  }
 
-    /**
-     * Construct a new Dictionary with Database Info.
-     *
-     * @param database     the dictionary database name
-     * @param description  description of the dictionary database
-     * @param databaseInfo string describing full database information
-     */
-    public Dictionary(String database, String description, String databaseInfo)
-    {
-        super(database, description);
-        this.databaseInfo = databaseInfo;
-    }
+  /**
+   * Construct a new Dictionary with Database Info.
+   *
+   * @param database     the dictionary database name
+   * @param description  description of the dictionary database
+   * @param databaseInfo string describing full database information
+   */
+  public Dictionary(String database, String description, String databaseInfo)
+  {
+    super(database, description);
+    this.databaseInfo = databaseInfo;
+  }
 
-    /**
-     * Construct a new Dictionary from a DictItem.
-     *
-     * @param dictItem the DictItem to convert into a Dictionary
-     */
-    public Dictionary(DictItem dictItem)
-    {
-        super(dictItem.getKey(), dictItem.getValue());
-    }
+  /**
+   * Construct a new Dictionary from a DictItem.
+   *
+   * @param dictItem the DictItem to convert into a Dictionary
+   */
+  public Dictionary(DictItem dictItem)
+  {
+    super(dictItem.getKey(), dictItem.getValue());
+  }
 
-    /**
-     * Get Dictionary database name.
-     *
-     */
-    public String getDatabase()
-    {
-        return getKey();
-    }
+  /**
+   * Get Dictionary database name.
+   *
+   */
+  public String getDatabase()
+  {
+    return getKey();
+  }
 
-    /**
-     * Get Dictionary database description.
-     *
-     */
-    public String getDescription()
-    {
-        return getValue();
-    }
+  /**
+   * Get Dictionary database description.
+   *
+   */
+  public String getDescription()
+  {
+    return getValue();
+  }
 
-    /**
-     * Get Dictionary database information.
-     * Source, copyright, licensing information, etc.
-     *
-     */
-    public String getDatabaseInfo()
-    {
-        return databaseInfo;
-    }
+  /**
+   * Get Dictionary database information.
+   * Source, copyright, licensing information, etc.
+   *
+   */
+  public String getDatabaseInfo()
+  {
+    return databaseInfo;
+  }
 
-    /**
-     * Set Dictionary database information.
-     *
-     */
-    void setDatabaseInfo(String databaseInfo)
-    {
-        this.databaseInfo = databaseInfo;
-    }
+  /**
+   * Set Dictionary database information.
+   *
+   */
+  void setDatabaseInfo(String databaseInfo)
+  {
+    this.databaseInfo = databaseInfo;
+  }
 
-    @Override
-    public Dictionary clone()
-    {
-        Dictionary dict = new Dictionary(
-                getKey(),
-                getValue()
-            );
-        dict.setDatabaseInfo(this.getDatabaseInfo());
+  @Override
+  public Dictionary clone()
+  {
+    Dictionary dict = new Dictionary(
+      getKey(),
+      getValue()
+    );
 
-        return dict;
-    }
+    dict.setDatabaseInfo(this.getDatabaseInfo());
+    return dict;
+  }
 }

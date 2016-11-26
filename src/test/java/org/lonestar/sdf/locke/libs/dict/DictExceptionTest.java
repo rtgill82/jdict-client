@@ -1,6 +1,6 @@
 /*
  * Created:  Mon 20 Apr 2015 07:38:35 PM PDT
- * Modified: Fri 25 Nov 2016 03:28:11 PM PST
+ * Modified: Fri 25 Nov 2016 03:35:48 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -30,22 +30,22 @@ import org.lonestar.sdf.locke.libs.dict.DictException;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictExceptionTest {
+public class DictExceptionTest
+{
+  private final String HOST     = "test.dict.org";
+  private final int STATUS      = 500;
+  private final String RESPONSE = "500 Syntax error, command not recognized";
+  private final String MESSAGE  = HOST + ": " + RESPONSE;
 
-    private final String HOST     = "test.dict.org";
-    private final int STATUS      = 500;
-    private final String RESPONSE = "500 Syntax error, command not recognized";
-    private final String MESSAGE  = HOST + ": " + RESPONSE;
-
-    /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictException#DictException(java.lang.String, int, java.lang.String)}.
-     */
-    @Test
-    public void testDictException()
-    {
-        DictException exception = new DictException(HOST, STATUS, RESPONSE);
-        assertEquals(HOST, exception.getHost());
-        assertEquals(STATUS, exception.getStatus());
-        assertEquals(MESSAGE, exception.getMessage());
-    }
+  /**
+   * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictException#DictException(java.lang.String, int, java.lang.String)}.
+   */
+  @Test
+  public void testDictException()
+  {
+    DictException exception = new DictException(HOST, STATUS, RESPONSE);
+    assertEquals(HOST, exception.getHost());
+    assertEquals(STATUS, exception.getStatus());
+    assertEquals(MESSAGE, exception.getMessage());
+  }
 }

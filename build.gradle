@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 12 Jun 2016 04:43:58 PM PDT
- * Modified: Sat 11 Feb 2017 08:21:01 PM PST
+ * Modified: Sun 12 Feb 2017 03:15:48 PM PST
  *
  */
 
@@ -11,6 +11,7 @@ apply plugin: 'java'
 version  '0.2.2'
 group    'org.lonestar.sdf.locke.libs.dict'
 project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
+jar.baseName 'jdict-client'
 
 processResources {
   filter ReplaceTokens, tokens: [
@@ -18,10 +19,6 @@ processResources {
     'library.version': project.property('version'),
     'library.vendor': project.property('vendor')
   ]
-}
-
-jar {
-  baseName 'jdict-client'
 }
 
 repositories {

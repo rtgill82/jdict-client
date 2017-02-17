@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 12 Jun 2016 04:43:58 PM PDT
- * Modified: Thu 16 Feb 2017 07:10:04 PM PST
+ * Modified: Thu 16 Feb 2017 08:04:01 PM PST
  *
  */
 
@@ -28,6 +28,13 @@ dependencies {
 compileJava {
   if (lint_unchecked == "true")
     options.compilerArgs << '-Xlint:unchecked'
+}
+
+task tags {
+  exec {
+    executable 'ctags'
+    args '--tag-relative', '-R', "-f $rootDir/.git/tags", "$rootDir"
+  }
 }
 
 repositories {

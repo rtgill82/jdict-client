@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Fri 25 Nov 2016 04:12:20 PM PST
+ * Modified: Thu 16 Feb 2017 07:24:59 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -317,7 +317,7 @@ public class DictResponse
         throw new NoSuchMethodException();
       }
 
-    ArrayList<DictItem> arrayList = new ArrayList();
+    ArrayList<DictItem> arrayList = new ArrayList<DictItem>();
     Pattern pattern = Pattern.compile(DICTITEM_REGEX);
     String line = responseBuffer.readLine();
     while (!line.equals("."))

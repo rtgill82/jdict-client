@@ -1,6 +1,6 @@
 /*
  * Created:  Fri 21 Dec 2012 11:03:29 PM PST
- * Modified: Fri 25 Nov 2016 04:09:53 PM PST
+ * Modified: Thu 16 Feb 2017 07:08:35 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -233,7 +233,7 @@ public class Dict
   private static Hashtable parseOptions(String[] args)
   {
     String optname = null;
-    Hashtable opts = new Hashtable();
+    Hashtable<String,Object> opts = new Hashtable<String,Object>();
     ArrayList<String> words = new ArrayList<String>();
 
     opts.put("host", "test.dict.org");

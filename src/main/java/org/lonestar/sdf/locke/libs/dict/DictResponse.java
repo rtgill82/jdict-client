@@ -1,6 +1,6 @@
 /*
  * Created:  Sun 02 Dec 2012 07:06:10 PM PST
- * Modified: Thu 16 Feb 2017 07:24:59 PM PST
+ * Modified: Thu 16 Feb 2017 08:35:03 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
@@ -299,7 +299,8 @@ public class DictResponse
    *
    * @return list of DictItems
    */
-  private List<DictItem> readDictItems(BufferedReader responseBuffer, Class cl)
+  private List<DictItem> readDictItems(BufferedReader responseBuffer,
+                                       Class<? extends DictItem> cl)
     throws IOException, NoSuchMethodException, InstantiationException,
            IllegalAccessException, InvocationTargetException
   {
@@ -307,7 +308,7 @@ public class DictResponse
     String key;
     String value;
 
-    Constructor con = null;
+    Constructor<? extends DictItem> con = null;
     if (DictItem.class.isAssignableFrom(cl))
       {
         con = cl.getConstructor(String.class, String.class);

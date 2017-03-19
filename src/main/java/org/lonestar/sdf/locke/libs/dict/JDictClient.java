@@ -1,6 +1,4 @@
 /*
- * Created:  Sun 02 Dec 2012 07:06:50 PM PST
- * Modified: Fri 25 Nov 2016 04:17:34 PM PST
  * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.

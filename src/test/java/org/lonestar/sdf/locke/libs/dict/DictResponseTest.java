@@ -122,7 +122,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(List.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -144,7 +143,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(List.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -166,7 +164,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(String.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -189,7 +186,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(String.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -211,7 +207,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(String.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -233,7 +228,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(List.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)
@@ -255,7 +249,6 @@ public class DictResponseTest
       {
         DictResponse resp = DictResponse.read(bufReader);
         assertEquals(250, resp.getStatus());
-        assertEquals(List.class, resp.getDataClass());
         assertNotNull(resp.getData());
       }
     catch (IOException e)

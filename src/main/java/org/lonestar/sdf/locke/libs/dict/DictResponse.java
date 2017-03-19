@@ -56,9 +56,6 @@ public class DictResponse
   /** Response message */
   private String message;
 
-  /** Class containing response data */
-  private Class dataClass;
-
   /** Data returned in response, if any */
   private Object data;
 
@@ -103,20 +100,17 @@ public class DictResponse
       /* Connection banner */
       case 220:
         data = DictBanner.parse(message);
-        dataClass = DictBanner.class;
         break;
 
       /* SHOW DATABASES response */
       case 110:
         data = readDictItems(responseBuffer, Dictionary.class);
-        dataClass = List.class;
         readStatusLine(responseBuffer);
         break;
 
       /* SHOW STRATEGIES response */
       case 111:
         data = readDictItems(responseBuffer, Strategy.class);
-        dataClass = List.class;
         readStatusLine(responseBuffer);
         break;
 
@@ -125,14 +119,12 @@ public class DictResponse
       case 113: // HELP response
       case 114: // SHOW SERVER response
         data = readInfo(responseBuffer);
-        dataClass = String.class;
         readStatusLine(responseBuffer);
         break;
 
       /* DEFINE response; list of definitions follows */
       case 150:
         data = new ArrayList();
-        dataClass = List.class;
 
         /* Followed immediately by a 151 response */
         if (readStatusLine(responseBuffer))
@@ -151,7 +143,6 @@ public class DictResponse
       /* MATCH response; list of matches follows */
       case 152:
         data = readDictItems(responseBuffer, Match.class);
-        dataClass = List.class;
         readStatusLine(responseBuffer);
         break;
 
@@ -186,19 +177,9 @@ public class DictResponse
   }
 
   /**
-   * Get data type of response data.
-   *
-   * @return class of data returned by getData()
-   */
-  Class getDataClass()
-  {
-    return dataClass;
-  }
-
-  /**
    * Get response data returned by the last command.
    *
-   * @return response data of type returned by getDataClass()
+   * @return response data
    */
   Object getData()
   {

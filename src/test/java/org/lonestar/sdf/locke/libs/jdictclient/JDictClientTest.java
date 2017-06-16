@@ -18,14 +18,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import java.util.ResourceBundle;
 
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -47,7 +47,7 @@ public class JDictClientTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.JDictClient#getLibraryName()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryName()}.
    */
   @Test
   public void testLibraryName()
@@ -56,7 +56,7 @@ public class JDictClientTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.JDictClient#getLibraryVersion()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVersion()}.
    */
   @Test
   public void testLibraryVersion()
@@ -65,7 +65,7 @@ public class JDictClientTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.JDictClient#getLibraryVendor()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVendor()}.
    */
   @Test
   public void testLibraryVendor()

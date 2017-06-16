@@ -18,11 +18,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.DictItem;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -35,7 +36,7 @@ public class DictItemTest
   private final String ITEMSTRING = KEY + " \"" + VALUE + '"';
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictItem#DictItem(java.lang.String, java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#DictItem(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testDictItem()
@@ -46,7 +47,7 @@ public class DictItemTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictItem#clone()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#clone()}.
    */
   @Test
   public void testDictItemClone()
@@ -62,7 +63,7 @@ public class DictItemTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictItem#toString()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#toString()}.
    */
   @Test
   public void testDictItemToString()

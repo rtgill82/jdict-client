@@ -18,11 +18,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -34,7 +36,7 @@ public class DictionaryTest
   private final String DESCRIPTION = "WordNet (r) 3.0 (2006)";
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#Dictionary(java.lang.String, java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#Dictionary(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testDictionary()
@@ -46,7 +48,7 @@ public class DictionaryTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#Dictionary(org.lonestar.sdf.locke.libs.dict.DictItem)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#Dictionary(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
    */
   @Test
   public void testConvertDictItem()
@@ -59,7 +61,7 @@ public class DictionaryTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#setDatabaseInfo(java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#setDatabaseInfo(java.lang.String)}.
    */
   @Test
   public void testSetDatabaseInfo()
@@ -71,7 +73,7 @@ public class DictionaryTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Dictionary#clone()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#clone()}.
    */
   @Test
   public void testDictionaryClone()

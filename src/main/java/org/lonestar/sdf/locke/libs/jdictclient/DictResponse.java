@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,11 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-import org.lonestar.sdf.locke.libs.dict.Strategy;
-import org.lonestar.sdf.locke.libs.dict.DictConnectionException;
 
 /**
  * Parses and returns a DICT protocol response.

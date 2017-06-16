@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.*
 apply plugin: 'java'
 
 version  '0.2.2'
-group    'org.lonestar.sdf.locke.libs.dict'
+group    'org.lonestar.sdf.locke.libs.jdictclient'
 project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
 jar.baseName 'jdict-client'
 
@@ -22,6 +22,10 @@ dependencies {
 compileJava {
   if (lint_unchecked == "true")
     options.compilerArgs << '-Xlint:unchecked'
+}
+
+jar {
+  manifest { attributes 'Main-Class': project.group + ".Dict" }
 }
 
 task tags(overwrite: true) {

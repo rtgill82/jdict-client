@@ -18,12 +18,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.DictItem;
-import org.lonestar.sdf.locke.libs.dict.Match;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -35,7 +35,7 @@ public class MatchTest
   private final String WORD       = "linux";
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Match#Match(java.lang.String, java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#Match(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testMatch()
@@ -46,7 +46,7 @@ public class MatchTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Match#Match(org.lonestar.sdf.locke.libs.dict.DictItem)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#Match(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
    */
   @Test
   public void testConvertDictItem()
@@ -58,7 +58,7 @@ public class MatchTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Match#clone()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#clone()}.
    */
   @Test
   public void testMatchClone()

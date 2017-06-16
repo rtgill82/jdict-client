@@ -18,25 +18,32 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- * Signals that an invalid command has been sent to the remote DICT server.
- *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictSyntaxException extends DictException
+public class DictExceptionTest
 {
+  private final String HOST     = "test.dict.org";
+  private final int STATUS      = 500;
+  private final String RESPONSE = "500 Syntax error, command not recognized";
+  private final String MESSAGE  = HOST + ": " + RESPONSE;
+
   /**
-   * Construct a new DictSyntaxException.
-   *
-   * @param host    the remote host name
-   * @param status  the status code returned
-   * @param message the entire response string
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictException#DictException(java.lang.String, int, java.lang.String)}.
    */
-  DictSyntaxException(String host, int status, String message)
+  @Test
+  public void testDictException()
   {
-    super(host, status, message);
+    DictException exception = new DictException(HOST, STATUS, RESPONSE);
+    assertEquals(HOST, exception.getHost());
+    assertEquals(STATUS, exception.getStatus());
+    assertEquals(MESSAGE, exception.getMessage());
   }
 }

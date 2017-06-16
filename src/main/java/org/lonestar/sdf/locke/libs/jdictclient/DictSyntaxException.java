@@ -18,25 +18,24 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * Signals that an error occurred while authenticating with the remote DICT
- * server.
+ * Signals that an invalid command has been sent to the remote DICT server.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictAuthException extends DictException
+public class DictSyntaxException extends DictException
 {
   /**
-   * Construct a new DictAuthException.
+   * Construct a new DictSyntaxException.
    *
    * @param host    the remote host name
    * @param status  the status code returned
    * @param message the entire response string
    */
-  DictAuthException(String host, int status, String message)
+  DictSyntaxException(String host, int status, String message)
   {
     super(host, status, message);
   }

@@ -18,21 +18,13 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
-import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.DictException;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
-import org.lonestar.sdf.locke.libs.dict.JDictClient;
-import org.lonestar.sdf.locke.libs.dict.Match;
-import org.lonestar.sdf.locke.libs.dict.Strategy;
 
 /**
  * Simple command line program that uses features of the library.

@@ -18,32 +18,37 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.DictException;
+import java.io.IOException;
 
 /**
+ * Signals that a remote DICT server has unexpectedly closed the connection.
+ *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictExceptionTest
+public class DictConnectionException extends IOException
 {
-  private final String HOST     = "test.dict.org";
-  private final int STATUS      = 500;
-  private final String RESPONSE = "500 Syntax error, command not recognized";
-  private final String MESSAGE  = HOST + ": " + RESPONSE;
+  private static final String MESSAGE =
+    "The connection has been closed by the remote host.";
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.DictException#DictException(java.lang.String, int, java.lang.String)}.
+   * Construct a new DictConnectionException.
+   *
    */
-  @Test
-  public void testDictException()
+  DictConnectionException()
   {
-    DictException exception = new DictException(HOST, STATUS, RESPONSE);
-    assertEquals(HOST, exception.getHost());
-    assertEquals(STATUS, exception.getStatus());
-    assertEquals(MESSAGE, exception.getMessage());
+    super(MESSAGE);
+  }
+
+  /**
+   * Construct a new DictConnectionException with message.
+   *
+   * @param message the custom exception message
+   */
+  DictConnectionException(String message)
+  {
+    super(message);
   }
 }

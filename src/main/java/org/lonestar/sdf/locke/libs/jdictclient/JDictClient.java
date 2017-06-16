@@ -18,23 +18,23 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import org.lonestar.sdf.locke.libs.dict.DictBanner;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.

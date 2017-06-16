@@ -18,12 +18,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.Definition;
-import org.lonestar.sdf.locke.libs.dict.Dictionary;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -43,7 +43,7 @@ public class DefinitionTest
     "     with information about them [syn: {dictionary}, {lexicon}]";
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Definition#Definition(java.lang.String, org.lonestar.sdf.locke.libs.dict.Dictionary, java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Definition#Definition(java.lang.String, org.lonestar.sdf.locke.libs.jdictclient.Dictionary, java.lang.String)}.
    */
   @Test
   public void testDefinition()
@@ -55,7 +55,7 @@ public class DefinitionTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Definition#clone()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Definition#clone()}.
    */
   @Test
   public void testDefinitionClone()

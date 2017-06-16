@@ -18,12 +18,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import org.lonestar.sdf.locke.libs.dict.DictItem;
-import org.lonestar.sdf.locke.libs.dict.Strategy;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -35,7 +35,7 @@ public class StrategyTest
   private final String DESCRIPTION = "Old (basic) regular expressions";
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Strategy#Strategy(java.lang.String, java.lang.String)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testStrategy()
@@ -46,7 +46,7 @@ public class StrategyTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Strategy#Strategy(org.lonestar.sdf.locke.libs.dict.DictItem)}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
    */
   @Test
   public void testConvertDictItem()
@@ -58,7 +58,7 @@ public class StrategyTest
   }
 
   /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.dict.Strategy#clone()}.
+   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#clone()}.
    */
   @Test
   public void testStrategyClone()

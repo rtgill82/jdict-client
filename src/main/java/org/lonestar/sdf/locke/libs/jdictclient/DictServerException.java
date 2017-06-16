@@ -18,37 +18,25 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.lonestar.sdf.locke.libs.dict;
-
-import java.io.IOException;
+package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * Signals that a remote DICT server has unexpectedly closed the connection.
+ * Signals that the requested DICT server is unavailable for some reason.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class DictConnectionException extends IOException
+public class DictServerException extends DictException
 {
-  private static final String MESSAGE =
-    "The connection has been closed by the remote host.";
-
   /**
-   * Construct a new DictConnectionException.
+   * Construct a new DictServerException.
    *
+   * @param host    the remote host name
+   * @param status  the status code returned
+   * @param message the entire response string
    */
-  DictConnectionException()
+  DictServerException(String host, int status, String message)
   {
-    super(MESSAGE);
-  }
-
-  /**
-   * Construct a new DictConnectionException with message.
-   *
-   * @param message the custom exception message
-   */
-  DictConnectionException(String message)
-  {
-    super(message);
+    super(host, status, message);
   }
 }

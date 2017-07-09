@@ -25,19 +25,16 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * server.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class DictAuthException extends DictException
-{
-  /**
-   * Construct a new DictAuthException.
-   *
-   * @param host    the remote host name
-   * @param status  the status code returned
-   * @param message the entire response string
-   */
-  DictAuthException(String host, int status, String message)
-  {
-    super(host, status, message);
-  }
+public class DictAuthException extends DictException {
+    /**
+     * Construct a new DictAuthException.
+     *
+     * @param host    the remote host name
+     * @param status  the status code returned
+     * @param message the entire response string
+     */
+    DictAuthException(String host, int status, String message) {
+        super(host, status, message);
+    }
 }

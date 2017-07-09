@@ -26,24 +26,21 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class DictExceptionTest
-{
-  private final String HOST     = "test.dict.org";
-  private final int STATUS      = 500;
-  private final String RESPONSE = "500 Syntax error, command not recognized";
-  private final String MESSAGE  = HOST + ": " + RESPONSE;
+public class DictExceptionTest {
+    private final String HOST = "test.dict.org";
+    private final int STATUS = 500;
+    private final String RESPONSE = "500 Syntax error, command not recognized";
+    private final String MESSAGE = HOST + ": " + RESPONSE;
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictException#DictException(java.lang.String, int, java.lang.String)}.
-   */
-  @Test
-  public void testDictException()
-  {
-    DictException exception = new DictException(HOST, STATUS, RESPONSE);
-    assertEquals(HOST, exception.getHost());
-    assertEquals(STATUS, exception.getStatus());
-    assertEquals(MESSAGE, exception.getMessage());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictException#DictException(java.lang.String, int, java.lang.String)}.
+     */
+    @Test
+    public void testDictException() {
+        DictException exception = new DictException(HOST, STATUS, RESPONSE);
+        assertEquals(HOST, exception.getHost());
+        assertEquals(STATUS, exception.getStatus());
+        assertEquals(MESSAGE, exception.getMessage());
+    }
 }

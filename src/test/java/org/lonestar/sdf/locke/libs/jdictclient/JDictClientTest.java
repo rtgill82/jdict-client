@@ -29,47 +29,41 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class JDictClientTest
-{
-  private static String LIBRARY_VERSION;
-  private static String LIBRARY_NAME    = "JDictClient";
-  private static String LIBRARY_VENDOR  =
-    "Robert Gill <locke@sdf.lonestar.org>";
+public class JDictClientTest {
+    private static String LIBRARY_VERSION;
+    private static String LIBRARY_NAME = "JDictClient";
+    private static String LIBRARY_VENDOR =
+            "Robert Gill <locke@sdf.lonestar.org>";
 
-  @BeforeClass
-  public static void oneTimeSetUp()
-  {
-    String packageName = JDictClient.class.getPackage().getName();
-    ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-    LIBRARY_VERSION = rb.getString("library.version");
-  }
+    @BeforeClass
+    public static void oneTimeSetUp() {
+        String packageName = JDictClient.class.getPackage().getName();
+        ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+        LIBRARY_VERSION = rb.getString("library.version");
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryName()}.
-   */
-  @Test
-  public void testLibraryName()
-  {
-    assertEquals(LIBRARY_NAME, JDictClient.getLibraryName());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryName()}.
+     */
+    @Test
+    public void testLibraryName() {
+        assertEquals(LIBRARY_NAME, JDictClient.getLibraryName());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVersion()}.
-   */
-  @Test
-  public void testLibraryVersion()
-  {
-    assertEquals(LIBRARY_VERSION, JDictClient.getLibraryVersion());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVersion()}.
+     */
+    @Test
+    public void testLibraryVersion() {
+        assertEquals(LIBRARY_VERSION, JDictClient.getLibraryVersion());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVendor()}.
-   */
-  @Test
-  public void testLibraryVendor()
-  {
-    assertEquals(LIBRARY_VENDOR, JDictClient.getLibraryVendor());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.JDictClient#getLibraryVendor()}.
+     */
+    @Test
+    public void testLibraryVendor() {
+        assertEquals(LIBRARY_VENDOR, JDictClient.getLibraryVendor());
+    }
 }

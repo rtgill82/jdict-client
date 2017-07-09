@@ -26,29 +26,24 @@ import java.io.IOException;
  * Signals that a remote DICT server has unexpectedly closed the connection.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class DictConnectionException extends IOException
-{
-  private static final String MESSAGE =
-    "The connection has been closed by the remote host.";
+public class DictConnectionException extends IOException {
+    private static final String MESSAGE =
+            "The connection has been closed by the remote host.";
 
-  /**
-   * Construct a new DictConnectionException.
-   *
-   */
-  DictConnectionException()
-  {
-    super(MESSAGE);
-  }
+    /**
+     * Construct a new DictConnectionException.
+     */
+    DictConnectionException() {
+        super(MESSAGE);
+    }
 
-  /**
-   * Construct a new DictConnectionException with message.
-   *
-   * @param message the custom exception message
-   */
-  DictConnectionException(String message)
-  {
-    super(message);
-  }
+    /**
+     * Construct a new DictConnectionException with message.
+     *
+     * @param message the custom exception message
+     */
+    DictConnectionException(String message) {
+        super(message);
+    }
 }

@@ -27,49 +27,44 @@ import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class StrategyTest
-{
-  private final String NAME        = "regexp";
-  private final String DESCRIPTION = "Old (basic) regular expressions";
+public class StrategyTest {
+    private final String NAME = "regexp";
+    private final String DESCRIPTION = "Old (basic) regular expressions";
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(java.lang.String, java.lang.String)}.
-   */
-  @Test
-  public void testStrategy()
-  {
-    Strategy strat = new Strategy(NAME, DESCRIPTION);
-    assertEquals(NAME, strat.getName());
-    assertEquals(DESCRIPTION, strat.getDescription());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(java.lang.String, java.lang.String)}.
+     */
+    @Test
+    public void testStrategy() {
+        Strategy strat = new Strategy(NAME, DESCRIPTION);
+        assertEquals(NAME, strat.getName());
+        assertEquals(DESCRIPTION, strat.getDescription());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
-   */
-  @Test
-  public void testConvertDictItem()
-  {
-    DictItem item = new DictItem(NAME, DESCRIPTION);
-    Strategy strat = new Strategy(item);
-    assertEquals(NAME, strat.getName());
-    assertEquals(DESCRIPTION, strat.getDescription());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
+     */
+    @Test
+    public void testConvertDictItem() {
+        DictItem item = new DictItem(NAME, DESCRIPTION);
+        Strategy strat = new Strategy(item);
+        assertEquals(NAME, strat.getName());
+        assertEquals(DESCRIPTION, strat.getDescription());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#clone()}.
-   */
-  @Test
-  public void testStrategyClone()
-  {
-    Strategy strat1;
-    Strategy strat2;
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#clone()}.
+     */
+    @Test
+    public void testStrategyClone() {
+        Strategy strat1;
+        Strategy strat2;
 
-    strat1 = new Strategy(NAME, DESCRIPTION);
-    strat2 = strat1.clone();
-    assertNotSame(strat1, strat2);
-    assertEquals(NAME, strat2.getName());
-    assertEquals(DESCRIPTION, strat2.getDescription());
-  }
+        strat1 = new Strategy(NAME, DESCRIPTION);
+        strat2 = strat1.clone();
+        assertNotSame(strat1, strat2);
+        assertEquals(NAME, strat2.getName());
+        assertEquals(DESCRIPTION, strat2.getDescription());
+    }
 }

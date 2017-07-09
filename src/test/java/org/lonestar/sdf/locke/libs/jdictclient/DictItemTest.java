@@ -27,48 +27,43 @@ import static org.junit.Assert.assertNotSame;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class DictItemTest
-{
-  private final String KEY   = "item-key";
-  private final String VALUE = "This is the item value.";
-  private final String ITEMSTRING = KEY + " \"" + VALUE + '"';
+public class DictItemTest {
+    private final String KEY = "item-key";
+    private final String VALUE = "This is the item value.";
+    private final String ITEMSTRING = KEY + " \"" + VALUE + '"';
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#DictItem(java.lang.String, java.lang.String)}.
-   */
-  @Test
-  public void testDictItem()
-  {
-    DictItem item = new DictItem(KEY, VALUE);
-    assertEquals(KEY,   item.getKey());
-    assertEquals(VALUE, item.getValue());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#DictItem(java.lang.String, java.lang.String)}.
+     */
+    @Test
+    public void testDictItem() {
+        DictItem item = new DictItem(KEY, VALUE);
+        assertEquals(KEY, item.getKey());
+        assertEquals(VALUE, item.getValue());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#clone()}.
-   */
-  @Test
-  public void testDictItemClone()
-  {
-    DictItem item1;
-    DictItem item2;
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#clone()}.
+     */
+    @Test
+    public void testDictItemClone() {
+        DictItem item1;
+        DictItem item2;
 
-    item1 = new DictItem(KEY, VALUE);
-    item2 = item1.clone();
-    assertNotSame(item1, item2);
-    assertEquals(KEY,   item2.getKey());
-    assertEquals(VALUE, item2.getValue());
-  }
+        item1 = new DictItem(KEY, VALUE);
+        item2 = item1.clone();
+        assertNotSame(item1, item2);
+        assertEquals(KEY, item2.getKey());
+        assertEquals(VALUE, item2.getValue());
+    }
 
-  /**
-   * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#toString()}.
-   */
-  @Test
-  public void testDictItemToString()
-  {
-    DictItem item = new DictItem(KEY, VALUE);
-    assertEquals(ITEMSTRING, item.toString());
-  }
+    /**
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#toString()}.
+     */
+    @Test
+    public void testDictItemToString() {
+        DictItem item = new DictItem(KEY, VALUE);
+        assertEquals(ITEMSTRING, item.toString());
+    }
 }

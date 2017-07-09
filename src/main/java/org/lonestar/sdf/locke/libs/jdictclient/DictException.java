@@ -19,6 +19,7 @@
  *
  */
 package org.lonestar.sdf.locke.libs.jdictclient;
+
 import java.net.ProtocolException;
 
 /**
@@ -26,53 +27,51 @@ import java.net.ProtocolException;
  * server.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
- *
  */
-public class DictException extends ProtocolException
-{
-  /** DICT protocol response status code */
-  private int status;
+public class DictException extends ProtocolException {
+    /**
+     * DICT protocol response status code
+     */
+    private int status;
 
-  /** Entire DICT protocol response message */
-  private String message;
+    /**
+     * Entire DICT protocol response message
+     */
+    private String message;
 
-  /**
-   * Construct a new DictException.
-   *
-   * @param host    the remote host name
-   * @param status  the status code returned
-   * @param message the entire response string
-   */
-  DictException(String host, int status, String message)
-  {
-    super(host);
-    this.status  = status;
-    this.message = message;
-  }
+    /**
+     * Construct a new DictException.
+     *
+     * @param host    the remote host name
+     * @param status  the status code returned
+     * @param message the entire response string
+     */
+    DictException(String host, int status, String message) {
+        super(host);
+        this.status = status;
+        this.message = message;
+    }
 
-  /**
-   * Returns the remote host name where the exception occurred.
-   *
-   * @return the host name name of this DictException instance.
-   */
-  public String getHost()
-  {
-    return super.getMessage();
-  }
+    /**
+     * Returns the remote host name where the exception occurred.
+     *
+     * @return the host name name of this DictException instance.
+     */
+    public String getHost() {
+        return super.getMessage();
+    }
 
-  /**
-   * Returns the status code of this DictException.
-   *
-   * @return the status code of this DictException instance.
-   */
-  public int getStatus()
-  {
-    return status;
-  }
+    /**
+     * Returns the status code of this DictException.
+     *
+     * @return the status code of this DictException instance.
+     */
+    public int getStatus() {
+        return status;
+    }
 
-  @Override
-  public String getMessage()
-  {
-    return String.format("%s: %s", super.getMessage(), message);
-  }
+    @Override
+    public String getMessage() {
+        return String.format("%s: %s", super.getMessage(), message);
+    }
 }

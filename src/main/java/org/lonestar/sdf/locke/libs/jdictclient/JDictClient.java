@@ -53,7 +53,7 @@ public class JDictClient {
     private String host;
     private int port;
     private int timeout;
-    private DictBanner banner;
+    private Banner banner;
     private DictResponse resp;
 
     private Socket dictSocket;
@@ -140,7 +140,7 @@ public class JDictClient {
             // Save connect response so it can be requested by applications
             // using this library.
             resp = DictResponse.read(in);
-            banner = (DictBanner) resp.getData();
+            banner = (Banner) resp.getData();
             if (resp.getStatus() != 220 || resp.getData() == null) {
                 throw new DictException(host, resp.getStatus(),
                         "Connection failed: " + resp.getMessage());
@@ -269,9 +269,9 @@ public class JDictClient {
     /**
      * Get the connection banner for the currently connected server.
      *
-     * @return DictBanner or null if not connected
+     * @return Banner or null if not connected
      */
-    public DictBanner getBanner() {
+    public Banner getBanner() {
         return banner;
     }
 

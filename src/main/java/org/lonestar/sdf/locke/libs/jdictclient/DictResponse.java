@@ -97,7 +97,7 @@ public class DictResponse {
         switch (status) {
       /* Connection banner */
             case 220:
-                data = DictBanner.parse(message);
+                data = Banner.parse(message);
                 break;
 
       /* SHOW DATABASES response */

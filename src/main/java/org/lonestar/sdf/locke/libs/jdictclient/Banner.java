@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-class DictBanner {
+class Banner {
     /**
      * Regex used to match DICT protocol banner
      */
@@ -59,24 +59,22 @@ class DictBanner {
      * Parse DICT protocol banner string
      *
      * @param banner the banner string returned by the remote DICT server
-     * @return a new DictBanner object or null
+     * @return a new Banner object or null
      */
-    static DictBanner parse(String banner) {
-        DictBanner dictBanner;
-
-        dictBanner = new DictBanner(banner);
-        if (dictBanner.connectionId == null)
+    static Banner parse(String bannerString) {
+        Banner banner = new Banner(bannerString);
+        if (banner.connectionId == null)
             return null;
         else
-            return dictBanner;
+            return banner;
     }
 
     /**
-     * Construct a new DictBanner.
+     * Construct a new Banner.
      *
      * @param banner the banner string returned by the remote DICT server
      */
-    DictBanner(String banner) {
+    Banner(String banner) {
         String capstring = null;
         String[] caparray = null;
         Pattern pattern = Pattern.compile(BANNER_REGEX);

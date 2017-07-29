@@ -29,16 +29,16 @@ import static org.junit.Assert.assertNull;
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class DictBannerTest {
+public class BannerTest {
     private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
     private final String INVALID = "220 invalid banner";
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictBanner#DictBanner(java.lang.String)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Banner#Banner(java.lang.String)}.
      */
     @Test
-    public void testDictBanner() {
-        DictBanner banner = new DictBanner(BANNER);
+    public void testBanner() {
+        Banner banner = new Banner(BANNER);
         assertEquals("dictd 1.12", banner.message);
         assertEquals("<100@dictd.org>", banner.connectionId);
         assertEquals(2, banner.capabilities.size());
@@ -47,32 +47,32 @@ public class DictBannerTest {
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictBanner#parse(java.lang.String)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Banner#parse(java.lang.String)}.
      */
     @Test
     public void testParse() {
-        DictBanner banner = DictBanner.parse(BANNER);
+        Banner banner = Banner.parse(BANNER);
         assertNotNull(banner);
     }
 
     /**
      * Test parsing an invalid banner string.
      * <p>
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictBanner#parse(java.lang.String)}
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Banner#parse(java.lang.String)}
      * while passing an invalid banner string.
      */
     @Test
     public void testInvalidBanner() {
-        DictBanner banner = DictBanner.parse(INVALID);
+        Banner banner = Banner.parse(INVALID);
         assertNull(banner);
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictBanner#toString()}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Banner#toString()}.
      */
     @Test
     public void testBannerToString() {
-        DictBanner banner = DictBanner.parse(BANNER);
+        Banner banner = Banner.parse(BANNER);
         assertEquals(BANNER, banner.toString());
     }
 }

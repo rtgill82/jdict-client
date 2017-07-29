@@ -35,7 +35,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class DictResponseTest {
+public class ResponseTest {
     /* SHOW DATABASES response */
     private final String DATABASES =
             "110 1 databases present - text follows\n" +
@@ -90,12 +90,12 @@ public class DictResponseTest {
      * Test reading of successful status.
      */
     @Test
-    public void testDictResponse()
+    public void testResponse()
             throws NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer("250 ok");
         try {
-            DictResponse resp = new DictResponse(bufReader);
+            Response resp = new Response(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
             assertNull(resp.getData());
@@ -113,7 +113,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DATABASES);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -130,7 +130,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(STRATEGIES);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -147,7 +147,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DATABASE_INFO);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -165,7 +165,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DATABASE_INFO);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -182,7 +182,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(SERVER_INFO);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -199,7 +199,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DEFINITION);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -216,7 +216,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(MATCH);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(250, resp.getStatus());
             assertNotNull(resp.getData());
         } catch (IOException e) {
@@ -233,7 +233,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(AUTH_SUCCESS);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(230, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
@@ -249,7 +249,7 @@ public class DictResponseTest {
             IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(AUTH_FAIL);
         try {
-            DictResponse resp = DictResponse.read(bufReader);
+            Response resp = Response.read(bufReader);
             assertEquals(531, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());

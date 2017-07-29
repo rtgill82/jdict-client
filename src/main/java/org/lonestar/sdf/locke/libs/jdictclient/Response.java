@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class DictResponse {
+public class Response {
     /**
      * REGEX matches a single line matching 'key "value"'
      */
@@ -66,20 +66,20 @@ public class DictResponse {
      * Read response data from response buffer.
      *
      * @param responseBuffer buffer with response data from the DICT server
-     * @return new DictResponse
+     * @return new Response
      */
-    static DictResponse read(BufferedReader responseBuffer)
+    static Response read(BufferedReader responseBuffer)
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
-        return new DictResponse(responseBuffer);
+        return new Response(responseBuffer);
     }
 
     /**
-     * Construct a new DictResponse.
+     * Construct a new Response.
      *
      * @param responseBuffer buffer with response data from the DICT server
      */
-    DictResponse(BufferedReader responseBuffer)
+    Response(BufferedReader responseBuffer)
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         readStatusLine(responseBuffer);
@@ -144,7 +144,7 @@ public class DictResponse {
                 readStatusLine(responseBuffer);
                 break;
 
-      /* The following cases return DictResponse with no further processing. */
+      /* The following cases return Response with no further processing. */
             case 230: /* AUTH success */
             case 531: /* AUTH failure */
                 break;

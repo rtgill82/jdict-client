@@ -54,7 +54,7 @@ public class JDictClient {
     private int port;
     private int timeout;
     private Banner banner;
-    private DictResponse resp;
+    private Response resp;
 
     private Socket dictSocket;
     private PrintWriter out;
@@ -128,7 +128,7 @@ public class JDictClient {
             throws UnknownHostException, IOException, DictException,
             NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
-        DictResponse resp;
+        Response resp;
 
         if (dictSocket == null) {
             dictSocket = new Socket();
@@ -139,7 +139,7 @@ public class JDictClient {
 
             // Save connect response so it can be requested by applications
             // using this library.
-            resp = DictResponse.read(in);
+            resp = Response.read(in);
             banner = (Banner) resp.getData();
             if (resp.getStatus() != 220 || resp.getData() == null) {
                 throw new DictException(host, resp.getStatus(),
@@ -149,7 +149,7 @@ public class JDictClient {
             // I don't think anyone should care about the sendClient()
             // response.
             sendClient();
-            resp = DictResponse.read(in);
+            resp = Response.read(in);
             if (resp.getStatus() != 250) {
                 throw new DictException(host, resp.getStatus(),
                         resp.getMessage());
@@ -170,7 +170,7 @@ public class JDictClient {
 
         try {
             quit();
-            resp = DictResponse.read(in);
+            resp = Response.read(in);
             if (resp.getStatus() != 221) {
                 throw new DictException(host, resp.getStatus(),
                         resp.getMessage());
@@ -252,7 +252,7 @@ public class JDictClient {
      *
      * @return the response for the last command.
      */
-    public DictResponse getResponse() {
+    public Response getResponse() {
         return resp;
     }
 
@@ -284,7 +284,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("SHOW SERVER");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (String) resp.getData();
     }
 
@@ -297,7 +297,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("HELP");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (String) resp.getData();
     }
 
@@ -320,7 +320,7 @@ public class JDictClient {
         String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
         out.println("AUTH " + username + " " + md5str);
 
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         if (resp.getStatus() == 230) rv = true;
 
         return rv;
@@ -335,7 +335,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("SHOW DATABASES");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (List<Dictionary>) resp.getData();
     }
 
@@ -349,7 +349,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("SHOW INFO " + dictionary);
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (String) resp.getData();
     }
 
@@ -378,7 +378,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("SHOW STRATEGIES");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (List<Strategy>) resp.getData();
     }
 
@@ -394,7 +394,7 @@ public class JDictClient {
         List definitions;
 
         out.println("DEFINE * \"" + word + "\"");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (List<Definition>) resp.getData();
     }
 
@@ -411,7 +411,7 @@ public class JDictClient {
         List definitions;
 
         out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (List<Definition>) resp.getData();
     }
 
@@ -426,7 +426,7 @@ public class JDictClient {
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
-        resp = DictResponse.read(in);
+        resp = Response.read(in);
         return (List<Match>) resp.getData();
     }
 

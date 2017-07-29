@@ -25,7 +25,7 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class Strategy extends DictItem {
+public class Strategy extends Element {
     /**
      * Construct a new Strategy.
      *
@@ -37,12 +37,12 @@ public class Strategy extends DictItem {
     }
 
     /**
-     * Construct a new Strategy from a DictItem.
+     * Construct a new Strategy from an Element.
      *
-     * @param dictItem the DictItem to convert into a Strategy
+     * @param element the Element to convert into a Strategy
      */
-    public Strategy(DictItem dictItem) {
-        super(dictItem.getKey(), dictItem.getValue());
+    public Strategy(Element element) {
+        super(element.getKey(), element.getValue());
     }
 
     /**
@@ -65,11 +65,11 @@ public class Strategy extends DictItem {
 
     @Override
     public Strategy clone() {
-        Strategy strat = new Strategy(
-                getKey(),
-                getValue()
+        Strategy strategy = new Strategy(
+            getKey(),
+            getValue()
         );
 
-        return strat;
+        return strategy;
     }
 }

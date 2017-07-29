@@ -38,7 +38,7 @@ public class DictResponse {
     /**
      * REGEX matches a single line matching 'key "value"'
      */
-    private static final String DICTITEM_REGEX =
+    private static final String ELEMENT_REGEX =
             "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
     /**
@@ -102,13 +102,13 @@ public class DictResponse {
 
       /* SHOW DATABASES response */
             case 110:
-                data = readDictItems(responseBuffer, Dictionary.class);
+                data = readElements(responseBuffer, Dictionary.class);
                 readStatusLine(responseBuffer);
                 break;
 
       /* SHOW STRATEGIES response */
             case 111:
-                data = readDictItems(responseBuffer, Strategy.class);
+                data = readElements(responseBuffer, Strategy.class);
                 readStatusLine(responseBuffer);
                 break;
 
@@ -140,7 +140,7 @@ public class DictResponse {
 
       /* MATCH response; list of matches follows */
             case 152:
-                data = readDictItems(responseBuffer, Match.class);
+                data = readElements(responseBuffer, Match.class);
                 readStatusLine(responseBuffer);
                 break;
 
@@ -258,25 +258,25 @@ public class DictResponse {
      * This also includes matches returned by the MATCH command.
      *
      * @param responseBuffer the buffer from which to read the list of items
-     * @return list of DictItems
+     * @return list of Elements
      */
-    private List<DictItem> readDictItems(BufferedReader responseBuffer,
-                                         Class<? extends DictItem> cl)
+    private List<Element> readElements(BufferedReader responseBuffer,
+                                       Class<? extends Element> cl)
             throws IOException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         Matcher matcher;
         String key;
         String value;
 
-        Constructor<? extends DictItem> con = null;
-        if (DictItem.class.isAssignableFrom(cl)) {
+        Constructor<? extends Element> con = null;
+        if (Element.class.isAssignableFrom(cl)) {
             con = cl.getConstructor(String.class, String.class);
         } else {
             throw new NoSuchMethodException();
         }
 
-        ArrayList<DictItem> arrayList = new ArrayList<DictItem>();
-        Pattern pattern = Pattern.compile(DICTITEM_REGEX);
+        ArrayList<Element> arrayList = new ArrayList<Element>();
+        Pattern pattern = Pattern.compile(ELEMENT_REGEX);
         String line = responseBuffer.readLine();
         while (!line.equals(".")) {
             matcher = pattern.matcher(line);
@@ -284,7 +284,7 @@ public class DictResponse {
             if (matcher.find()) {
                 key = line.substring(matcher.start(1), matcher.end(1));
                 value = line.substring(matcher.start(2), matcher.end(2));
-                arrayList.add((DictItem) con.newInstance(key, value));
+                arrayList.add((Element) con.newInstance(key, value));
             }
             line = responseBuffer.readLine();
         }

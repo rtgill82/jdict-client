@@ -28,42 +28,42 @@ import static org.junit.Assert.assertNotSame;
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class DictItemTest {
-    private final String KEY = "item-key";
-    private final String VALUE = "This is the item value.";
+public class ElementTest {
+    private final String KEY = "element-key";
+    private final String VALUE = "This is the element value.";
     private final String ITEMSTRING = KEY + " \"" + VALUE + '"';
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#DictItem(java.lang.String, java.lang.String)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Element#Element(java.lang.String, java.lang.String)}.
      */
     @Test
-    public void testDictItem() {
-        DictItem item = new DictItem(KEY, VALUE);
-        assertEquals(KEY, item.getKey());
-        assertEquals(VALUE, item.getValue());
+    public void testElement() {
+        Element element = new Element(KEY, VALUE);
+        assertEquals(KEY, element.getKey());
+        assertEquals(VALUE, element.getValue());
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#clone()}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Element#clone()}.
      */
     @Test
-    public void testDictItemClone() {
-        DictItem item1;
-        DictItem item2;
+    public void testElementClone() {
+        Element element1;
+        Element element2;
 
-        item1 = new DictItem(KEY, VALUE);
-        item2 = item1.clone();
-        assertNotSame(item1, item2);
-        assertEquals(KEY, item2.getKey());
-        assertEquals(VALUE, item2.getValue());
+        element1 = new Element(KEY, VALUE);
+        element2 = element1.clone();
+        assertNotSame(element1, element2);
+        assertEquals(KEY, element2.getKey());
+        assertEquals(VALUE, element2.getValue());
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.DictItem#toString()}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Element#toString()}.
      */
     @Test
-    public void testDictItemToString() {
-        DictItem item = new DictItem(KEY, VALUE);
-        assertEquals(ITEMSTRING, item.toString());
+    public void testElementToString() {
+        Element element = new Element(KEY, VALUE);
+        assertEquals(ITEMSTRING, element.toString());
     }
 }

@@ -43,12 +43,12 @@ public class StrategyTest {
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#Strategy(org.lonestar.sdf.locke.libs.jdictclient.Element)}.
      */
     @Test
-    public void testConvertDictItem() {
-        DictItem item = new DictItem(NAME, DESCRIPTION);
-        Strategy strat = new Strategy(item);
+    public void testConvertElement() {
+        Element element = new Element(NAME, DESCRIPTION);
+        Strategy strat = new Strategy(element);
         assertEquals(NAME, strat.getName());
         assertEquals(DESCRIPTION, strat.getDescription());
     }

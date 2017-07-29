@@ -45,12 +45,12 @@ public class DictionaryTest {
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#Dictionary(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Dictionary#Dictionary(org.lonestar.sdf.locke.libs.jdictclient.Element)}.
      */
     @Test
-    public void testConvertDictItem() {
-        DictItem item = new DictItem(DATABASE, DESCRIPTION);
-        Dictionary dict = new Dictionary(item);
+    public void testConvertElement() {
+        Element element = new Element(DATABASE, DESCRIPTION);
+        Dictionary dict = new Dictionary(element);
         assertEquals(DATABASE, dict.getDatabase());
         assertEquals(DESCRIPTION, dict.getDescription());
         assertNull(dict.getDatabaseInfo());

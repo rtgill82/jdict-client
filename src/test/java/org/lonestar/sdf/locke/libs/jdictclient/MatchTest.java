@@ -43,12 +43,12 @@ public class MatchTest {
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#Match(org.lonestar.sdf.locke.libs.jdictclient.DictItem)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#Match(org.lonestar.sdf.locke.libs.jdictclient.Element)}.
      */
     @Test
-    public void testConvertDictItem() {
-        DictItem item = new DictItem(DICTIONARY, WORD);
-        Match match = new Match(item);
+    public void testConvertElement() {
+        Element element = new Element(DICTIONARY, WORD);
+        Match match = new Match(element);
         assertEquals(DICTIONARY, match.getDictionary());
         assertEquals(WORD, match.getWord());
     }

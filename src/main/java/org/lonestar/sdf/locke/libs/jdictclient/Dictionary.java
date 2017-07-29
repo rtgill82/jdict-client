@@ -25,7 +25,7 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class Dictionary extends DictItem {
+public class Dictionary extends Element {
     /**
      * Database source, copyright and licensing information
      */
@@ -54,12 +54,12 @@ public class Dictionary extends DictItem {
     }
 
     /**
-     * Construct a new Dictionary from a DictItem.
+     * Construct a new Dictionary from an Element.
      *
-     * @param dictItem the DictItem to convert into a Dictionary
+     * @param element the Element to convert into a Dictionary
      */
-    public Dictionary(DictItem dictItem) {
-        super(dictItem.getKey(), dictItem.getValue());
+    public Dictionary(Element element) {
+        super(element.getKey(), element.getValue());
     }
 
     /**

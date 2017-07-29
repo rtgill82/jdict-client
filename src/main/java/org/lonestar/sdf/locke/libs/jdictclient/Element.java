@@ -21,7 +21,7 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * A DictItem is a simple key, value pair.
+ * An Element is a simple key, value pair.
  * <p>
  * It is used for data returned by the DICT protocol in the format of:<br />
  * <p>
@@ -35,38 +35,38 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class DictItem extends Object {
+public class Element {
     /**
-     * Key used to identify the item
+     * Key used to identify the element
      */
     private String key;
 
     /**
-     * Value of the item (often an item description)
+     * Value of the element (often a description)
      */
     private String value;
 
     /**
-     * Construct a new DictItem.
+     * Construct a new Element.
      *
-     * @param key   the key identifying the item.
-     * @param value the value of the item (often an item description).
+     * @param key   the key identifying the element.
+     * @param value the value of the element (often a description).
      */
-    public DictItem(String key, String value) {
+    public Element(String key, String value) {
         super();
         this.key = key;
         this.value = value;
     }
 
     /**
-     * Get the item key.
+     * Get the element key.
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * Get the item value.
+     * Get the element value.
      */
     public String getValue() {
         return value;
@@ -76,13 +76,13 @@ public class DictItem extends Object {
      * Creates and returns a copy of this object.
      */
     @Override
-    public DictItem clone() {
-        DictItem item = new DictItem(
-                getKey(),
-                getValue()
+    public Element clone() {
+        Element element = new Element(
+            getKey(),
+            getValue()
         );
 
-        return item;
+        return element;
     }
 
     /**

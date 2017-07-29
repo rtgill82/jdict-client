@@ -21,11 +21,11 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * Simpe class that represents a DICT match.
+ * Simple class that represents a DICT match.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class Match extends DictItem {
+public class Match extends Element {
     /**
      * Construct a new Match.
      *
@@ -37,12 +37,12 @@ public class Match extends DictItem {
     }
 
     /**
-     * Construct a new Match from a DictItem.
+     * Construct a new Match from an Element.
      *
-     * @param dictItem the DictItem to convert into a Match
+     * @param element the Element to convert into a Match
      */
-    public Match(DictItem dictItem) {
-        super(dictItem.getKey(), dictItem.getValue());
+    public Match(Element element) {
+        super(element.getKey(), element.getValue());
     }
 
     /**
@@ -66,8 +66,8 @@ public class Match extends DictItem {
     @Override
     public Match clone() {
         Match match = new Match(
-                getKey(),
-                getValue()
+            getKey(),
+            getValue()
         );
 
         return match;

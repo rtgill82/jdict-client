@@ -22,19 +22,23 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.CLIENT;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.DEFINE;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.HELP;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.MATCH;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.QUIT;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_DATABASES;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_INFO;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_SERVER;
+import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_STRATEGIES;
 
 /**
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
@@ -53,10 +57,9 @@ public class JDictClient {
     private String host;
     private int port;
     private int timeout;
-    private Banner banner;
     private Response resp;
 
-    private Socket dictSocket;
+    private Connection connection;
     private PrintWriter out;
     private BufferedReader in;
 
@@ -84,12 +87,9 @@ public class JDictClient {
      * @param host DICT host to connect to
      * @return new JDictClient instance
      */
-    public static JDictClient connect(String host)
-            throws UnknownHostException, IOException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+    public static JDictClient connect(String host) throws IOException {
         JDictClient dictClient =
-                JDictClient.connect(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
+          JDictClient.connect(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
         return dictClient;
     }
 
@@ -101,18 +101,14 @@ public class JDictClient {
      * @return new JDictClient instance
      */
     public static JDictClient connect(String host, int port)
-            throws UnknownHostException, IOException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+          throws IOException  {
         JDictClient dictClient = new JDictClient(host, port, DEFAULT_TIMEOUT);
         dictClient.connect();
         return dictClient;
     }
 
     public static JDictClient connect(String host, int port, int timeout)
-            throws UnknownHostException, IOException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+          throws IOException {
         JDictClient dictClient = new JDictClient(host, port, timeout);
         dictClient.connect();
         return dictClient;
@@ -124,36 +120,11 @@ public class JDictClient {
      * If this instance is not currently connected, attempt to open a
      * connection to the server previously specified.
      */
-    public void connect()
-            throws UnknownHostException, IOException, DictException,
-            NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        Response resp;
-
-        if (dictSocket == null) {
-            dictSocket = new Socket();
-            dictSocket.connect(new InetSocketAddress(host, port), timeout);
-            out = new PrintWriter(dictSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(
-                    dictSocket.getInputStream()));
-
-            // Save connect response so it can be requested by applications
-            // using this library.
-            resp = Response.read(in);
-            banner = (Banner) resp.getData();
-            if (resp.getStatus() != 220 || resp.getData() == null) {
-                throw new DictException(host, resp.getStatus(),
-                        "Connection failed: " + resp.getMessage());
-            }
-
-            // I don't think anyone should care about the sendClient()
-            // response.
+    public void connect() throws IOException {
+        if (connection == null) {
+            connection = new Connection(host, port, timeout);
+            connection.connect();
             sendClient();
-            resp = Response.read(in);
-            if (resp.getStatus() != 250) {
-                throw new DictException(host, resp.getStatus(),
-                        resp.getMessage());
-            }
         }
     }
 
@@ -162,28 +133,16 @@ public class JDictClient {
      *
      * @return true if successful, false if closed by remote
      */
-    public boolean close()
-            throws DictException, IOException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+    public boolean close() throws IOException {
         boolean rv = true;
 
-        try {
-            quit();
-            resp = Response.read(in);
-            if (resp.getStatus() != 221) {
-                throw new DictException(host, resp.getStatus(),
-                        resp.getMessage());
-            }
-        } catch (DictConnectionException e) {
-            rv = false;
-        }
+        Response resp = quit();
+        if (resp.getStatus() != 221)
+          throw new DictException(host, resp.getStatus(), resp.getMessage());
 
-        dictSocket.close();
-        dictSocket = null;
+        connection.close();
         in = null;
         out = null;
-        banner = null;
 
         return rv;
     }
@@ -241,8 +200,8 @@ public class JDictClient {
      * @param clientString client string to send to DICT server
      */
     public void setClientString(String clientString) {
-        if (clientString == null)
-            clientString = clientString;
+        if (this.clientString == null)
+          this.clientString = clientString;
     }
 
     /**
@@ -262,8 +221,13 @@ public class JDictClient {
      * This method is called by the connect() method. It's not necessary to use
      * it in normal practice.
      */
-    private void sendClient() {
-        out.println("CLIENT " + clientString);
+    private void sendClient() throws IOException {
+        Request request = new Request.Builder(CLIENT)
+                                     .setParamString(clientString).build();
+        List<Response> responses = request.execute(connection);
+        Response resp = responses.get(1);
+        if (resp.getStatus() != 250)
+          throw new DictException(host, resp.getStatus(), resp.getMessage());
     }
 
     /**
@@ -272,7 +236,7 @@ public class JDictClient {
      * @return Banner or null if not connected
      */
     public Banner getBanner() {
-        return banner;
+        return connection.getBanner();
     }
 
     /**
@@ -280,12 +244,11 @@ public class JDictClient {
      *
      * @return server information string
      */
-    public String getServerInfo()
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("SHOW SERVER");
-        resp = Response.read(in);
-        return (String) resp.getData();
+    public String getServerInfo() throws IOException {
+        Request.Builder builder = new Request.Builder(SHOW_SERVER);
+        Request request = builder.build();
+        List<Response> responses = request.execute(connection);
+        return responses.get(0).getRawData();
     }
 
     /**
@@ -293,15 +256,15 @@ public class JDictClient {
      *
      * @return server help string
      */
-    public String getHelp()
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("HELP");
-        resp = Response.read(in);
-        return (String) resp.getData();
+    public String getHelp() throws IOException {
+        Request.Builder builder = new Request.Builder(HELP);
+        Request request = builder.build();
+        List<Response> responses = request.execute(connection);
+        return responses.get(0).getRawData();
     }
 
     /**
+     * FIXME: Implement
      * Authenticate with the server.
      *
      * @param username authenticate with username
@@ -309,19 +272,21 @@ public class JDictClient {
      * @return true on success, false on failure
      */
     public boolean authenticate(String username, String secret)
-            throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+          throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
+                 InstantiationException, IllegalAccessException,
+                 InvocationTargetException {
         boolean rv = false;
 
+        /*
         MessageDigest authdigest = MessageDigest.getInstance("MD5");
-        String authstring = banner.connectionId + secret;
+        String authstring = connection.getId() + secret;
         authdigest.update(authstring.getBytes(Charset.forName("UTF-8")));
         String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
         out.println("AUTH " + username + " " + md5str);
 
-        resp = Response.read(in);
+        resp = ResponseParser.parse(in);
         if (resp.getStatus() == 230) rv = true;
+        */
 
         return rv;
     }
@@ -329,14 +294,15 @@ public class JDictClient {
     /**
      * Get list of available dictionary databases from the server.
      *
+     * FIXME: Allow requesting that dictionary info be set while querying
+     * server.
+     *
      * @return list of dictionaries
      */
-    public List<Dictionary> getDictionaries()
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("SHOW DATABASES");
-        resp = Response.read(in);
-        return (List<Dictionary>) resp.getData();
+    public List<Dictionary> getDictionaries() throws IOException {
+        Request request = new Request.Builder(SHOW_DATABASES).build();
+        List<Response> responses = request.execute(connection);
+        return (List<Dictionary>) responses.get(0).getData();
     }
 
     /**
@@ -345,28 +311,26 @@ public class JDictClient {
      * @param dictionary the dictionary for which to get information
      * @return dictionary info string
      */
-    public String getDictionaryInfo(String dictionary)
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("SHOW INFO " + dictionary);
-        resp = Response.read(in);
-        return (String) resp.getData();
+    public String getDictionaryInfo(String dictionary) throws IOException {
+        Request request = new Request.Builder(SHOW_INFO)
+                                     .setDatabase(dictionary)
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return responses.get(0).getRawData();
     }
 
     /**
      * Get detailed dictionary info for the specified dictionary.
      *
      * @param dictionary the dictionary for which to get information
-     * @return same dictionary instance with detailed info set
+     * @return dictionary info string
      */
-    public Dictionary getDictionaryInfo(Dictionary dictionary)
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        String info;
-
-        info = getDictionaryInfo(dictionary.getDatabase());
-        dictionary.setDatabaseInfo(info);
-        return dictionary;
+    public String getDictionaryInfo(Dictionary dictionary) throws IOException {
+        Request request = new Request.Builder(SHOW_INFO)
+                                     .setDatabase(dictionary.getDatabase())
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return responses.get(0).getRawData();
     }
 
     /**
@@ -374,12 +338,10 @@ public class JDictClient {
      *
      * @return list of strategies
      */
-    public List<Strategy> getStrategies()
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("SHOW STRATEGIES");
-        resp = Response.read(in);
-        return (List<Strategy>) resp.getData();
+    public List<Strategy> getStrategies() throws IOException {
+        Request request = new Request.Builder(SHOW_STRATEGIES).build();
+        List<Response> responses = request.execute(connection);
+        return (List<Strategy>) responses.get(0).getData();
     }
 
     /**
@@ -388,14 +350,12 @@ public class JDictClient {
      * @param word the word to define
      * @return a list of definitions for word
      */
-    public List<Definition> define(String word)
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        List definitions;
-
-        out.println("DEFINE * \"" + word + "\"");
-        resp = Response.read(in);
-        return (List<Definition>) resp.getData();
+    public List<Definition> define(String word) throws IOException {
+        Request request = new Request.Builder(DEFINE)
+                                     .setParamString(word)
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return collect_definitions(responses);
     }
 
     /**
@@ -406,34 +366,68 @@ public class JDictClient {
      * @return a list of definitions for word
      */
     public List<Definition> define(String dictionary, String word)
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        List definitions;
-
-        out.println("DEFINE \"" + dictionary + "\" \"" + word + "\"");
-        resp = Response.read(in);
-        return (List<Definition>) resp.getData();
+          throws IOException {
+        Request request = new Request.Builder(DEFINE)
+                                     .setDatabase(dictionary)
+                                     .setParamString(word)
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return collect_definitions(responses);
     }
 
     /**
      * Match word using requested strategy.
      *
-     * @param word     the word to match
      * @param strategy the strategy to use for matching
+     * @param word     the word to match
      * @return a list of matching words and the dictionaries they are found in
      */
-    public List<Match> match(String strategy, String word)
-            throws IOException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        out.println("MATCH * \"" + strategy + "\" \"" + word + "\"");
-        resp = Response.read(in);
-        return (List<Match>) resp.getData();
+    public List<Match> match(String strategy, String word) throws IOException {
+        Request request = new Request.Builder(MATCH)
+                                     .setStrategy(strategy)
+                                     .setParamString(word)
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return (List<Match>) responses.get(0).getData();
+    }
+
+    /**
+     * Match word using requested strategy.
+     *
+     * @param dictionary the dictionary to search
+     * @param strategy   the strategy to use for matching
+     * @param word       the word to match
+     * @return a list of matching words and the dictionaries they are found in
+     */
+    public List<Match> match(String dictionary, String strategy, String word)
+          throws IOException {
+        Request request = new Request.Builder(MATCH)
+                                     .setDatabase(dictionary)
+                                     .setStrategy(strategy)
+                                     .setParamString(word)
+                                     .build();
+        List<Response> responses = request.execute(connection);
+        return (List<Match>) responses.get(0).getData();
     }
 
     /**
      * Send QUIT command to server.
      */
-    private void quit() {
-        out.println("QUIT");
+    private Response quit() throws IOException {
+        Request request = new Request.Builder(QUIT).build();
+        List<Response> responses = request.execute(connection);
+        return responses.get(0);
+    }
+
+    private ArrayList<Definition> collect_definitions(List<Response> responses)
+    {
+        ListIterator<Response> itr = responses.listIterator(1);
+        ArrayList<Definition> definitions = new ArrayList<Definition>();
+        while (itr.hasNext()) {
+            Response response = itr.next();
+            if (response.getStatus() == 151)
+              definitions.add((Definition) response.getData());
+        }
+        return definitions;
     }
 }

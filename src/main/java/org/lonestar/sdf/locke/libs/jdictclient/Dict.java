@@ -136,12 +136,17 @@ public class Dict {
                 Iterator words = ((ArrayList) opts.get("words")).iterator();
                 while (words.hasNext()) {
                     String word = (String) words.next();
-                    if (opts.containsKey("dictionary")) {
+                    if (opts.containsKey("match")) {
+                        String strategy = (String) opts.get("match");
+                        if (opts.containsKey("dictionary")) {
+                            String dictionary = (String) opts.get("dictionary");
+                            matches = dictClient.match(dictionary, strategy, word);
+                        } else {
+                            matches = dictClient.match(strategy, word);
+                        }
+                    } else if (opts.containsKey("dictionary")) {
                         String dictionary = (String) opts.get("dictionary");
                         definitions = dictClient.define(dictionary, word);
-                    } else if (opts.containsKey("match")) {
-                        String strategy = (String) opts.get("match");
-                        matches = dictClient.match(strategy, word);
                     } else {
                         definitions = dictClient.define(word);
                     }

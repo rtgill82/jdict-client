@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2018 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of JDictClient.
  *
@@ -35,7 +35,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class ResponseTest {
+public class ResponseParserTest {
     /* SHOW DATABASES response */
     private final String DATABASES =
             "110 1 databases present - text follows\n" +
@@ -90,15 +90,15 @@ public class ResponseTest {
      * Test reading of successful status.
      */
     @Test
-    public void testResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+    public void testResponseParser()
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer("250 ok");
         try {
-            Response resp = new Response(bufReader);
+            Response resp = ResponseParser.parse(bufReader);
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
-            assertNull(resp.getData());
+            assertNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -109,13 +109,13 @@ public class ResponseTest {
      */
     @Test
     public void testDatabaseResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DATABASES);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(110, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -126,13 +126,13 @@ public class ResponseTest {
      */
     @Test
     public void testStrategiesResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(STRATEGIES);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(111, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -143,31 +143,30 @@ public class ResponseTest {
      */
     @Test
     public void testHelpResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(DATABASE_INFO);
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
+        BufferedReader bufReader = stringBuffer(HELP);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(113, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
     }
-
 
     /**
      * Test reading of SHOW INFO response.
      */
     @Test
     public void testDatabaseInfoResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DATABASE_INFO);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(112, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -178,13 +177,13 @@ public class ResponseTest {
      */
     @Test
     public void testServerInfoResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(SERVER_INFO);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(114, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -195,13 +194,14 @@ public class ResponseTest {
      */
     @Test
     public void testDefineResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(DEFINITION);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(150, resp.getStatus());
+            resp = ResponseParser.parse(bufReader);
+            assertEquals(151, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -212,13 +212,13 @@ public class ResponseTest {
      */
     @Test
     public void testMatchResponse()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(MATCH);
         try {
-            Response resp = Response.read(bufReader);
-            assertEquals(250, resp.getStatus());
-            assertNotNull(resp.getData());
+            Response resp = ResponseParser.parse(bufReader);
+            assertEquals(152, resp.getStatus());
+            assertNotNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
@@ -229,11 +229,11 @@ public class ResponseTest {
      */
     @Test
     public void testAuthSuccess()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(AUTH_SUCCESS);
         try {
-            Response resp = Response.read(bufReader);
+            Response resp = ResponseParser.parse(bufReader);
             assertEquals(230, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
@@ -245,11 +245,11 @@ public class ResponseTest {
      */
     @Test
     public void testAuthFail()
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+          throws NoSuchMethodException, InstantiationException,
+                 IllegalAccessException, InvocationTargetException {
         BufferedReader bufReader = stringBuffer(AUTH_FAIL);
         try {
-            Response resp = Response.read(bufReader);
+            Response resp = ResponseParser.parse(bufReader);
             assertEquals(531, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());

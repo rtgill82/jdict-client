@@ -92,16 +92,17 @@ public class Connection {
         if (socket == null) {
             socket = new Socket();
             socket.connect(new InetSocketAddress(host, port), timeout);
-
-            InputStream stream = socket.getInputStream();
-            byte[] buffer = new byte[stream.available()];
-            stream.read(buffer);
-            String bannerString = new String(buffer);
-            banner = Banner.parse(bannerString);
-
-            InputStreamReader sreader = new InputStreamReader(stream);
-            in = new BufferedReader(sreader);
-            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(getInputStream()));
+            out = new PrintWriter(getOutputStream(), true);
+            Response response = ResponseParser.parse(this);
+            if (response.getStatus() != 220) {
+                throw new DictException(
+                    host, response.getStatus(),
+                    "Connection banner expected, received: "
+                    + response.getMessage()
+                  );
+            }
+            banner = (Banner) response.getData();
         }
     }
 

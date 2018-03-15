@@ -21,8 +21,8 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Parses the DICT protocol connection banner.
@@ -31,24 +31,9 @@ import java.util.regex.Pattern;
  */
 class Banner {
     /**
-     * Regex used to match DICT protocol banner
-     */
-    private static final String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
-
-    /**
-     * Entire DICT protocol banner
-     */
-    public final String banner;
-
-    /**
      * DICT protocol banner message
      */
     public final String message;
-
-    /**
-     * Array of capabilities the remote DICT server supports
-     */
-    public final ArrayList<String> capabilities;
 
     /**
      * The remote DICT server's connection ID for this session
@@ -56,51 +41,26 @@ class Banner {
     public final String connectionId;
 
     /**
-     * Parse DICT protocol banner string
-     *
-     * @param banner the banner string returned by the remote DICT server
-     * @return a new Banner object or null
+     * Array of capabilities the remote DICT server supports
      */
-    static Banner parse(String bannerString) {
-        Banner banner = new Banner(bannerString);
-        if (banner.connectionId == null)
-            return null;
-        else
-            return banner;
-    }
+    public final List<String> capabilities;
 
     /**
      * Construct a new Banner.
      *
-     * @param banner the banner string returned by the remote DICT server
+     * @param message      the full banner message
+     * @param connectionId the server's connection ID
+     * @param capabilities a list of capabilities the server supports
      */
-    Banner(String banner) {
-        String capstring = null;
-        String[] caparray = null;
-        Pattern pattern = Pattern.compile(BANNER_REGEX);
-        Matcher matcher = pattern.matcher(banner);
-
-        if (matcher.find()) {
-            this.banner = banner;
-            message = banner.substring(matcher.start(1), matcher.end(1));
-            connectionId = banner.substring(matcher.start(4), matcher.end(4));
-
-            capabilities = new ArrayList<String>();
-            capstring = banner.substring(matcher.start(2), matcher.end(2));
-            caparray = capstring.split("\\.");
-            for (int i = 0; i < caparray.length; i++)
-                capabilities.add(caparray[i]);
-        } else {
-            // can only be assigned once, yet still need to be assigned
-            this.banner = null;
-            message = null;
-            capabilities = null;
-            connectionId = null;
-        }
+    public Banner(String message, String connectionId,
+                  ArrayList<String> capabilities) {
+        this.message = message;
+        this.connectionId = connectionId;
+        this.capabilities = Collections.unmodifiableList(capabilities);
     }
 
     @Override
     public String toString() {
-        return banner;
+        return message;
     }
 }

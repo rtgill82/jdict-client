@@ -225,7 +225,7 @@ public class JDictClient {
         Request request = new Request.Builder(CLIENT)
                                      .setParamString(clientString).build();
         List<Response> responses = request.execute(connection);
-        Response resp = responses.get(1);
+        Response resp = responses.get(0);
         if (resp.getStatus() != 250)
           throw new DictException(host, resp.getStatus(), resp.getMessage());
     }

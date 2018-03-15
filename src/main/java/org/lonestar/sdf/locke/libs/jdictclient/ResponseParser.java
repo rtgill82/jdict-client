@@ -49,23 +49,47 @@ public class ResponseParser {
     };
 
     /**
+     * Regex used to match DICT protocol banner
+     */
+    private final String BANNER_REGEX =
+        "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
+
+    /**
+     * REGEX matches a 151 status line preceding definition text
+     */
+    private final String DEFINITION_REGEX =
+        "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
+
+    /**
      * REGEX matches a single line matching 'key "value"'
      */
     private final String ELEMENT_REGEX =
         "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
-    /**
-     * REGEX matches a 151 status line preceeding definition text
-     */
-    private final String DEFINITION_REGEX =
-        "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
-
     private Connection connection;
     private BufferedReader responseBuffer;
 
+    /**
+     * Construct a new ResponseParser.
+     *
+     * @param connection the connection to read responses from
+     */
     public ResponseParser(Connection connection) {
         this.connection = connection;
         this.responseBuffer = connection.getInputReader();
+    }
+
+    /**
+     * Parse a response from the DICT server.
+     * <p>
+     * Convenience method to parse a single Response from the server without
+     * having to manually allocate a persistent ResponseParser.
+     *
+     * @param connection the connection to read the response from
+     */
+    public static Response parse(Connection connection)
+          throws DictConnectionException, IOException {
+        return new ResponseParser(connection).parse();
     }
 
     /**
@@ -133,12 +157,32 @@ public class ResponseParser {
         Class cl = status.getResponseDataClass();
         if (cl != null && Element.class.isAssignableFrom(cl)) {
             data = readElements(status, stringBuffer(rawData));
+        } else if (cl == Banner.class) {
+            data = readBanner(status);
         } else if (cl == Definition.class) {
             data = readDefinition(status, rawData);
         } else if (cl == String.class) {
             data = rawData;
         }
         return data;
+    }
+
+    private Banner readBanner(Status status) {
+        Banner banner = null;
+        String message = status.getMessage();
+        Pattern pattern = Pattern.compile(BANNER_REGEX);
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) {
+            String id = message.substring(matcher.start(4), matcher.end(4));
+            ArrayList<String> capabilities = new ArrayList<String>();
+            String capstring =
+              message.substring(matcher.start(2), matcher.end(2));
+            String[] caparray = capstring.split("\\.");
+            for (int i = 0; i < caparray.length; i++)
+              capabilities.add(caparray[i]);
+            banner = new Banner(message, id, capabilities);
+        }
+        return banner;
     }
 
     /**
@@ -256,6 +300,10 @@ public class ResponseParser {
 
               case 152: // MATCH response
                 cl = Match.class;
+                break;
+
+              case 220: // Connection banner
+                cl = Banner.class;
                 break;
             }
             return cl;

@@ -167,7 +167,7 @@ public class Request {
         return responses;
     }
 
-    static public class Builder {
+    public static class Builder {
         private Request request;
 
         public Builder(Type type) {

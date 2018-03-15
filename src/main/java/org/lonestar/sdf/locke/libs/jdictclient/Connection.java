@@ -165,6 +165,14 @@ public class Connection {
         return request.execute(this);
     }
 
+    @Override
+    public String toString() {
+        if (port != DEFAULT_PORT)
+          return host + ":" + port;
+        else
+          return host;
+    }
+
     String getHost() {
         return host;
     }

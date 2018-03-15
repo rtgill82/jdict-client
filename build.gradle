@@ -17,6 +17,7 @@ processResources {
 
 dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.8.2'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.+'
 }
 
 compileJava {
@@ -36,5 +37,6 @@ task tags(overwrite: true) {
 }
 
 repositories {
+  jcenter()
   mavenCentral()
 }

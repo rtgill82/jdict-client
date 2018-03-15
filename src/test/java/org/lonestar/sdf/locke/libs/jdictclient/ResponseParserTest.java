@@ -31,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -90,12 +91,10 @@ public class ResponseParserTest {
      * Test reading of successful status.
      */
     @Test
-    public void testResponseParser()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer("250 ok");
+    public void testResponseParser() {
+        Connection connection = mockConnection("250 ok");
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
             assertNull(resp.getRawData());
@@ -108,12 +107,10 @@ public class ResponseParserTest {
      * Test reading of SHOW DATABASES response.
      */
     @Test
-    public void testDatabaseResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(DATABASES);
+    public void testDatabaseResponse() {
+        Connection connection = mockConnection(DATABASES);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(110, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -125,12 +122,10 @@ public class ResponseParserTest {
      * Test reading of SHOW STRATEGIES response.
      */
     @Test
-    public void testStrategiesResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(STRATEGIES);
+    public void testStrategiesResponse() {
+        Connection connection = mockConnection(STRATEGIES);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(111, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -142,12 +137,10 @@ public class ResponseParserTest {
      * Test reading of HELP response.
      */
     @Test
-    public void testHelpResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(HELP);
+    public void testHelpResponse() {
+        Connection connection = mockConnection(HELP);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(113, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -159,12 +152,10 @@ public class ResponseParserTest {
      * Test reading of SHOW INFO response.
      */
     @Test
-    public void testDatabaseInfoResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(DATABASE_INFO);
+    public void testDatabaseInfoResponse() {
+        Connection connection = mockConnection(DATABASE_INFO);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(112, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -176,12 +167,10 @@ public class ResponseParserTest {
      * Test reading of SHOW SERVER response.
      */
     @Test
-    public void testServerInfoResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(SERVER_INFO);
+    public void testServerInfoResponse() {
+        Connection connection = mockConnection(SERVER_INFO);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(114, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -193,14 +182,12 @@ public class ResponseParserTest {
      * Test reading of DEFINE response.
      */
     @Test
-    public void testDefineResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(DEFINITION);
+    public void testDefineResponse() {
+        Connection connection = mockConnection(DEFINITION);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(150, resp.getStatus());
-            resp = ResponseParser.parse(bufReader);
+            resp = ResponseParser.parse(connection);
             assertEquals(151, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
@@ -211,12 +198,10 @@ public class ResponseParserTest {
      * Test reading of MATCH response.
      */
     @Test
-    public void testMatchResponse()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(MATCH);
+    public void testMatchResponse() {
+        Connection connection = mockConnection(MATCH);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(152, resp.getStatus());
             assertNotNull(resp.getRawData());
         } catch (IOException e) {
@@ -228,12 +213,10 @@ public class ResponseParserTest {
      * Test reading of successful AUTH response.
      */
     @Test
-    public void testAuthSuccess()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(AUTH_SUCCESS);
+    public void testAuthSuccess() {
+        Connection connection = mockConnection(AUTH_SUCCESS);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(230, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
@@ -244,16 +227,25 @@ public class ResponseParserTest {
      * Test reading of failed AUTH response.
      */
     @Test
-    public void testAuthFail()
-          throws NoSuchMethodException, InstantiationException,
-                 IllegalAccessException, InvocationTargetException {
-        BufferedReader bufReader = stringBuffer(AUTH_FAIL);
+    public void testAuthFail() {
+        Connection connection = mockConnection(AUTH_FAIL);
         try {
-            Response resp = ResponseParser.parse(bufReader);
+            Response resp = ResponseParser.parse(connection);
             assertEquals(531, resp.getStatus());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
+    }
+
+    /**
+     * Create mock Connection.
+     *
+     * @param str the string to return when reading from connection.
+     */
+    private Connection mockConnection(String str) {
+      Connection connection = mock(Connection.class);
+      when(connection.getInputReader()).thenReturn(stringBuffer(str));
+      return connection;
     }
 
     /**

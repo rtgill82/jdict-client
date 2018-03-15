@@ -173,6 +173,7 @@ public class ResponseParser {
         Pattern pattern = Pattern.compile(BANNER_REGEX);
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
+            String text = message.substring(matcher.start(1), matcher.end(1));
             String id = message.substring(matcher.start(4), matcher.end(4));
             ArrayList<String> capabilities = new ArrayList<String>();
             String capstring =
@@ -180,7 +181,7 @@ public class ResponseParser {
             String[] caparray = capstring.split("\\.");
             for (int i = 0; i < caparray.length; i++)
               capabilities.add(caparray[i]);
-            banner = new Banner(message, id, capabilities);
+            banner = new Banner(message, text, id, capabilities);
         }
         return banner;
     }

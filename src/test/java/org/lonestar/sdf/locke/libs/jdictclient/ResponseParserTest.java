@@ -37,6 +37,12 @@ import static org.mockito.Mockito.*;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
 public class ResponseParserTest {
+    /* Connection banner response */
+    private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
+
+    /* Invalid connection banner */
+    private final String INVALID_BANNER = "220 invalid banner";
+
     /* SHOW DATABASES response */
     private final String DATABASES =
             "110 1 databases present - text follows\n" +
@@ -98,6 +104,41 @@ public class ResponseParserTest {
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
             assertNull(resp.getRawData());
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test reading of connection banner.
+     */
+    @Test
+    public void testConnectionBanner() {
+        Connection connection = mockConnection(BANNER);
+        try {
+            Response resp = ResponseParser.parse(connection);
+            assertEquals(220, resp.getStatus());
+            assertNotNull(resp.getData());
+            Banner banner = (Banner) resp.getData();
+            assertEquals("dictd 1.12", banner.text);
+            assertEquals("<100@dictd.org>", banner.connectionId);
+            assertEquals(2, banner.capabilities.size());
+            assertEquals(true, banner.capabilities.contains("auth"));
+            assertEquals(true, banner.capabilities.contains("mime"));
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test handling of invalid connection banner.
+     */
+    public void testInvalidConnectionBanner() {
+        Connection connection = mockConnection(INVALID_BANNER);
+        try {
+            Response resp = ResponseParser.parse(connection);
+            assertEquals(220, resp.getStatus());
+            assertNull(resp.getData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }

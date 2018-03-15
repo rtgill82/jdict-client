@@ -36,6 +36,11 @@ class Banner {
     public final String message;
 
     /**
+     * The text portion of the banner message
+     */
+    public final String text;
+
+    /**
      * The remote DICT server's connection ID for this session
      */
     public final String connectionId;
@@ -49,12 +54,14 @@ class Banner {
      * Construct a new Banner.
      *
      * @param message      the full banner message
+     * @param text         the text portion of the banner message
      * @param connectionId the server's connection ID
      * @param capabilities a list of capabilities the server supports
      */
-    public Banner(String message, String connectionId,
-                  ArrayList<String> capabilities) {
+    public Banner(String message, String text,
+                  String connectionId, ArrayList<String> capabilities) {
         this.message = message;
+        this.text = text;
         this.connectionId = connectionId;
         this.capabilities = Collections.unmodifiableList(capabilities);
     }

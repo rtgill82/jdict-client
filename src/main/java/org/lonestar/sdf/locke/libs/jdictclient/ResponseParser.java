@@ -139,6 +139,8 @@ public class ResponseParser {
                 String data = new String();
                 String line = responseBuffer.readLine();
                 while (!line.equals(".")) {
+                    if (line.equals(".."))
+                      line = ".";
                     data += line + "\n";
                     line = responseBuffer.readLine();
                 }

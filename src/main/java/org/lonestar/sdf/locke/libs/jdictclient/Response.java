@@ -32,6 +32,11 @@ public class Response {
     private int status;
 
     /**
+     * The text of the response.
+     */
+    private String text;
+
+    /**
      * The full response message (including initial status code).
      */
     private String message;
@@ -50,13 +55,16 @@ public class Response {
      * Construct a new Response.
      *
      * @param status response status code
-     * @param message response status message
+     * @param message full response status message
+     * @param text response text
      * @param rawData raw text response data
      * @param data parsed response data
      */
-    Response(int status, String message, String rawData, Object data) {
+    Response(int status, String message, String text,
+             String rawData, Object data) {
         this.status = status;
         this.message = message;
+        this.text = text;
         this.rawData = rawData;
         this.data = data;
     }
@@ -65,10 +73,11 @@ public class Response {
      * Construct a new Response.
      *
      * @param status response status code
-     * @param message response status message
+     * @param message full response status message
+     * @param text response text
      */
-    Response(int status, String message) {
-        this(status, message, null, null);
+    Response(int status, String message, String text) {
+        this(status, message, text, null, null);
     }
 
     /**
@@ -81,9 +90,18 @@ public class Response {
     }
 
     /**
+     * Get the response text.
+     *
+     * @return the response text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
      * Get the response status message.
      *
-     * @return the response status result message (including status code)
+     * @return the full response status result message (including status code)
      */
     public String getMessage() {
         return message;

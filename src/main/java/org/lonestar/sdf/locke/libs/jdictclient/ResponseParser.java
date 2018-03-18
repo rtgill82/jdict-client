@@ -100,8 +100,9 @@ public class ResponseParser {
         String rawData = readData(status);
         Object data = parseData(status, rawData);
         return new Response(
-            status.getCode(),
-            status.getMessage(),
+            status.code,
+            status.message,
+            status.text,
             rawData, data
           );
     }
@@ -117,18 +118,14 @@ public class ResponseParser {
      */
     private Status readStatusLine()
           throws DictConnectionException, IOException {
-        String line;
-        int code;
-        String message;
-
         responseBuffer.mark(512);
         try {
-            line = responseBuffer.readLine();
+            String line = responseBuffer.readLine();
             if (line == null)
               throw new DictConnectionException();
-            code = Integer.parseInt(line.substring(0, 3));
-            message = line;
-            return new Status(code, message);
+            int code = Integer.parseInt(line.substring(0, 3));
+            String text = line.substring(4);
+            return new Status(code, text, line);
         } catch (NumberFormatException e) {
             responseBuffer.reset();
             return null;
@@ -138,7 +135,7 @@ public class ResponseParser {
     private String readData(Status status)
           throws IOException {
         for (int i : DATA_RESPONSES) {
-            if (status.getCode() == i) {
+            if (status.code == i) {
                 String data = new String();
                 String line = responseBuffer.readLine();
                 while (!line.equals(".")) {
@@ -169,7 +166,7 @@ public class ResponseParser {
 
     private Banner readBanner(Status status) {
         Banner banner = null;
-        String message = status.getMessage();
+        String message = status.message;
         Pattern pattern = Pattern.compile(BANNER_REGEX);
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
@@ -237,7 +234,7 @@ public class ResponseParser {
      */
     private Definition readDefinition(Status status, String rawData) {
         Pattern pattern = Pattern.compile(DEFINITION_REGEX);
-        String message = status.getMessage();
+        String message = status.message;
         Matcher matcher = pattern.matcher(message);
         if (!matcher.find()) {
             throw new RuntimeException(
@@ -262,20 +259,14 @@ public class ResponseParser {
     }
 
     private class Status {
-        private int code;
-        private String message;
+        private final int code;
+        private final String text;
+        private final String message;
 
-        Status(int code, String message) {
+        Status(int code, String text, String message) {
             this.code = code;
+            this.text = text;
             this.message = message;
-        }
-
-        int getCode() {
-            return code;
-        }
-
-        String getMessage() {
-            return message;
         }
 
         Class getResponseDataClass() {

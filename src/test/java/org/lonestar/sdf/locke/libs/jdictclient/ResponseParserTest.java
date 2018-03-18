@@ -103,6 +103,7 @@ public class ResponseParserTest {
             Response resp = ResponseParser.parse(connection);
             assertEquals(250, resp.getStatus());
             assertEquals("250 ok", resp.getMessage());
+            assertEquals("ok", resp.getText());
             assertNull(resp.getRawData());
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());

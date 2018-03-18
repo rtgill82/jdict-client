@@ -29,20 +29,20 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.AUTH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.CLIENT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.DEFINE;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.MATCH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.OTHER;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_INFO;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.AUTH;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.CLIENT;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.DEFINE;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.MATCH;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.OTHER;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_INFO;
 
 /**
- * A DICT protocol command request.
+ * A DICT protocol command.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class Request {
-    /** The Type of Request to be sent. */
+public class Command {
+    /** The Type of Command to be sent. */
     enum Type {
         /** Send client name and version information to remote host. */
         CLIENT,
@@ -69,15 +69,19 @@ public class Request {
     }
 
     private Type type;
-    private String command;
     private String param;
     private String database;
     private String strategy;
 
+    /**
+     * Full string of custom command provided by user for Command type OTHER.
+     */
+    private String command;
+
     private String username;
     private String secret;
 
-    public Request(Type type) {
+    public Command(Type type) {
         this.type = type;
 
         if (type == DEFINE || type == MATCH)
@@ -137,7 +141,7 @@ public class Request {
             break;
 
           default:
-            throw new RuntimeException("Invalid request type: " + type);
+            throw new RuntimeException("Invalid command type: " + type);
         }
 
         return parseResponse(connection);
@@ -168,80 +172,80 @@ public class Request {
     }
 
     public static class Builder {
-        private Request request;
+        private Command command;
 
         public Builder(Type type) {
-            request = new Request(type);
+            command = new Command(type);
         }
 
         public Builder setCommandString(String command) {
-            if (request.type != OTHER)
+            if (this.command.type != OTHER)
               throw new RuntimeException(
                   "Command string parameter only valid for OTHER."
                 );
 
-            request.command = command;
+            this.command.command = command;
             return this;
         }
 
         public Builder setParamString(String param) {
-            request.param = param;
+            command.param = param;
             return this;
         }
 
         public Builder setDatabase(String database) {
-            if (request.type != DEFINE && request.type != MATCH
-                && request.type != SHOW_INFO)
+            if (command.type != DEFINE && command.type != MATCH
+                && command.type != SHOW_INFO)
               throw new RuntimeException(
                   "Database parameter only valid for DEFINE, MATCH, and SHOW_INFO."
                 );
 
-            request.database = database;
+            command.database = database;
             return this;
         }
 
         public Builder setStrategy(String strategy) {
-            if (request.type != MATCH)
+            if (command.type != MATCH)
               throw new RuntimeException(
                   "Strategy parameter only valid for MATCH."
                 );
 
-            request.strategy = strategy;
+            command.strategy = strategy;
             return this;
         }
 
         public Builder setUsername(String username) {
-            if (request.type != AUTH)
+            if (command.type != AUTH)
               throw new RuntimeException(
                   "Username parameter only valid for AUTH."
                 );
 
-            request.username = username;
+            command.username = username;
             return this;
         }
 
         public Builder setPassword(String password) {
-            if (request.type != AUTH)
+            if (command.type != AUTH)
               throw new RuntimeException(
                   "Password parameter only valid for AUTH."
                 );
 
-            request.secret = password;
+            command.secret = password;
             return this;
         }
 
-        public Request build() {
-            if (request.type == CLIENT && request.param == null)
+        public Command build() {
+            if (command.type == CLIENT && command.param == null)
               throw new RuntimeException("CLIENT requires a parameter string.");
-            else if (request.type == AUTH && request.username == null
-                     && request.secret == null)
+            else if (command.type == AUTH && command.username == null
+                     && command.secret == null)
               throw new RuntimeException("AUTH requires a username and password.");
-            else if (request.type == SHOW_INFO && request.database == null)
+            else if (command.type == SHOW_INFO && command.database == null)
               throw new RuntimeException("SHOW_INFO requires a database.");
-            else if (request.type == MATCH && request.strategy == null)
+            else if (command.type == MATCH && command.strategy == null)
               throw new RuntimeException("MATCH requires a strategy.");
 
-            return request;
+            return command;
         }
     }
 }

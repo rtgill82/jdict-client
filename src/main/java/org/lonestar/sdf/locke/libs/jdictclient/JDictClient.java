@@ -30,15 +30,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.CLIENT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.DEFINE;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.HELP;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.MATCH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.QUIT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_DATABASES;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_INFO;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_SERVER;
-import static org.lonestar.sdf.locke.libs.jdictclient.Request.Type.SHOW_STRATEGIES;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.CLIENT;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.DEFINE;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.HELP;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.MATCH;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.QUIT;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_DATABASES;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_INFO;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_SERVER;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_STRATEGIES;
 
 /**
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
@@ -222,9 +222,9 @@ public class JDictClient {
      * it in normal practice.
      */
     private void sendClient() throws IOException {
-        Request request = new Request.Builder(CLIENT)
+        Command command = new Command.Builder(CLIENT)
                                      .setParamString(clientString).build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         Response resp = responses.get(0);
         if (resp.getStatus() != 250)
           throw new DictException(host, resp.getStatus(), resp.getMessage());
@@ -245,9 +245,9 @@ public class JDictClient {
      * @return server information string
      */
     public String getServerInfo() throws IOException {
-        Request.Builder builder = new Request.Builder(SHOW_SERVER);
-        Request request = builder.build();
-        List<Response> responses = request.execute(connection);
+        Command.Builder builder = new Command.Builder(SHOW_SERVER);
+        Command command = builder.build();
+        List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
 
@@ -257,9 +257,9 @@ public class JDictClient {
      * @return server help string
      */
     public String getHelp() throws IOException {
-        Request.Builder builder = new Request.Builder(HELP);
-        Request request = builder.build();
-        List<Response> responses = request.execute(connection);
+        Command.Builder builder = new Command.Builder(HELP);
+        Command command = builder.build();
+        List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
 
@@ -300,8 +300,8 @@ public class JDictClient {
      * @return list of dictionaries
      */
     public List<Dictionary> getDictionaries() throws IOException {
-        Request request = new Request.Builder(SHOW_DATABASES).build();
-        List<Response> responses = request.execute(connection);
+        Command command = new Command.Builder(SHOW_DATABASES).build();
+        List<Response> responses = command.execute(connection);
         return (List<Dictionary>) responses.get(0).getData();
     }
 
@@ -312,10 +312,10 @@ public class JDictClient {
      * @return dictionary info string
      */
     public String getDictionaryInfo(String dictionary) throws IOException {
-        Request request = new Request.Builder(SHOW_INFO)
+        Command command = new Command.Builder(SHOW_INFO)
                                      .setDatabase(dictionary)
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
 
@@ -326,10 +326,10 @@ public class JDictClient {
      * @return dictionary info string
      */
     public String getDictionaryInfo(Dictionary dictionary) throws IOException {
-        Request request = new Request.Builder(SHOW_INFO)
+        Command command = new Command.Builder(SHOW_INFO)
                                      .setDatabase(dictionary.getDatabase())
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
 
@@ -339,8 +339,8 @@ public class JDictClient {
      * @return list of strategies
      */
     public List<Strategy> getStrategies() throws IOException {
-        Request request = new Request.Builder(SHOW_STRATEGIES).build();
-        List<Response> responses = request.execute(connection);
+        Command command = new Command.Builder(SHOW_STRATEGIES).build();
+        List<Response> responses = command.execute(connection);
         return (List<Strategy>) responses.get(0).getData();
     }
 
@@ -351,10 +351,10 @@ public class JDictClient {
      * @return a list of definitions for word
      */
     public List<Definition> define(String word) throws IOException {
-        Request request = new Request.Builder(DEFINE)
+        Command command = new Command.Builder(DEFINE)
                                      .setParamString(word)
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return collect_definitions(responses);
     }
 
@@ -367,11 +367,11 @@ public class JDictClient {
      */
     public List<Definition> define(String dictionary, String word)
           throws IOException {
-        Request request = new Request.Builder(DEFINE)
+        Command command = new Command.Builder(DEFINE)
                                      .setDatabase(dictionary)
                                      .setParamString(word)
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return collect_definitions(responses);
     }
 
@@ -383,11 +383,11 @@ public class JDictClient {
      * @return a list of matching words and the dictionaries they are found in
      */
     public List<Match> match(String strategy, String word) throws IOException {
-        Request request = new Request.Builder(MATCH)
+        Command command = new Command.Builder(MATCH)
                                      .setStrategy(strategy)
                                      .setParamString(word)
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();
     }
 
@@ -401,12 +401,12 @@ public class JDictClient {
      */
     public List<Match> match(String dictionary, String strategy, String word)
           throws IOException {
-        Request request = new Request.Builder(MATCH)
+        Command command = new Command.Builder(MATCH)
                                      .setDatabase(dictionary)
                                      .setStrategy(strategy)
                                      .setParamString(word)
                                      .build();
-        List<Response> responses = request.execute(connection);
+        List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();
     }
 
@@ -414,8 +414,8 @@ public class JDictClient {
      * Send QUIT command to server.
      */
     private Response quit() throws IOException {
-        Request request = new Request.Builder(QUIT).build();
-        List<Response> responses = request.execute(connection);
+        Command command = new Command.Builder(QUIT).build();
+        List<Response> responses = command.execute(connection);
         return responses.get(0);
     }
 

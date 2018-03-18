@@ -155,14 +155,14 @@ public class Connection {
     }
 
     /**
-     * Send a command request to the current host.
+     * Send a command to the current host.
      *
-     * @param request the Request to be sent
-     * @return List of Responses for Request
+     * @param command the Command to be sent
+     * @return List of Responses for Command
      */
-    public List<Response> sendRequest(Request request)
+    public List<Response> sendCommand(Command command)
           throws IOException {
-        return request.execute(this);
+        return command.execute(this);
     }
 
     @Override

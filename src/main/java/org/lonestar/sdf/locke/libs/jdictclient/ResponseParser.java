@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +36,7 @@ import java.util.regex.Pattern;
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
-public class ResponseParser {
+public class ResponseParser implements Iterator<Response> {
     /**
      * An array of response codes that return data.
      */
@@ -68,6 +70,7 @@ public class ResponseParser {
 
     private Connection connection;
     private BufferedReader responseBuffer;
+    private Status status;
 
     /**
      * Construct a new ResponseParser.
@@ -95,8 +98,8 @@ public class ResponseParser {
     /**
      * Parse a response from the DICT server.
      */
-    Response parse() throws DictConnectionException, IOException {
-        Status status = readStatusLine();
+    public Response parse() throws DictConnectionException, IOException {
+        status = readStatusLine();
         String rawData = readData(status);
         Object data = parseData(status, rawData);
         return new Response(
@@ -105,6 +108,24 @@ public class ResponseParser {
             status.text,
             rawData, data
           );
+    }
+
+    @Override
+    public Response next() {
+        Response response;
+        try {
+            response = parse();
+        } catch (IOException e) {
+            throw new NoSuchElementException(e.toString());
+        }
+        return response;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (status != null)
+          return status.hasNext();
+        return true;
     }
 
     /**
@@ -269,6 +290,12 @@ public class ResponseParser {
             this.code = code;
             this.text = text;
             this.message = message;
+        }
+
+        boolean hasNext() {
+            if (code >= 200)
+              return false;
+            return true;
         }
 
         Class getResponseDataClass() {

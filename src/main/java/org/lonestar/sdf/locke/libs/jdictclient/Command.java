@@ -144,7 +144,7 @@ public class Command {
             throw new RuntimeException("Invalid command type: " + type);
         }
 
-        return parseResponse(connection);
+        return readResponses(connection);
     }
 
     private String digest_secret(Connection connection, String secret) {
@@ -158,15 +158,13 @@ public class Command {
         }
     }
 
-    private List<Response> parseResponse(Connection connection)
+    private List<Response> readResponses(Connection connection)
           throws DictConnectionException, IOException {
         ResponseParser responseParser = new ResponseParser(connection);
         LinkedList<Response> responses = new LinkedList<Response>();
-        while (true) {
+        while (responseParser.hasNext()) {
             Response resp = responseParser.parse();
             responses.add(resp);
-            if (resp.getStatus() == 250 || resp.getStatus() == 221)
-              break;
         }
         return responses;
     }

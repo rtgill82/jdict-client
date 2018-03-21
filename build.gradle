@@ -21,6 +21,9 @@ dependencies {
 }
 
 compileJava {
+  if (project.hasProperty('debugBuild'))
+    options.debug = project.getProperty('debugBuild').toBoolean()
+
   if (lint_unchecked == "true")
     options.compilerArgs << '-Xlint:unchecked'
 }

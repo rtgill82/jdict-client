@@ -29,13 +29,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.AUTH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.CLIENT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.DEFINE;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.MATCH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.OTHER;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_INFO;
-
 /**
  * A DICT protocol command.
  *
@@ -43,7 +36,7 @@ import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_INFO;
  */
 public class Command {
     /** The Type of Command to be sent. */
-    enum Type {
+    public enum Type {
         /** Send client name and version information to remote host. */
         CLIENT,
         /** Get remote host server information. */
@@ -84,7 +77,7 @@ public class Command {
     public Command(Type type) {
         this.type = type;
 
-        if (type == DEFINE || type == MATCH)
+        if (type == Type.DEFINE || type == Type.MATCH)
           database = "*";
     }
 
@@ -169,79 +162,165 @@ public class Command {
         return responses;
     }
 
+    /**
+     * Constructs and initializes an instance of Command.
+     */
     public static class Builder {
         private Command command;
 
+        /**
+         * Construct a new Command.Builder.
+         *
+         * @param type the Type of Command to build.
+         */
         public Builder(Type type) {
             command = new Command(type);
         }
 
+        /**
+         * Set the command string for Command Type.OTHER.
+         * The entire string will be sent to the server unmodified as a raw
+         * command.
+         *
+         * @param command the raw command string to send to the server
+         * @return the command builder in progress
+         */
         public Builder setCommandString(String command) {
-            if (this.command.type != OTHER)
+            if (this.command.type != Type.OTHER)
               throw new RuntimeException(
-                  "Command string parameter only valid for OTHER."
+                  "Command string parameter only valid for OTHER commands."
                 );
 
             this.command.command = command;
             return this;
         }
 
+        /**
+         * Set the parameter for a command that accepts a parameter.
+         * For example, the DEFINE command accepts a word as a parameter.
+         *
+         * @param param the parameter to pass along with the command
+         * @return the command builder in progress
+         */
         public Builder setParamString(String param) {
             command.param = param;
             return this;
         }
 
+        /**
+         * An alias for setParamString().
+         * <p>
+         * The DEFINE command passes a parameter to the server as the word to
+         * be defined. This provides a more convenient alias for setting that
+         * parameter.
+         *
+         * @param word the word to use as a parameter
+         * @return the command builder in progress
+         */
+        public Builder setWord(String word) {
+            return setParamString(word);
+        }
+
+        /**
+         * Set the database for a DEFINE, MATCH, or SHOW_INFO Command.
+         *
+         * @param database the database the command will query
+         * @return the command builder in progress
+         */
         public Builder setDatabase(String database) {
-            if (command.type != DEFINE && command.type != MATCH
-                && command.type != SHOW_INFO)
+            if (command.type != Type.DEFINE && command.type != Type.MATCH
+                && command.type != Type.SHOW_INFO)
               throw new RuntimeException(
-                  "Database parameter only valid for DEFINE, MATCH, and SHOW_INFO."
+                  "Database parameter only valid for " +
+                  "DEFINE, MATCH, and SHOW_INFO commands."
                 );
 
             command.database = database;
             return this;
         }
 
+        /**
+         * Set the strategy for a MATCH Command.
+         *
+         * @param strategy the strategy used to match
+         * @return the command builder in progress
+         */
         public Builder setStrategy(String strategy) {
-            if (command.type != MATCH)
+            if (command.type != Type.MATCH)
               throw new RuntimeException(
-                  "Strategy parameter only valid for MATCH."
+                  "Strategy parameter only valid for MATCH commands."
                 );
 
             command.strategy = strategy;
             return this;
         }
 
+        /**
+         * Set the username for an AUTH Command.
+         *
+         * @param username the authentication user name
+         * @return the command builder in progress
+         */
         public Builder setUsername(String username) {
-            if (command.type != AUTH)
+            if (command.type != Type.AUTH)
               throw new RuntimeException(
-                  "Username parameter only valid for AUTH."
+                  "Username parameter only valid for AUTH commands."
                 );
 
             command.username = username;
             return this;
         }
 
+        /**
+         * Set the password for an AUTH Command.
+         *
+         * @param password the authenticaton password
+         * @return the command builder in progress
+         */
         public Builder setPassword(String password) {
-            if (command.type != AUTH)
+            if (command.type != Type.AUTH)
               throw new RuntimeException(
-                  "Password parameter only valid for AUTH."
+                  "Password parameter only valid for AUTH commands."
                 );
 
             command.secret = password;
             return this;
         }
 
+        /**
+         * Return the built command instance.
+         *
+         * @return the Command instance that was built
+         */
         public Command build() {
-            if (command.type == CLIENT && command.param == null)
-              throw new RuntimeException("CLIENT requires a parameter string.");
-            else if (command.type == AUTH && command.username == null
-                     && command.secret == null)
-              throw new RuntimeException("AUTH requires a username and password.");
-            else if (command.type == SHOW_INFO && command.database == null)
-              throw new RuntimeException("SHOW_INFO requires a database.");
-            else if (command.type == MATCH && command.strategy == null)
-              throw new RuntimeException("MATCH requires a strategy.");
+            if (command.type == Type.CLIENT && command.param == null) {
+                throw new RuntimeException(
+                            "CLIENT command requires a parameter string."
+                          );
+            } else if (command.type == Type.DEFINE && command.param == null) {
+                throw new RuntimeException(
+                            "DEFINE command requires a word or parameter."
+                          );
+            } else if (command.type == Type.MATCH
+                       && command.strategy == null) {
+                throw new RuntimeException(
+                            "MATCH command requires a strategy."
+                          );
+            } else if (command.type == Type.MATCH && command.param == null) {
+                throw new RuntimeException(
+                            "MATCH command requires a parameter."
+                          );
+            } else if (command.type == Type.AUTH && command.username == null
+                       && command.secret == null) {
+                throw new RuntimeException(
+                            "AUTH command requires a username and password."
+                          );
+            } else if (command.type == Type.SHOW_INFO
+                       && command.database == null) {
+                throw new RuntimeException(
+                            "SHOW_INFO command requires a database."
+                          );
+            }
 
             return command;
         }

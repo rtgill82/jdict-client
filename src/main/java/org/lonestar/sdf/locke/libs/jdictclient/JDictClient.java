@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.AUTH;
 import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.CLIENT;
 import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.DEFINE;
 import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.HELP;
@@ -299,7 +300,6 @@ public class JDictClient {
     }
 
     /**
-     * FIXME: Implement
      * Authenticate with the server.
      *
      * @param username authenticate with username
@@ -310,22 +310,14 @@ public class JDictClient {
      */
     public boolean authenticate(String username, String secret)
           throws IOException {
-          //throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
-          //       InstantiationException, IllegalAccessException,
-          //       InvocationTargetException {
         boolean rv = false;
-
-        /*
-        MessageDigest authdigest = MessageDigest.getInstance("MD5");
-        String authstring = connection.getId() + secret;
-        authdigest.update(authstring.getBytes(Charset.forName("UTF-8")));
-        String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
-        out.println("AUTH " + username + " " + md5str);
-
-        resp = ResponseParser.parse(in);
-        if (resp.getStatus() == 230) rv = true;
-        */
-
+        Command command = new Command.Builder(AUTH)
+                                     .setUsername(username)
+                                     .setPassword(secret)
+                                     .build();
+        List<Response> responses = command.execute(connection);
+        if (responses.get(0).getStatus() == 230)
+          rv = true;
         return rv;
     }
 

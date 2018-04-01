@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
  * A DICT protocol command.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Command {
     /** The Type of Command to be sent. */
@@ -65,10 +66,6 @@ public class Command {
     private String param;
     private String database;
     private String strategy;
-
-    /**
-     * Full string of custom command provided by user for Command type OTHER.
-     */
     private String command;
 
     private String username;
@@ -164,6 +161,7 @@ public class Command {
 
     /**
      * Constructs and initializes an instance of Command.
+     *
      */
     public static class Builder {
         private Command command;
@@ -172,6 +170,7 @@ public class Command {
          * Construct a new Command.Builder.
          *
          * @param type the Type of Command to build.
+         *
          */
         public Builder(Type type) {
             command = new Command(type);
@@ -184,6 +183,7 @@ public class Command {
          *
          * @param command the raw command string to send to the server
          * @return the command builder in progress
+         *
          */
         public Builder setCommandString(String command) {
             if (this.command.type != Type.OTHER)
@@ -201,6 +201,7 @@ public class Command {
          *
          * @param param the parameter to pass along with the command
          * @return the command builder in progress
+         *
          */
         public Builder setParamString(String param) {
             command.param = param;
@@ -216,6 +217,7 @@ public class Command {
          *
          * @param word the word to use as a parameter
          * @return the command builder in progress
+         *
          */
         public Builder setWord(String word) {
             return setParamString(word);
@@ -226,6 +228,7 @@ public class Command {
          *
          * @param database the database the command will query
          * @return the command builder in progress
+         *
          */
         public Builder setDatabase(String database) {
             if (command.type != Type.DEFINE && command.type != Type.MATCH
@@ -244,6 +247,7 @@ public class Command {
          *
          * @param strategy the strategy used to match
          * @return the command builder in progress
+         *
          */
         public Builder setStrategy(String strategy) {
             if (command.type != Type.MATCH)
@@ -260,6 +264,7 @@ public class Command {
          *
          * @param username the authentication user name
          * @return the command builder in progress
+         *
          */
         public Builder setUsername(String username) {
             if (command.type != Type.AUTH)
@@ -276,6 +281,7 @@ public class Command {
          *
          * @param password the authenticaton password
          * @return the command builder in progress
+         *
          */
         public Builder setPassword(String password) {
             if (command.type != Type.AUTH)
@@ -288,9 +294,10 @@ public class Command {
         }
 
         /**
-         * Return the built command instance.
+         * Return the built Command instance.
          *
          * @return the Command instance that was built
+         *
          */
         public Command build() {
             if (command.type == Type.CLIENT && command.param == null) {

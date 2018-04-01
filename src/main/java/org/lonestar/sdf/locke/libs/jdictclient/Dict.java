@@ -30,6 +30,7 @@ import java.util.List;
  * Simple command line program that uses features of the library.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Dict {
     private static void showHelp() {

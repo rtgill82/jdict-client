@@ -25,38 +25,32 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Parses the DICT protocol connection banner.
+ * Represents the DICT protocol connection banner.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 class Banner {
-    /**
-     * DICT protocol banner message
-     */
+    /** DICT protocol banner message */
     public final String message;
 
-    /**
-     * The text portion of the banner message
-     */
+    /** The text portion of the banner message */
     public final String text;
 
-    /**
-     * The remote DICT server's connection ID for this session
-     */
+    /** The remote DICT server's connection ID for this session */
     public final String connectionId;
 
-    /**
-     * Array of capabilities the remote DICT server supports
-     */
+    /** Array of capabilities the remote DICT server supports */
     public final List<String> capabilities;
 
     /**
      * Construct a new Banner.
      *
-     * @param message      the full banner message
-     * @param text         the text portion of the banner message
+     * @param message the full banner message
+     * @param text the text portion of the banner message
      * @param connectionId the server's connection ID
      * @param capabilities a list of capabilities the server supports
+     *
      */
     public Banner(String message, String text,
                   String connectionId, ArrayList<String> capabilities) {

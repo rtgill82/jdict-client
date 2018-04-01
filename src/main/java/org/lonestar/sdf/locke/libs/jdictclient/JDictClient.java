@@ -44,10 +44,11 @@ import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_STRATEGI
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class JDictClient {
-    public static final int DEFAULT_PORT = 2628;
-    public static final int DEFAULT_TIMEOUT = 10000;
+    public static final int DEFAULT_PORT = Connection.DEFAULT_PORT;
+    public static final int DEFAULT_TIMEOUT = Connection.DEFAULT_TIMEOUT;
 
     private static String libraryName;
     private static String libraryVendor;
@@ -72,6 +73,8 @@ public class JDictClient {
      *
      * @param host DICT host
      * @param port port number
+     * @param timeout connection timeout
+     *
      */
     public JDictClient(String host, int port, int timeout) {
         setClientString(getLibraryName() + " " + getLibraryVersion());
@@ -85,7 +88,9 @@ public class JDictClient {
      * Create a new JDictClient object and connect to specified host.
      *
      * @param host DICT host to connect to
+     * @throws IOException from associated Connection Socket
      * @return new JDictClient instance
+     *
      */
     public static JDictClient connect(String host) throws IOException {
         JDictClient dictClient =
@@ -98,7 +103,9 @@ public class JDictClient {
      *
      * @param host DICT host to connect to
      * @param port port number to connect to
+     * @throws IOException from associated Connection Socket
      * @return new JDictClient instance
+     *
      */
     public static JDictClient connect(String host, int port)
           throws IOException  {
@@ -107,6 +114,16 @@ public class JDictClient {
         return dictClient;
     }
 
+    /**
+     * Create a new JDictClient object and connect to specified host and port.
+     *
+     * @param host DICT host to connect to
+     * @param port port number to connect to
+     * @param timeout connection socket timeout
+     * @throws IOException from associated Connection Socket
+     * @return new JDictClient instance
+     *
+     */
     public static JDictClient connect(String host, int port, int timeout)
           throws IOException {
         JDictClient dictClient = new JDictClient(host, port, timeout);
@@ -119,6 +136,9 @@ public class JDictClient {
      * <p>
      * If this instance is not currently connected, attempt to open a
      * connection to the server previously specified.
+     *
+     * @throws IOException from associated Connection Socket
+     *
      */
     public void connect() throws IOException {
         if (connection == null) {
@@ -131,7 +151,9 @@ public class JDictClient {
     /**
      * Close connection to the DICT server.
      *
+     * @throws IOException from associated Connection Socket
      * @return true if successful, false if closed by remote
+     *
      */
     public boolean close() throws IOException {
         boolean rv = true;
@@ -151,6 +173,7 @@ public class JDictClient {
      * Get library name.
      *
      * @return library name String
+     *
      */
     public static String getLibraryName() {
         if (libraryName == null) {
@@ -165,6 +188,7 @@ public class JDictClient {
      * Get library version.
      *
      * @return library version String
+     *
      */
     public static String getLibraryVersion() {
         if (libraryVersion == null) {
@@ -179,6 +203,7 @@ public class JDictClient {
      * Get library developer/vendor name.
      *
      * @return library vendor String
+     *
      */
     public static String getLibraryVendor() {
         if (libraryVendor == null) {
@@ -198,6 +223,7 @@ public class JDictClient {
      * this method is not called, the library name and version will be used.
      *
      * @param clientString client string to send to DICT server
+     *
      */
     public void setClientString(String clientString) {
         if (this.clientString == null)
@@ -210,6 +236,7 @@ public class JDictClient {
      * It's overwritten by subsequent commands.
      *
      * @return the response for the last command.
+     *
      */
     public Response getResponse() {
         return resp;
@@ -220,6 +247,9 @@ public class JDictClient {
      * <p>
      * This method is called by the connect() method. It's not necessary to use
      * it in normal practice.
+     *
+     * @throws IOException from associated Connection Socket
+     *
      */
     private void sendClient() throws IOException {
         Command command = new Command.Builder(CLIENT)
@@ -234,6 +264,7 @@ public class JDictClient {
      * Get the connection banner for the currently connected server.
      *
      * @return Banner or null if not connected
+     *
      */
     public Banner getBanner() {
         return connection.getBanner();
@@ -242,7 +273,9 @@ public class JDictClient {
     /**
      * Get the server information as written by the database administrator.
      *
+     * @throws IOException from associated Connection Socket
      * @return server information string
+     *
      */
     public String getServerInfo() throws IOException {
         Command.Builder builder = new Command.Builder(SHOW_SERVER);
@@ -254,7 +287,9 @@ public class JDictClient {
     /**
      * Get summary of server commands.
      *
+     * @throws IOException from associated Connection Socket
      * @return server help string
+     *
      */
     public String getHelp() throws IOException {
         Command.Builder builder = new Command.Builder(HELP);
@@ -268,13 +303,16 @@ public class JDictClient {
      * Authenticate with the server.
      *
      * @param username authenticate with username
-     * @param secret   authenticate with password
+     * @param secret authenticate with password
+     * @throws IOException from associated Connection Socket
      * @return true on success, false on failure
+     *
      */
     public boolean authenticate(String username, String secret)
-          throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
-                 InstantiationException, IllegalAccessException,
-                 InvocationTargetException {
+          throws IOException {
+          //throws IOException, NoSuchAlgorithmException, NoSuchMethodException,
+          //       InstantiationException, IllegalAccessException,
+          //       InvocationTargetException {
         boolean rv = false;
 
         /*
@@ -297,7 +335,9 @@ public class JDictClient {
      * FIXME: Allow requesting that dictionary info be set while querying
      * server.
      *
+     * @throws IOException from associated Connection Socket
      * @return list of dictionaries
+     *
      */
     public List<Dictionary> getDictionaries() throws IOException {
         Command command = new Command.Builder(SHOW_DATABASES).build();
@@ -309,7 +349,9 @@ public class JDictClient {
      * Get detailed dictionary info for the specified dictionary.
      *
      * @param dictionary the dictionary for which to get information
+     * @throws IOException from associated Connection Socket
      * @return dictionary info string
+     *
      */
     public String getDictionaryInfo(String dictionary) throws IOException {
         Command command = new Command.Builder(SHOW_INFO)
@@ -323,7 +365,9 @@ public class JDictClient {
      * Get detailed dictionary info for the specified dictionary.
      *
      * @param dictionary the dictionary for which to get information
+     * @throws IOException from associated Connection Socket
      * @return dictionary info string
+     *
      */
     public String getDictionaryInfo(Dictionary dictionary) throws IOException {
         Command command = new Command.Builder(SHOW_INFO)
@@ -336,7 +380,9 @@ public class JDictClient {
     /**
      * Get list of available match strategies from the server.
      *
+     * @throws IOException from associated Connection Socket
      * @return list of strategies
+     *
      */
     public List<Strategy> getStrategies() throws IOException {
         Command command = new Command.Builder(SHOW_STRATEGIES).build();
@@ -348,7 +394,9 @@ public class JDictClient {
      * Get definition for word from DICT server.
      *
      * @param word the word to define
+     * @throws IOException from associated Connection Socket
      * @return a list of definitions for word
+     *
      */
     public List<Definition> define(String word) throws IOException {
         Command command = new Command.Builder(DEFINE)
@@ -362,8 +410,10 @@ public class JDictClient {
      * Get definition for word from DICT server.
      *
      * @param dictionary the dictionary in which to find the definition
-     * @param word       the word to define
+     * @param word the word to define
+     * @throws IOException from associated Connection Socket
      * @return a list of definitions for word
+     *
      */
     public List<Definition> define(String dictionary, String word)
           throws IOException {
@@ -379,8 +429,10 @@ public class JDictClient {
      * Match word using requested strategy.
      *
      * @param strategy the strategy to use for matching
-     * @param word     the word to match
+     * @param word the word to match
+     * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
+     *
      */
     public List<Match> match(String strategy, String word) throws IOException {
         Command command = new Command.Builder(MATCH)
@@ -395,9 +447,11 @@ public class JDictClient {
      * Match word using requested strategy.
      *
      * @param dictionary the dictionary to search
-     * @param strategy   the strategy to use for matching
-     * @param word       the word to match
+     * @param strategy the strategy to use for matching
+     * @param word the word to match
+     * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
+     *
      */
     public List<Match> match(String dictionary, String strategy, String word)
           throws IOException {
@@ -412,6 +466,9 @@ public class JDictClient {
 
     /**
      * Send QUIT command to server.
+     *
+     * @throws IOException from associated Connection Socket
+     *
      */
     private Response quit() throws IOException {
         Command command = new Command.Builder(QUIT).build();

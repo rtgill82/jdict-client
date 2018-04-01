@@ -27,16 +27,13 @@ import java.net.ProtocolException;
  * server.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class DictException extends ProtocolException {
-    /**
-     * DICT protocol response status code
-     */
+    /** DICT protocol response status code */
     private int status;
 
-    /**
-     * Entire DICT protocol response message
-     */
+    /** Entire DICT protocol response message */
     private String message;
 
     /**
@@ -45,6 +42,7 @@ public class DictException extends ProtocolException {
      * @param host    the remote host name
      * @param status  the status code returned
      * @param message the entire response string
+     *
      */
     DictException(String host, int status, String message) {
         super(host);
@@ -56,6 +54,7 @@ public class DictException extends ProtocolException {
      * Returns the remote host name where the exception occurred.
      *
      * @return the host name name of this DictException instance.
+     *
      */
     public String getHost() {
         return super.getMessage();
@@ -65,6 +64,7 @@ public class DictException extends ProtocolException {
      * Returns the status code of this DictException.
      *
      * @return the status code of this DictException instance.
+     *
      */
     public int getStatus() {
         return status;

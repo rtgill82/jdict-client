@@ -34,6 +34,7 @@ import java.util.List;
  * A connection to a DICT host.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Connection {
     /** The default connection port. */
@@ -58,6 +59,7 @@ public class Connection {
      * @param host DICT host
      * @param port port number
      * @param timeout connection timeout
+     *
      */
     public Connection(String host, int port, int timeout) {
         this.host = host;
@@ -69,6 +71,7 @@ public class Connection {
      * Construct a new connection.
      *
      * @param host DICT host
+     *
      */
     public Connection(String host) {
         this(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
@@ -79,6 +82,7 @@ public class Connection {
      *
      * @param host DICT host
      * @param port port number
+     *
      */
     public Connection(String host, int port) {
         this(host, port, DEFAULT_TIMEOUT);
@@ -86,6 +90,8 @@ public class Connection {
 
     /**
      * Establish a connection to the DICT host.
+     *
+     * @throws IOException from associated Socket
      *
      */
     public void connect() throws IOException {
@@ -109,6 +115,8 @@ public class Connection {
     /**
      * Close the connection to the DICT host.
      *
+     * @throws IOException from associated Socket
+     *
      */
     public void close() throws IOException {
         if (socket != null)
@@ -119,6 +127,7 @@ public class Connection {
      * Get the initial connection banner for the host.
      *
      * @return Banner containing banner message, connection ID, etc.
+     *
      */
     public Banner getBanner() {
         return banner;
@@ -132,6 +141,7 @@ public class Connection {
      * established yet.
      *
      * @return connection ID string
+     *
      */
     public String getId() {
         if (banner != null)
@@ -147,6 +157,7 @@ public class Connection {
      * been established yet.
      *
      * @return List of capabilities supported by host
+     *
      */
     public List<String> getCapabilities() {
         if (banner != null)
@@ -159,6 +170,9 @@ public class Connection {
      *
      * @param command the Command to be sent
      * @return List of Responses for Command
+     *
+     * @throws IOException from associated Socket
+     *
      */
     public List<Response> sendCommand(Command command)
           throws IOException {

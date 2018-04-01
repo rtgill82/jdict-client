@@ -24,29 +24,25 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * Simple class that represents a DICT dictionary definition.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Definition extends Object {
-    /**
-     * The word being defined
-     */
+    /** The word being defined */
     private String word;
 
-    /**
-     * The dictionary database the definition was retrieved from
-     */
+    /** The dictionary database the definition was retrieved from */
     private Dictionary dictionary;
 
-    /**
-     * The definition provided dictionary
-     */
+    /** The definition provided dictionary */
     private String definition;
 
     /**
      * Construct a new Definition.
      *
-     * @param word       the word being defined
+     * @param word the word being defined
      * @param dictionary the dictionary the definition was retrieved from
      * @param definition the definition provided by dictionary
+     *
      */
     Definition(String word, Dictionary dictionary, String definition) {
         super();
@@ -57,6 +53,9 @@ public class Definition extends Object {
 
     /**
      * Get defined word.
+     *
+     * @return the word being defined
+     *
      */
     public String getWord() {
         return word;
@@ -64,6 +63,9 @@ public class Definition extends Object {
 
     /**
      * Get dictionary that defined the word.
+     *
+     * @return the Dictionary where the definition was found
+     *
      */
     public Dictionary getDictionary() {
         return dictionary;
@@ -71,6 +73,9 @@ public class Definition extends Object {
 
     /**
      * Get word definition.
+     *
+     * @return definition for the word
+     *
      */
     public String getDefinition() {
         return definition;

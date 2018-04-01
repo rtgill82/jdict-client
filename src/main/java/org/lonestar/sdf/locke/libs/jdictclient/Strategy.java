@@ -24,13 +24,15 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * Simple class that represents a DICT match strategy.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Strategy extends Element {
     /**
      * Construct a new Strategy.
      *
-     * @param name        the match strategy name
+     * @param name the match strategy name
      * @param description description of the match strategy
+     *
      */
     public Strategy(String name, String description) {
         super(name, description);
@@ -40,6 +42,7 @@ public class Strategy extends Element {
      * Construct a new Strategy from an Element.
      *
      * @param element the Element to convert into a Strategy
+     *
      */
     public Strategy(Element element) {
         super(element.getKey(), element.getValue());
@@ -49,6 +52,9 @@ public class Strategy extends Element {
      * Get match strategy name.
      * <p>
      * An alias for getKey().
+     *
+     * @return Strategy name
+     *
      */
     public String getName() {
         return getKey();
@@ -58,6 +64,9 @@ public class Strategy extends Element {
      * Get match strategy description.
      * <p>
      * An alias for getValue().
+     *
+     * @return Strategy description
+     *
      */
     public String getDescription() {
         return getValue();

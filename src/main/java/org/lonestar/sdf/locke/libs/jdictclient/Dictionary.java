@@ -24,11 +24,10 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * Simple class that represents a DICT dictionary database.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Dictionary extends Element {
-    /**
-     * Database source, copyright and licensing information
-     */
+    /** Database source, copyright and licensing information */
     private String databaseInfo;
 
     /**
@@ -36,6 +35,7 @@ public class Dictionary extends Element {
      *
      * @param database    the dictionary database name
      * @param description description of the dictionary database
+     *
      */
     public Dictionary(String database, String description) {
         super(database, description);
@@ -47,6 +47,7 @@ public class Dictionary extends Element {
      * @param database     the dictionary database name
      * @param description  description of the dictionary database
      * @param databaseInfo string describing full database information
+     *
      */
     public Dictionary(String database, String description, String databaseInfo) {
         super(database, description);
@@ -57,6 +58,7 @@ public class Dictionary extends Element {
      * Construct a new Dictionary from an Element.
      *
      * @param element the Element to convert into a Dictionary
+     *
      */
     public Dictionary(Element element) {
         super(element.getKey(), element.getValue());
@@ -64,6 +66,9 @@ public class Dictionary extends Element {
 
     /**
      * Get Dictionary database name.
+     *
+     * @return the Dictionary name
+     *
      */
     public String getDatabase() {
         return getKey();
@@ -71,6 +76,9 @@ public class Dictionary extends Element {
 
     /**
      * Get Dictionary database description.
+     *
+     * @return Dictionary description
+     *
      */
     public String getDescription() {
         return getValue();
@@ -78,7 +86,11 @@ public class Dictionary extends Element {
 
     /**
      * Get Dictionary database information.
+     * <p>
      * Source, copyright, licensing information, etc.
+     *
+     * @return Dictionary information
+     *
      */
     public String getDatabaseInfo() {
         return databaseInfo;
@@ -86,6 +98,9 @@ public class Dictionary extends Element {
 
     /**
      * Set Dictionary database information.
+     *
+     * @param databaseInfo database information string
+     *
      */
     void setDatabaseInfo(String databaseInfo) {
         this.databaseInfo = databaseInfo;

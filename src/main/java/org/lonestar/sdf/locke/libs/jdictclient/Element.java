@@ -23,8 +23,8 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 /**
  * An Element is a simple key, value pair.
  * <p>
- * It is used for data returned by the DICT protocol in the format of:<br />
- * <p>
+ * It is used for data returned by the DICT protocol in the format of:<br>
+ *
  * <pre>
  * {@code
  * key "value"
@@ -34,16 +34,13 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * This includes data returned by SHOW DATABASES, SHOW STRATEGIES, and MATCH.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Element {
-    /**
-     * Key used to identify the element
-     */
+    /** Key used to identify the element */
     private String key;
 
-    /**
-     * Value of the element (often a description)
-     */
+    /** Value of the element (often a description) */
     private String value;
 
     /**
@@ -51,6 +48,7 @@ public class Element {
      *
      * @param key   the key identifying the element.
      * @param value the value of the element (often a description).
+     *
      */
     public Element(String key, String value) {
         super();
@@ -60,6 +58,9 @@ public class Element {
 
     /**
      * Get the element key.
+     *
+     * @return Element key
+     *
      */
     public String getKey() {
         return key;
@@ -67,14 +68,14 @@ public class Element {
 
     /**
      * Get the element value.
+     *
+     * @return Element value
+     *
      */
     public String getValue() {
         return value;
     }
 
-    /**
-     * Creates and returns a copy of this object.
-     */
     @Override
     public Element clone() {
         Element element = new Element(
@@ -85,9 +86,6 @@ public class Element {
         return element;
     }
 
-    /**
-     * Returns a string representation of the object.
-     */
     @Override
     public String toString() {
         return key + " \"" + value + '"';

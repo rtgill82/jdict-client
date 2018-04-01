@@ -24,31 +24,22 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * Class containing a response from the server.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Response {
-    /**
-     * The status code of the response.
-     */
+    /** The status code of the response.  */
     private int status;
 
-    /**
-     * The text of the response.
-     */
+    /** The text of the response.  */
     private String text;
 
-    /**
-     * The full response message (including initial status code).
-     */
+    /** The full response message (including initial status code).  */
     private String message;
 
-    /**
-     * The raw text data following the response message, if applicable.
-     */
+    /** The raw text data following the response message, if applicable.  */
     private String rawData;
 
-    /**
-     * Parsed response data.
-     */
+    /** Parsed response data.  */
     private Object data;
 
     /**
@@ -59,6 +50,7 @@ public class Response {
      * @param text response text
      * @param rawData raw text response data
      * @param data parsed response data
+     *
      */
     Response(int status, String message, String text,
              String rawData, Object data) {
@@ -75,6 +67,7 @@ public class Response {
      * @param status response status code
      * @param message full response status message
      * @param text response text
+     *
      */
     Response(int status, String message, String text) {
         this(status, message, text, null, null);
@@ -84,6 +77,7 @@ public class Response {
      * Get the response status code.
      *
      * @return an int representing the response status result
+     *
      */
     public int getStatus() {
         return status;
@@ -93,6 +87,7 @@ public class Response {
      * Get the response text.
      *
      * @return the response text
+     *
      */
     public String getText() {
         return text;
@@ -102,6 +97,7 @@ public class Response {
      * Get the response status message.
      *
      * @return the full response status result message (including status code)
+     *
      */
     public String getMessage() {
         return message;
@@ -111,6 +107,7 @@ public class Response {
      * Get the raw text data associated with the response.
      *
      * @return a String containing the response data
+     *
      */
     public String getRawData() {
         return rawData;
@@ -120,6 +117,7 @@ public class Response {
      * Get the data associated with the response.
      *
      * @return an Object representing the response data
+     *
      */
     public Object getData() {
         return data;

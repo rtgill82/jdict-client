@@ -24,6 +24,7 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * Simple class that represents a DICT match.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class Match extends Element {
     /**
@@ -31,6 +32,7 @@ public class Match extends Element {
      *
      * @param dictionary the dictionary the match was found in
      * @param word       the word matching the query
+     *
      */
     public Match(String dictionary, String word) {
         super(dictionary, word);
@@ -40,6 +42,7 @@ public class Match extends Element {
      * Construct a new Match from an Element.
      *
      * @param element the Element to convert into a Match
+     *
      */
     public Match(Element element) {
         super(element.getKey(), element.getValue());
@@ -49,6 +52,9 @@ public class Match extends Element {
      * Get match dictionary name
      * <p>
      * An alias for getKey().
+     *
+     * @return the dictionary with the matching word
+     *
      */
     public String getDictionary() {
         return getKey();
@@ -58,6 +64,9 @@ public class Match extends Element {
      * Get matching word
      * <p>
      * An alias for getValue().
+     *
+     * @return the matching word
+     *
      */
     public String getWord() {
         return getValue();

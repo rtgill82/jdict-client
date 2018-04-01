@@ -26,6 +26,7 @@ import java.io.IOException;
  * Signals that a remote DICT server has unexpectedly closed the connection.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class DictConnectionException extends IOException {
     private static final String MESSAGE =
@@ -33,6 +34,7 @@ public class DictConnectionException extends IOException {
 
     /**
      * Construct a new DictConnectionException.
+     *
      */
     DictConnectionException() {
         super(MESSAGE);
@@ -42,6 +44,7 @@ public class DictConnectionException extends IOException {
      * Construct a new DictConnectionException with message.
      *
      * @param message the custom exception message
+     *
      */
     DictConnectionException(String message) {
         super(message);

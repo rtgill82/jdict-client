@@ -35,11 +35,10 @@ import java.util.regex.Pattern;
  * Parses and returns a DICT protocol response.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class ResponseParser implements Iterator<Response> {
-    /**
-     * An array of response codes that return data.
-     */
+    /** An array of response codes that return data.  */
     private final int[] DATA_RESPONSES = {
         110, // SHOW DATABASES response
         111, // SHOW STRATEGIES response
@@ -50,21 +49,15 @@ public class ResponseParser implements Iterator<Response> {
         152  // MATCH response; list of matches follows
     };
 
-    /**
-     * Regex used to match DICT protocol banner
-     */
+    /** Regex used to match DICT protocol banner */
     private final String BANNER_REGEX =
         "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
 
-    /**
-     * REGEX matches a 151 status line preceding definition text
-     */
+    /** REGEX matches a 151 status line preceding definition text */
     private final String DEFINITION_REGEX =
         "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
-    /**
-     * REGEX matches a single line matching 'key "value"'
-     */
+    /** REGEX matches a single line matching 'key "value"' */
     private final String ELEMENT_REGEX =
         "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
@@ -76,6 +69,7 @@ public class ResponseParser implements Iterator<Response> {
      * Construct a new ResponseParser.
      *
      * @param connection the connection to read responses from
+     *
      */
     public ResponseParser(Connection connection) {
         this.connection = connection;
@@ -89,6 +83,11 @@ public class ResponseParser implements Iterator<Response> {
      * having to manually allocate a persistent ResponseParser.
      *
      * @param connection the connection to read the response from
+     * @throws DictConnectionException when the connection is unexpectedly
+     *         closed by the server
+     * @throws IOException from associated Connection Socket
+     * @return the parsed server Response
+     *
      */
     public static Response parse(Connection connection)
           throws DictConnectionException, IOException {
@@ -97,6 +96,12 @@ public class ResponseParser implements Iterator<Response> {
 
     /**
      * Parse a response from the DICT server.
+     *
+     * @throws DictConnectionException when the connection is unexpectedly
+     *         closed by the server
+     * @throws IOException from associated Connection Socket
+     * @return the parsed server Response for the most recent Command
+     *
      */
     public Response parse() throws DictConnectionException, IOException {
         status = readStatusLine();
@@ -135,7 +140,11 @@ public class ResponseParser implements Iterator<Response> {
      * If the line is not a status line, the buffer is reset and the method
      * returns null.
      *
+     * @throws DictConnectionException when the connection is unexpectedly
+     *         closed by the server
+     * @throws IOException from associated Connection Socket
      * @return a Status object if status was successfully read
+     *
      */
     private Status readStatusLine()
           throws DictConnectionException, IOException {
@@ -215,6 +224,7 @@ public class ResponseParser implements Iterator<Response> {
      * @param status the response status
      * @param buffer the buffer from which to read the list of items
      * @return list of Elements
+     *
      */
     private List<Element> readElements(Status status, BufferedReader buffer)
           throws IOException {
@@ -254,6 +264,7 @@ public class ResponseParser implements Iterator<Response> {
      * @param status the response status (151 expected)
      * @param rawData the definition string
      * @return dictionary Definition
+     *
      */
     private Definition readDefinition(Status status, String rawData) {
         Pattern pattern = Pattern.compile(DEFINITION_REGEX);
@@ -274,6 +285,7 @@ public class ResponseParser implements Iterator<Response> {
 
     /**
      * Create buffered reader for String.
+     *
      */
     private BufferedReader stringBuffer(String str) {
         StringReader sreader = new StringReader(str);

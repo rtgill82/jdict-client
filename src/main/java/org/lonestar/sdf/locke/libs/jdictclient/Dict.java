@@ -20,7 +20,6 @@
  */
 package org.lonestar.sdf.locke.libs.jdictclient;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -58,19 +57,17 @@ public class Dict {
                 JDictClient.getLibraryVersion());
     }
 
-    public static void main(String[] args)
-            throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+    public static void main(String[] args) {
         JDictClient dictClient;
-        String info;
         Hashtable opts;
 
-        List<Dictionary> dictionaries = null;
-        List<Strategy> strategies = null;
+        List<Dictionary> dictionaries;
+        List<Strategy> strategies;
+        Definition definition;
+        Match match;
+
         List<Definition> definitions = null;
         List<Match> matches = null;
-        Definition definition = null;
-        Match match = null;
 
         if (args.length == 0) {
             showHelp();

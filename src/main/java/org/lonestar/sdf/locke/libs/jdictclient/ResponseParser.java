@@ -236,7 +236,7 @@ public class ResponseParser implements Iterator<Response> {
             Class<? extends Element> cl = status.getResponseDataClass();
             con = cl.getConstructor(String.class, String.class);
 
-            arrayList = new ArrayList<Element>();
+            arrayList = new ArrayList<>();
             Pattern pattern = Pattern.compile(ELEMENT_REGEX);
             String line = buffer.readLine();
             while (line != null) {
@@ -244,7 +244,7 @@ public class ResponseParser implements Iterator<Response> {
                 if (matcher.find()) {
                     key = line.substring(matcher.start(1), matcher.end(1));
                     value = line.substring(matcher.start(2), matcher.end(2));
-                    arrayList.add((Element) con.newInstance(key, value));
+                    arrayList.add(con.newInstance(key, value));
                 }
                 line = buffer.readLine();
             }

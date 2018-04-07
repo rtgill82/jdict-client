@@ -20,11 +20,7 @@
  */
 package org.lonestar.sdf.locke.libs.jdictclient;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -59,15 +55,7 @@ public class JDictClient {
     private String host;
     private int port;
     private int timeout;
-    private Response resp;
-
     private Connection connection;
-    private PrintWriter out;
-    private BufferedReader in;
-
-    private String serverInfo;
-    private String capabilities;
-    private String connectionId;
 
     /**
      * Construct a new JDictClient.
@@ -164,9 +152,6 @@ public class JDictClient {
           throw new DictException(host, resp.getStatus(), resp.getMessage());
 
         connection.close();
-        in = null;
-        out = null;
-
         return rv;
     }
 
@@ -229,18 +214,6 @@ public class JDictClient {
     public void setClientString(String clientString) {
         if (this.clientString == null)
           this.clientString = clientString;
-    }
-
-    /**
-     * Get the response for the last command sent.
-     * <p>
-     * It's overwritten by subsequent commands.
-     *
-     * @return the response for the last command.
-     *
-     */
-    public Response getResponse() {
-        return resp;
     }
 
     /**

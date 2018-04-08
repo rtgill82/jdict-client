@@ -27,24 +27,13 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.lonestar.sdf.locke.libs.jdictclient.Mocks.*;
+import static org.lonestar.sdf.locke.libs.jdictclient.ResponseStrings.*;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
 public class ConnectionTest {
-    /* Connection banner response */
-    private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
-
-    /* Server unavailable response */
-    private final String UNAVAILABLE = "420 Server temporarily unavailable";
-
-    /* Server shutting down response */
-    private final String SHUTDOWN = "421 Server shutting down at operator request";
-
-    /* Server access denied response */
-    private final String DENIED = "530 Access denied";
-
     @Test
     public void testConnectionDefaultPort() {
         Connection connection = new Connection("dict.org");
@@ -96,7 +85,7 @@ public class ConnectionTest {
 
     @Test
     public void testServerAccessDenied() {
-        Connection connection = mockConnection(DENIED);
+        Connection connection = mockConnection(ACCESS_DENIED);
         try {
             connection.connect();
         } catch (IOException e) {

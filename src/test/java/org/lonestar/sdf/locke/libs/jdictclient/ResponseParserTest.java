@@ -24,72 +24,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-import static org.lonestar.sdf.locke.libs.jdictclient.Mocks.mockConnection;
+import static org.junit.Assert.*;
+import static org.lonestar.sdf.locke.libs.jdictclient.Mocks.*;
+import static org.lonestar.sdf.locke.libs.jdictclient.ResponseStrings.*;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
 public class ResponseParserTest {
-    /* Connection banner response */
-    private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
-
-    /* Invalid connection banner */
-    private final String INVALID_BANNER = "220 invalid banner";
-
-    /* SHOW DATABASES response */
-    private final String DATABASES =
-            "110 1 databases present - text follows\n" +
-                    "foldoc \"The Free On-line Dictionary of Computing (26 July 2010)\"" +
-                    "\n.\n250 ok";
-
-    /* SHOW STRATEGIES response */
-    private final String STRATEGIES =
-            "111 1 strategies present\n" +
-                    "exact \"Match headwords exactly\"" +
-                    "\n.\n250 ok";
-
-    /* SHOW HELP response */
-    private final String HELP =
-            "113 help text follows\n" +
-                    "DEFINE database word         -- look up word in database\n" +
-                    "\n.\n250 ok";
-
-    /* SHOW INFO response */
-    private final String DATABASE_INFO =
-            "112 database information follows\n" +
-                    "Some random information describing a database.\n" +
-                    "\n.\n250 ok";
-
-    /* SHOW SERVER response */
-    private final String SERVER_INFO =
-            "114 server information follows\n" +
-                    "Some random information describing the server.\n" +
-                    "\n.\n250 ok";
-
-    /* DEFINE response */
-    private final String DEFINITION =
-            "150 1 definitions retrieved\n" +
-                    "151 \"word\" database \"Database Description\"\n" +
-                    "This word is defined as a word with meaning.\n" +
-                    "\n.\n250 ok";
-
-    /* MATCH response */
-    private final String MATCH =
-            "152 21 matches found\n" +
-                    "wn \"cat\"" +
-                    "wn \"cat and mouse\"" +
-                    "\n.\n250 ok [d/m/c = 0/1/323; 0.000r 0.000u 0.000s]";
-
-    /* AUTH success response */
-    private final String AUTH_SUCCESS = "230 Authentication Successful\n";
-
-    /* AUTH fail response */
-    private final String AUTH_FAIL = "531 Access denied\n";
-
     /**
      * Test reading of successful status.
      */

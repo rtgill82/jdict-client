@@ -22,16 +22,13 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.lonestar.sdf.locke.libs.jdictclient.Mocks.mockConnection;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
@@ -277,25 +274,5 @@ public class ResponseParserTest {
         } catch (IOException e) {
             fail("IOException: " + e.getMessage());
         }
-    }
-
-    /**
-     * Create mock Connection.
-     *
-     * @param str the string to return when reading from connection.
-     */
-    private Connection mockConnection(String str) {
-      Connection connection = mock(Connection.class);
-      when(connection.getInputReader()).thenReturn(stringBuffer(str));
-      return connection;
-    }
-
-    /**
-     * Create buffered reader for String.
-     */
-    private BufferedReader stringBuffer(String str) {
-        StringReader sreader = new StringReader(str);
-        BufferedReader breader = new BufferedReader(sreader);
-        return breader;
     }
 }

@@ -30,10 +30,20 @@ import static org.lonestar.sdf.locke.libs.jdictclient.Mocks.*;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ *
  */
 public class ConnectionTest {
     /* Connection banner response */
     private final String BANNER = "220 dictd 1.12 <auth.mime> <100@dictd.org>";
+
+    /* Server unavailable response */
+    private final String UNAVAILABLE = "420 Server temporarily unavailable";
+
+    /* Server shutting down response */
+    private final String SHUTDOWN = "421 Server shutting down at operator request";
+
+    /* Server access denied response */
+    private final String DENIED = "530 Access denied";
 
     @Test
     public void testConnectionDefaultPort() {
@@ -60,5 +70,38 @@ public class ConnectionTest {
         List capabilities = connection.getCapabilities();
         assertTrue(capabilities.contains("auth"));
         assertTrue(capabilities.contains("mime"));
+    }
+
+    @Test
+    public void testServerUnavailable() {
+        Connection connection = mockConnection(UNAVAILABLE);
+        try {
+            connection.connect();
+        } catch (IOException e) {
+            assertEquals(DictServerException.class, e.getClass());
+            assertEquals(420, ((DictServerException) e).getStatus());
+        }
+    }
+
+    @Test
+    public void testServerShuttingDown() {
+        Connection connection = mockConnection(SHUTDOWN);
+        try {
+            connection.connect();
+        } catch (IOException e) {
+            assertEquals(DictServerException.class, e.getClass());
+            assertEquals(421, ((DictServerException) e).getStatus());
+        }
+    }
+
+    @Test
+    public void testServerAccessDenied() {
+        Connection connection = mockConnection(DENIED);
+        try {
+            connection.connect();
+        } catch (IOException e) {
+            assertEquals(DictServerException.class, e.getClass());
+            assertEquals(530, ((DictServerException) e).getStatus());
+        }
     }
 }

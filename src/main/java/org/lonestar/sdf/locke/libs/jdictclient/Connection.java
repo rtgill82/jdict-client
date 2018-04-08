@@ -101,14 +101,26 @@ public class Connection {
             in = new BufferedReader(new InputStreamReader(getInputStream()));
             out = new PrintWriter(getOutputStream(), true);
             Response response = ResponseParser.parse(this);
-            if (response.getStatus() != 220) {
+            switch (response.getStatus()) {
+              case 220: /* Connection banner */
+                banner = (Banner) response.getData();
+                break;
+
+              case 420: /* Server temporarily unavailable */
+              case 421: /* Server shutting down at operator request */
+              case 530: /* Access denied */
+                throw new DictServerException(
+                    host, response.getStatus(),
+                    response.getMessage()
+                  );
+
+              default:
                 throw new DictException(
                     host, response.getStatus(),
                     "Connection banner expected, received: "
                     + response.getMessage()
                   );
             }
-            banner = (Banner) response.getData();
         }
     }
 

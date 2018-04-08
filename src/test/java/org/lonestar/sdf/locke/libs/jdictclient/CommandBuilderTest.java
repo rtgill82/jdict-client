@@ -165,4 +165,26 @@ public class CommandBuilderTest {
                                      .build();
         assertNotNull(command);
     }
+
+    @Test
+    public void testOtherCommand() {
+        Command command = new Command.Builder(OTHER)
+                                     .setCommandString("CUSTOM COMMAND")
+                                     .build();
+        assertNotNull(command);
+    }
+
+    @Test
+    public void testOtherCommandExceptions() {
+        Exception exception = null;
+        try {
+            Command command = new Command.Builder(OTHER)
+                                         .build();
+        } catch (RuntimeException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertEquals("OTHER command requires a raw command string.",
+                     exception.getMessage());
+    }
 }

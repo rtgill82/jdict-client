@@ -327,6 +327,11 @@ public class Command {
                 throw new RuntimeException(
                             "SHOW_INFO command requires a database."
                           );
+            } else if (command.type == Type.OTHER
+                       && command.command == null) {
+                throw new RuntimeException(
+                            "OTHER command requires a raw command string."
+                          );
             }
 
             return command;

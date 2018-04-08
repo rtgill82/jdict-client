@@ -25,26 +25,34 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.Socket;
 
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
 class Mocks {
-    @Mock
-    Socket socket;
+    @Mock Socket socket;
+    @Mock InputStream input;
+    @Mock OutputStream output;
 
     @InjectMocks
-    Connection connection = mock(Connection.class, CALLS_REAL_METHODS);
+    Connection connection = spy(new Connection("localhost"));
 
     public Mocks() {
         MockitoAnnotations.initMocks(this);
+        try {
+            when(socket.getInputStream()).thenReturn(input);
+            when(socket.getOutputStream()).thenReturn(output);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

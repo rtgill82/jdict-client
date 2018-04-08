@@ -65,6 +65,7 @@ public class Connection {
         this.host = host;
         this.port = port;
         this.timeout = timeout;
+        socket = new Socket();
     }
 
     /**
@@ -95,8 +96,7 @@ public class Connection {
      *
      */
     public void connect() throws IOException {
-        if (socket == null) {
-            socket = new Socket();
+        if (!socket.isConnected()) {
             socket.connect(new InetSocketAddress(host, port), timeout);
             in = new BufferedReader(new InputStreamReader(getInputStream()));
             out = new PrintWriter(getOutputStream(), true);
@@ -119,8 +119,7 @@ public class Connection {
      *
      */
     public void close() throws IOException {
-        if (socket != null)
-          socket.close();
+        socket.close();
     }
 
     /**

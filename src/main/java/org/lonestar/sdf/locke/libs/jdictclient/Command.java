@@ -78,7 +78,7 @@ public class Command {
           database = "*";
     }
 
-    List<Response> execute(Connection connection) throws IOException {
+    public List<Response> execute(Connection connection) throws IOException {
         PrintWriter out = connection.getOutputWriter();
         switch(type) {
           case CLIENT:

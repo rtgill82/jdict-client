@@ -234,4 +234,20 @@ public class ResponseParserTest {
             fail("IOException: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testPipelining() {
+        Connection connection = mockConnection(PIPELINE_RESPONSE);
+        try {
+            ResponseParser parser = new ResponseParser(connection, 3);
+            int count = 0;
+            while (parser.hasNext()) {
+                Response resp = parser.parse();
+                count += 1;
+            }
+            assertEquals(6, count);
+        } catch (IOException e) {
+            fail("IOException: " + e.getMessage());
+        }
+    }
 }

@@ -62,6 +62,7 @@ public class ResponseParser implements Iterator<Response> {
         "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
     private Connection connection;
+    private int numCommands;
     private BufferedReader responseBuffer;
     private Status status;
 
@@ -72,7 +73,12 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     public ResponseParser(Connection connection) {
+        this(connection, 1);
+    }
+
+    public ResponseParser(Connection connection, int numCommands) {
         this.connection = connection;
+        this.numCommands = numCommands - 1;
         this.responseBuffer = connection.getInputReader();
     }
 
@@ -305,8 +311,13 @@ public class ResponseParser implements Iterator<Response> {
         }
 
         boolean hasNext() {
-            if (code >= 200)
-              return false;
+            if (code >= 200) {
+                if (numCommands > 0) {
+                    numCommands -= 1;
+                    return true;
+                }
+                return false;
+            }
             return true;
         }
 

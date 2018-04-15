@@ -99,4 +99,9 @@ class ResponseStrings {
     /* AUTH fail response */
     public static final
       String AUTH_FAIL = "531 Access denied\n";
+
+    public static final
+      String PIPELINE_RESPONSE = BANNER + "\n" +
+                                 SERVER_INFO + "\n" +
+                                 DEFINITION;
 }

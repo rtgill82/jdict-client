@@ -67,12 +67,14 @@ public class Command {
     private String database;
     private String strategy;
     private String command;
+    private int numCommands;
 
     private String username;
     private String secret;
 
     public Command(Type type) {
         this.type = type;
+        this.numCommands = 1;
 
         if (type == Type.DEFINE || type == Type.MATCH)
           database = "*";
@@ -147,7 +149,8 @@ public class Command {
 
     private List<Response> readResponses(Connection connection)
           throws DictConnectionException, IOException {
-        ResponseParser responseParser = new ResponseParser(connection);
+        ResponseParser responseParser =
+          new ResponseParser(connection, numCommands);
         LinkedList<Response> responses = new LinkedList<Response>();
         while (responseParser.hasNext()) {
             Response resp = responseParser.parse();
@@ -188,7 +191,8 @@ public class Command {
                   "Command string parameter only valid for OTHER commands."
                 );
 
-            this.command.command = command;
+            this.command.command = command.trim();
+            this.command.numCommands = command.split("\r\n|\r|\n").length;
             return this;
         }
 

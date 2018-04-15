@@ -148,17 +148,16 @@ public class ResponseParser implements Iterator<Response> {
      */
     private Status readStatusLine()
           throws DictConnectionException, IOException {
-        responseBuffer.mark(512);
+        String line = responseBuffer.readLine();
+        if (line == null)
+          throw new DictConnectionException();
+
         try {
-            String line = responseBuffer.readLine();
-            if (line == null)
-              throw new DictConnectionException();
             int code = Integer.parseInt(line.substring(0, 3));
             String text = line.substring(4);
             return new Status(code, text, line);
         } catch (NumberFormatException e) {
-            responseBuffer.reset();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

@@ -124,10 +124,7 @@ public class Command {
             break;
 
           case OTHER:
-            String cmd = command;
-            if (param != null)
-              cmd += " " + param;
-            out.println(cmd);
+            out.println(command);
             break;
 
           default:

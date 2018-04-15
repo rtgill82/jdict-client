@@ -35,7 +35,7 @@ public class DictServerException extends DictException {
      * @param message the entire response string
      *
      */
-    DictServerException(String host, int status, String message) {
+    DictServerException(String host, Integer status, String message) {
         super(host, status, message);
     }
 }

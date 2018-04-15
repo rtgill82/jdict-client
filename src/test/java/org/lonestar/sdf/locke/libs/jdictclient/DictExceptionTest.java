@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class DictExceptionTest {
     private final String HOST = "test.dict.org";
-    private final int STATUS = 500;
+    private final Integer STATUS = 500;
     private final String RESPONSE = "500 Syntax error, command not recognized";
     private final String MESSAGE = HOST + ": " + RESPONSE;
 

@@ -157,7 +157,8 @@ public class ResponseParser implements Iterator<Response> {
             String text = line.substring(4);
             return new Status(code, text, line);
         } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+            throw new DictException(connection.getHost(), null,
+                                    "Invalid status line: " + line);
         }
     }
 

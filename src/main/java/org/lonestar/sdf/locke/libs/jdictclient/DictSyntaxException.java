@@ -35,7 +35,7 @@ public class DictSyntaxException extends DictException {
      * @param message the entire response string
      *
      */
-    DictSyntaxException(String host, int status, String message) {
+    DictSyntaxException(String host, Integer status, String message) {
         super(host, status, message);
     }
 }

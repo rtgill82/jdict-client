@@ -50,6 +50,23 @@ public class ResponseParserTest {
     }
 
     /**
+     * Test reading of invalid response.
+     */
+    @Test
+    public void testInvalidResponse() {
+        Exception exception = null;
+        Connection connection = mockConnection(INVALID_RESPONSE);
+        try {
+            Response resp = ResponseParser.parse(connection);
+        } catch (DictException e) {
+            exception = e;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(exception.getClass(), DictException.class);
+    }
+
+    /**
      * Test reading of connection banner.
      */
     @Test

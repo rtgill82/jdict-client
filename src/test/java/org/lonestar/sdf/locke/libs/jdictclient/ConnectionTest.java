@@ -68,7 +68,8 @@ public class ConnectionTest {
             connection.connect();
         } catch (IOException e) {
             assertEquals(DictServerException.class, e.getClass());
-            assertEquals(420, ((DictServerException) e).getStatus());
+            assertEquals(new Integer(420),
+                         ((DictServerException) e).getStatus());
         }
     }
 
@@ -79,7 +80,8 @@ public class ConnectionTest {
             connection.connect();
         } catch (IOException e) {
             assertEquals(DictServerException.class, e.getClass());
-            assertEquals(421, ((DictServerException) e).getStatus());
+            assertEquals(new Integer(421),
+                         ((DictServerException) e).getStatus());
         }
     }
 
@@ -90,7 +92,8 @@ public class ConnectionTest {
             connection.connect();
         } catch (IOException e) {
             assertEquals(DictServerException.class, e.getClass());
-            assertEquals(530, ((DictServerException) e).getStatus());
+            assertEquals(new Integer(530),
+                         ((DictServerException) e).getStatus());
         }
     }
 }

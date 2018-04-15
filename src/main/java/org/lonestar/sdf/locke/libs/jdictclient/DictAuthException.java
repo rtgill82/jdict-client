@@ -36,7 +36,7 @@ public class DictAuthException extends DictException {
      * @param message the entire response string
      *
      */
-    DictAuthException(String host, int status, String message) {
+    DictAuthException(String host, Integer status, String message) {
         super(host, status, message);
     }
 }

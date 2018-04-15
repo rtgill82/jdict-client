@@ -33,6 +33,9 @@ class ResponseStrings {
     public static final
       String INVALID_BANNER = "220 invalid banner";
 
+    public static final
+      String INVALID_RESPONSE = "apoidfj;alskjdfijealisdjf;lasdjf";
+
     /* Server unavailable response */
     public static final
       String UNAVAILABLE = "420 Server temporarily unavailable";

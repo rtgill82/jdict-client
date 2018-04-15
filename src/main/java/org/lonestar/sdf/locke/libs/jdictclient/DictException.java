@@ -31,7 +31,7 @@ import java.net.ProtocolException;
  */
 public class DictException extends ProtocolException {
     /** DICT protocol response status code */
-    private int status;
+    private Integer status;
 
     /** Entire DICT protocol response message */
     private String message;
@@ -44,7 +44,7 @@ public class DictException extends ProtocolException {
      * @param message the entire response string
      *
      */
-    DictException(String host, int status, String message) {
+    DictException(String host, Integer status, String message) {
         super(host);
         this.status = status;
         this.message = message;
@@ -66,7 +66,7 @@ public class DictException extends ProtocolException {
      * @return the status code of this DictException instance.
      *
      */
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 

@@ -25,9 +25,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 
@@ -41,6 +42,7 @@ class Mocks {
     @Mock Socket socket;
     @Mock InputStream input;
     @Mock OutputStream output;
+    @Mock PrintWriter printWriter;
 
     @InjectMocks
     Connection connection = spy(new Connection("localhost"));
@@ -66,6 +68,7 @@ class Mocks {
 
     private Connection connection(String str) {
         when(connection.getInputReader()).thenReturn(stringBuffer(str));
+        when(connection.getOutputWriter()).thenReturn(printWriter);
         return connection;
     }
 

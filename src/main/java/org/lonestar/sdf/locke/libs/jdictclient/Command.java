@@ -68,6 +68,7 @@ public class Command {
     private String strategy;
     private String command;
     private int numCommands;
+    private ResponseHandler handler;
 
     private String username;
     private String secret;
@@ -136,6 +137,10 @@ public class Command {
         return readResponses(connection);
     }
 
+    public void setResponseHandler(ResponseHandler handler) {
+        this.handler = handler;
+    }
+
     private String digest_secret(Connection connection, String secret) {
         try {
             MessageDigest authdigest = MessageDigest.getInstance("MD5");
@@ -153,8 +158,12 @@ public class Command {
           new ResponseParser(connection, numCommands);
         LinkedList<Response> responses = new LinkedList<Response>();
         while (responseParser.hasNext()) {
-            Response resp = responseParser.parse();
-            responses.add(resp);
+            boolean rv = true;
+            Response response = responseParser.parse();
+            if (handler != null)
+              rv = handler.handle(response);
+            if (rv)
+              responses.add(response);
         }
         return responses;
     }
@@ -291,6 +300,11 @@ public class Command {
                 );
 
             command.secret = password;
+            return this;
+        }
+
+        public Builder setResponseHandler(ResponseHandler handler) {
+            command.handler = handler;
             return this;
         }
 

@@ -44,6 +44,10 @@ class ResponseStrings {
     public static final
       String SHUTDOWN = "421 Server shutting down at operator request";
 
+    /* Command not implemented */
+    public static final
+      String NOT_IMPLEMENTED = "502 Command not implemented";
+
     /* Server access denied response */
     public static final
       String ACCESS_DENIED = "530 Access denied";

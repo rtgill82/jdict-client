@@ -26,16 +26,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.AUTH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.CLIENT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.DEFINE;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.HELP;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.MATCH;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.QUIT;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_DATABASES;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_INFO;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_SERVER;
-import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.SHOW_STRATEGIES;
+import org.lonestar.sdf.locke.libs.jdictclient.Command.Type;
+import static org.lonestar.sdf.locke.libs.jdictclient.Command.Type.*;
 
 /**
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
@@ -226,8 +218,8 @@ public class JDictClient {
      *
      */
     private void sendClient() throws IOException {
-        Command command = new Command.Builder(CLIENT)
-                                     .setParamString(clientString).build();
+        Command command = commandBuilder(CLIENT)
+                            .setParamString(clientString).build();
         List<Response> responses = command.execute(connection);
         Response resp = responses.get(0);
         if (resp.getStatus() != 250)
@@ -252,7 +244,7 @@ public class JDictClient {
      *
      */
     public String getServerInfo() throws IOException {
-        Command.Builder builder = new Command.Builder(SHOW_SERVER);
+        Command.Builder builder = commandBuilder(SHOW_SERVER);
         Command command = builder.build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
@@ -266,7 +258,7 @@ public class JDictClient {
      *
      */
     public String getHelp() throws IOException {
-        Command.Builder builder = new Command.Builder(HELP);
+        Command.Builder builder = commandBuilder(HELP);
         Command command = builder.build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
@@ -284,10 +276,10 @@ public class JDictClient {
     public boolean authenticate(String username, String secret)
           throws IOException {
         boolean rv = false;
-        Command command = new Command.Builder(AUTH)
-                                     .setUsername(username)
-                                     .setPassword(secret)
-                                     .build();
+        Command command = commandBuilder(AUTH)
+                            .setUsername(username)
+                            .setPassword(secret)
+                            .build();
         List<Response> responses = command.execute(connection);
         if (responses.get(0).getStatus() == 230)
           rv = true;
@@ -305,7 +297,7 @@ public class JDictClient {
      *
      */
     public List<Dictionary> getDictionaries() throws IOException {
-        Command command = new Command.Builder(SHOW_DATABASES).build();
+        Command command = commandBuilder(SHOW_DATABASES).build();
         List<Response> responses = command.execute(connection);
         return (List<Dictionary>) responses.get(0).getData();
     }
@@ -319,9 +311,9 @@ public class JDictClient {
      *
      */
     public String getDictionaryInfo(String dictionary) throws IOException {
-        Command command = new Command.Builder(SHOW_INFO)
-                                     .setDatabase(dictionary)
-                                     .build();
+        Command command = commandBuilder(SHOW_INFO)
+                            .setDatabase(dictionary)
+                            .build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
@@ -335,9 +327,9 @@ public class JDictClient {
      *
      */
     public String getDictionaryInfo(Dictionary dictionary) throws IOException {
-        Command command = new Command.Builder(SHOW_INFO)
-                                     .setDatabase(dictionary.getDatabase())
-                                     .build();
+        Command command = commandBuilder(SHOW_INFO)
+                            .setDatabase(dictionary.getDatabase())
+                            .build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
@@ -350,7 +342,7 @@ public class JDictClient {
      *
      */
     public List<Strategy> getStrategies() throws IOException {
-        Command command = new Command.Builder(SHOW_STRATEGIES).build();
+        Command command = commandBuilder(SHOW_STRATEGIES).build();
         List<Response> responses = command.execute(connection);
         return (List<Strategy>) responses.get(0).getData();
     }
@@ -360,14 +352,15 @@ public class JDictClient {
      *
      * @param word the word to define
      * @throws IOException from associated Connection Socket
-     * @return a list of definitions for word
+     * @return a list of definitions for word or null if no word found
      *
      */
     public List<Definition> define(String word) throws IOException {
-        Command command = new Command.Builder(DEFINE)
-                                     .setParamString(word)
-                                     .build();
+        Command command = commandBuilder(DEFINE)
+                            .setParamString(word)
+                            .build();
         List<Response> responses = command.execute(connection);
+        if (responses.get(0).getStatus() == 552) return null;
         return collect_definitions(responses);
     }
 
@@ -377,16 +370,17 @@ public class JDictClient {
      * @param dictionary the dictionary in which to find the definition
      * @param word the word to define
      * @throws IOException from associated Connection Socket
-     * @return a list of definitions for word
+     * @return a list of definitions for word or null if no word found
      *
      */
     public List<Definition> define(String dictionary, String word)
           throws IOException {
-        Command command = new Command.Builder(DEFINE)
-                                     .setDatabase(dictionary)
-                                     .setParamString(word)
-                                     .build();
+        Command command = commandBuilder(DEFINE)
+                            .setDatabase(dictionary)
+                            .setParamString(word)
+                            .build();
         List<Response> responses = command.execute(connection);
+        if (responses.get(0).getStatus() == 552) return null;
         return collect_definitions(responses);
     }
 
@@ -400,10 +394,10 @@ public class JDictClient {
      *
      */
     public List<Match> match(String strategy, String word) throws IOException {
-        Command command = new Command.Builder(MATCH)
-                                     .setStrategy(strategy)
-                                     .setParamString(word)
-                                     .build();
+        Command command = commandBuilder(MATCH)
+                            .setStrategy(strategy)
+                            .setParamString(word)
+                            .build();
         List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();
     }
@@ -416,15 +410,16 @@ public class JDictClient {
      * @param word the word to match
      * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
+     *         or null if no matches found
      *
      */
     public List<Match> match(String dictionary, String strategy, String word)
           throws IOException {
-        Command command = new Command.Builder(MATCH)
-                                     .setDatabase(dictionary)
-                                     .setStrategy(strategy)
-                                     .setParamString(word)
-                                     .build();
+        Command command = commandBuilder(MATCH)
+                            .setDatabase(dictionary)
+                            .setStrategy(strategy)
+                            .setParamString(word)
+                            .build();
         List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();
     }
@@ -436,7 +431,7 @@ public class JDictClient {
      *
      */
     private Response quit() throws IOException {
-        Command command = new Command.Builder(QUIT).build();
+        Command command = commandBuilder(QUIT).build();
         List<Response> responses = command.execute(connection);
         return responses.get(0);
     }
@@ -451,5 +446,29 @@ public class JDictClient {
               definitions.add((Definition) response.getData());
         }
         return definitions;
+    }
+
+    private Command.Builder commandBuilder(Type commandType) {
+        return new Command.Builder(commandType)
+                          .setResponseHandler(new ThrowExceptionHandler());
+    }
+
+    private class ThrowExceptionHandler implements ResponseHandler {
+        @Override
+        public boolean handle(Response response) throws DictException {
+            switch (response.getStatus()) {
+              case 420: case 421: case 502: case 503: case 530: case 550:
+              case 551: case 554: case 555:
+                throw new DictServerException(host,
+                                              response.getStatus(),
+                                              response.getMessage());
+
+              case 500: case 501:
+                throw new DictSyntaxException(host,
+                                              response.getStatus(),
+                                              response.getMessage());
+            }
+            return true;
+        }
     }
 }

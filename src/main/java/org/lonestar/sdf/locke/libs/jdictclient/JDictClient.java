@@ -457,12 +457,43 @@ public class JDictClient {
         @Override
         public boolean handle(Response response) throws DictException {
             switch (response.getStatus()) {
+
+                /*
+                 * Throw server exceptions.
+                 *
+                 * 420 - Server temporarily unavailable
+                 *
+                 * 421 - Server shutting down at operator request
+                 *
+                 * 502 - Command not implemented
+                 *
+                 * 503 - Command parameter not implemented
+                 *
+                 * 530 - Access denied
+                 *
+                 * 550 - Invalid database
+                 *
+                 * 551 - Invalid strategy
+                 *
+                 * 554 - No databases present
+                 *
+                 * 555 - No strategies available
+                 *
+                 */
               case 420: case 421: case 502: case 503: case 530: case 550:
               case 551: case 554: case 555:
                 throw new DictServerException(host,
                                               response.getStatus(),
                                               response.getMessage());
 
+                /*
+                 * Throw syntax exceptions.
+                 *
+                 * 500 - Syntax error, command not recognized
+                 *
+                 * 501 - Syntax error, illegal parameters
+                 *
+                 */
               case 500: case 501:
                 throw new DictSyntaxException(host,
                                               response.getStatus(),

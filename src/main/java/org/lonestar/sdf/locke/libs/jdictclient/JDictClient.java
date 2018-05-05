@@ -471,17 +471,8 @@ public class JDictClient {
                  *
                  * 530 - Access denied
                  *
-                 * 550 - Invalid database
-                 *
-                 * 551 - Invalid strategy
-                 *
-                 * 554 - No databases present
-                 *
-                 * 555 - No strategies available
-                 *
                  */
-              case 420: case 421: case 502: case 503: case 530: case 550:
-              case 551: case 554: case 555:
+              case 420: case 421: case 502: case 503: case 530:
                 throw new DictServerException(host,
                                               response.getStatus(),
                                               response.getMessage());
@@ -493,8 +484,12 @@ public class JDictClient {
                  *
                  * 501 - Syntax error, illegal parameters
                  *
+                 * 550 - Invalid database
+                 *
+                 * 551 - Invalid strategy
+                 *
                  */
-              case 500: case 501:
+              case 500: case 501: case 550: case 551:
                 throw new DictSyntaxException(host,
                                               response.getStatus(),
                                               response.getMessage());

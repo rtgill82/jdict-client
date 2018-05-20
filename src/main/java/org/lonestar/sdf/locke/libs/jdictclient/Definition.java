@@ -26,7 +26,7 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Definition extends Object {
+public class Definition {
     /** The word being defined */
     private String word;
 

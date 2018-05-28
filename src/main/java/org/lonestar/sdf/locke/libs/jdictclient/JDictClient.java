@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016-2018 Robert Gill <locke@sdf.lonestar.org>
  *
  * This file is part of jdict-client.
  *
@@ -367,17 +367,17 @@ public class JDictClient {
     /**
      * Get definition for word from DICT server.
      *
-     * @param dictionary the dictionary in which to find the definition
      * @param word the word to define
+     * @param database the dictionary database in which to find the definition
      * @throws IOException from associated Connection Socket
      * @return a list of definitions for word or null if no word found
      *
      */
-    public List<Definition> define(String dictionary, String word)
+    public List<Definition> define(String word, String database)
           throws IOException {
         Command command = commandBuilder(DEFINE)
-                            .setDatabase(dictionary)
                             .setParamString(word)
+                            .setDatabase(database)
                             .build();
         List<Response> responses = command.execute(connection);
         if (responses.get(0).getStatus() == 552) return null;
@@ -387,16 +387,16 @@ public class JDictClient {
     /**
      * Match word using requested strategy.
      *
-     * @param strategy the strategy to use for matching
      * @param word the word to match
+     * @param strategy the strategy to use for matching
      * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
      *
      */
-    public List<Match> match(String strategy, String word) throws IOException {
+    public List<Match> match(String word, String strategy) throws IOException {
         Command command = commandBuilder(MATCH)
-                            .setStrategy(strategy)
                             .setParamString(word)
+                            .setStrategy(strategy)
                             .build();
         List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();
@@ -405,20 +405,20 @@ public class JDictClient {
     /**
      * Match word using requested strategy.
      *
-     * @param dictionary the dictionary to search
-     * @param strategy the strategy to use for matching
      * @param word the word to match
+     * @param strategy the strategy to use for matching
+     * @param database the dictionary database to search
      * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
      *         or null if no matches found
      *
      */
-    public List<Match> match(String dictionary, String strategy, String word)
+    public List<Match> match(String word, String strategy, String database)
           throws IOException {
         Command command = commandBuilder(MATCH)
-                            .setDatabase(dictionary)
-                            .setStrategy(strategy)
                             .setParamString(word)
+                            .setStrategy(strategy)
+                            .setDatabase(database)
                             .build();
         List<Response> responses = command.execute(connection);
         return (List<Match>) responses.get(0).getData();

@@ -138,13 +138,13 @@ public class Dict {
                         String strategy = (String) opts.get("match");
                         if (opts.containsKey("dictionary")) {
                             String dictionary = (String) opts.get("dictionary");
-                            matches = dictClient.match(dictionary, strategy, word);
+                            matches = dictClient.match(word, strategy, dictionary);
                         } else {
-                            matches = dictClient.match(strategy, word);
+                            matches = dictClient.match(word, strategy);
                         }
                     } else if (opts.containsKey("dictionary")) {
                         String dictionary = (String) opts.get("dictionary");
-                        definitions = dictClient.define(dictionary, word);
+                        definitions = dictClient.define(word, dictionary);
                     } else {
                         definitions = dictClient.define(word);
                     }

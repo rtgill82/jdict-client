@@ -33,21 +33,20 @@ public class DefinitionTest {
     private final String DESCRIPTION = "WordNet (r) 3.0 (2006)";
     private final String WORD = "dictionary";
 
-    private final Dictionary DICTIONARY =
-            new Dictionary(DATABASE, DESCRIPTION);
+    private final Database DICTDB = new Database(DATABASE, DESCRIPTION);
 
     private final String DEFINITION =
             "n 1: a reference book containing an alphabetical list of words\n" +
-                    "     with information about them [syn: {dictionary}, {lexicon}]";
+            "     with information about them [syn: {dictionary}, {lexicon}]";
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Definition#Definition(java.lang.String, org.lonestar.sdf.locke.libs.jdictclient.Dictionary, java.lang.String)}.
+     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Definition#Definition(java.lang.String, org.lonestar.sdf.locke.libs.jdictclient.Database, java.lang.String)}.
      */
     @Test
     public void testDefinition() {
-        Definition def = new Definition(WORD, DICTIONARY, DEFINITION);
+        Definition def = new Definition(WORD, DICTDB, DEFINITION);
         assertEquals(WORD, def.getWord());
-        assertEquals(DICTIONARY, def.getDictionary());
+        assertEquals(DICTDB, def.getDatabase());
         assertEquals(DEFINITION, def.getDefinition());
     }
 
@@ -56,14 +55,12 @@ public class DefinitionTest {
      */
     @Test
     public void testDefinitionClone() {
-        Definition def1;
-        Definition def2;
-
-        def1 = new Definition(WORD, DICTIONARY, DEFINITION);
+        Definition def1, def2;
+        def1 = new Definition(WORD, DICTDB, DEFINITION);
         def2 = def1.clone();
         assertNotSame(def1, def2);
         assertEquals(WORD, def2.getWord());
-        assertEquals(DICTIONARY, def2.getDictionary());
+        assertEquals(DICTDB, def2.getDatabase());
         assertEquals(DEFINITION, def2.getDefinition());
     }
 }

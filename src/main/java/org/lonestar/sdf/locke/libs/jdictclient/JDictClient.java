@@ -287,48 +287,47 @@ public class JDictClient {
     }
 
     /**
-     * Get list of available dictionary databases from the server.
+     * Get list of available databases from the server.
      *
-     * FIXME: Allow requesting that dictionary info be set while querying
-     * server.
+     * FIXME: Allow requesting that database info be set while querying server.
      *
      * @throws IOException from associated Connection Socket
      * @return list of dictionaries
      *
      */
-    public List<Dictionary> getDictionaries() throws IOException {
+    public List<Database> getDictionaries() throws IOException {
         Command command = commandBuilder(SHOW_DATABASES).build();
         List<Response> responses = command.execute(connection);
-        return (List<Dictionary>) responses.get(0).getData();
+        return (List<Database>) responses.get(0).getData();
     }
 
     /**
-     * Get detailed dictionary info for the specified dictionary.
+     * Get detailed database info for the specified database.
      *
-     * @param dictionary the dictionary for which to get information
+     * @param database the database for which to get information
      * @throws IOException from associated Connection Socket
-     * @return dictionary info string
+     * @return database info string
      *
      */
-    public String getDictionaryInfo(String dictionary) throws IOException {
+    public String getDatabaseInfo(String database) throws IOException {
         Command command = commandBuilder(SHOW_INFO)
-                            .setDatabase(dictionary)
+                            .setDatabase(database)
                             .build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
     }
 
     /**
-     * Get detailed dictionary info for the specified dictionary.
+     * Get detailed database info for the specified database.
      *
-     * @param dictionary the dictionary for which to get information
+     * @param database the database for which to get information
      * @throws IOException from associated Connection Socket
-     * @return dictionary info string
+     * @return database info string
      *
      */
-    public String getDictionaryInfo(Dictionary dictionary) throws IOException {
+    public String getDatabaseInfo(Database database) throws IOException {
         Command command = commandBuilder(SHOW_INFO)
-                            .setDatabase(dictionary.getDatabase())
+                            .setDatabase(database.getName())
                             .build();
         List<Response> responses = command.execute(connection);
         return responses.get(0).getRawData();
@@ -368,7 +367,7 @@ public class JDictClient {
      * Get definition for word from DICT server.
      *
      * @param word the word to define
-     * @param database the dictionary database in which to find the definition
+     * @param database the database in which to find the definition
      * @throws IOException from associated Connection Socket
      * @return a list of definitions for word or null if no word found
      *
@@ -407,7 +406,7 @@ public class JDictClient {
      *
      * @param word the word to match
      * @param strategy the strategy to use for matching
-     * @param database the dictionary database to search
+     * @param database the database to search
      * @throws IOException from associated Connection Socket
      * @return a list of matching words and the dictionaries they are found in
      *         or null if no matches found

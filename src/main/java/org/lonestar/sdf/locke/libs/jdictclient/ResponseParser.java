@@ -269,7 +269,7 @@ public class ResponseParser implements Iterator<Response> {
      *
      * @param status the response status (151 expected)
      * @param rawData the definition string
-     * @return dictionary Definition
+     * @return database Definition
      *
      */
     private Definition readDefinition(Status status, String rawData) {
@@ -283,10 +283,10 @@ public class ResponseParser implements Iterator<Response> {
         }
 
         String word = message.substring(matcher.start(1), matcher.end(1));
-        String dict = message.substring(matcher.start(2), matcher.end(2));
+        String db = message.substring(matcher.start(2), matcher.end(2));
         String desc = message.substring(matcher.start(3), matcher.end(3));
-        Dictionary dictionary = new Dictionary(dict, desc);
-        return new Definition(word, dictionary, rawData);
+        Database database = new Database(db, desc);
+        return new Definition(word, database, rawData);
     }
 
     /**
@@ -331,7 +331,7 @@ public class ResponseParser implements Iterator<Response> {
                 break;
 
               case 110: // SHOW DATABASES response
-                cl = Dictionary.class;
+                cl = Database.class;
                 break;
 
               case 111: // SHOW STRATEGIES response

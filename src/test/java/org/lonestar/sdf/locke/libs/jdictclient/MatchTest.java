@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotSame;
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  */
 public class MatchTest {
-    private final String DICTIONARY = "foldoc";
+    private final String DATABASE = "foldoc";
     private final String WORD = "linux";
 
     /**
@@ -37,8 +37,8 @@ public class MatchTest {
      */
     @Test
     public void testMatch() {
-        Match match = new Match(DICTIONARY, WORD);
-        assertEquals(DICTIONARY, match.getDictionary());
+        Match match = new Match(DATABASE, WORD);
+        assertEquals(DATABASE, match.getDatabase());
         assertEquals(WORD, match.getWord());
     }
 
@@ -47,9 +47,9 @@ public class MatchTest {
      */
     @Test
     public void testConvertElement() {
-        Element element = new Element(DICTIONARY, WORD);
+        Element element = new Element(DATABASE, WORD);
         Match match = new Match(element);
-        assertEquals(DICTIONARY, match.getDictionary());
+        assertEquals(DATABASE, match.getDatabase());
         assertEquals(WORD, match.getWord());
     }
 
@@ -58,13 +58,11 @@ public class MatchTest {
      */
     @Test
     public void testMatchClone() {
-        Match match1;
-        Match match2;
-
-        match1 = new Match(DICTIONARY, WORD);
+        Match match1, match2;
+        match1 = new Match(DATABASE, WORD);
         match2 = match1.clone();
         assertNotSame(match1, match2);
-        assertEquals(DICTIONARY, match2.getDictionary());
+        assertEquals(DATABASE, match2.getDatabase());
         assertEquals(WORD, match2.getWord());
     }
 }

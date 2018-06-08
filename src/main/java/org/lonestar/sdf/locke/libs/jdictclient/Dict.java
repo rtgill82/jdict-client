@@ -45,9 +45,9 @@ public class Dict {
         System.out.println("\t-banner\t\t\t\tshow connection banner");
         System.out.println("\t-serverinfo\t\t\tshow server information");
         System.out.println("\t-help\t\t\t\tshow server help");
-        System.out.println("\t-dictionary <dictionary>\tlook up word in <dictionary>");
-        System.out.println("\t-dictionaries\t\t\tlist dictionaries available");
-        System.out.println("\t-dictionaryinfo <dictionary>\tget information for <dictionary>");
+        System.out.println("\t-database <database>\tlook up word in <database>");
+        System.out.println("\t-databases\t\t\tlist databases available");
+        System.out.println("\t-databaseinfo <database>\tget information for <database>");
         System.out.println("\t-strategies\t\t\tlist strategies available");
         System.out.println("\t-match <strategy>\t\ttry to match word using strategy");
     }
@@ -61,7 +61,7 @@ public class Dict {
         JDictClient dictClient;
         Hashtable opts;
 
-        List<Dictionary> dictionaries;
+        List<Database> databases;
         List<Strategy> strategies;
         Definition definition;
         Match match;
@@ -104,20 +104,20 @@ public class Dict {
                 System.out.println(dictClient.getBanner());
             } else if (opts.containsKey("serverinfo")) {
                 System.out.println(dictClient.getServerInfo());
-            } else if (opts.containsKey("dictionaryinfo")) {
-                String dictionary;
-                dictionary = (String) opts.get("dictionaryinfo");
-                System.out.println(dictClient.getDictionaryInfo(dictionary));
-            } else if (opts.containsKey("dictionaries")) {
-                dictionaries = dictClient.getDictionaries();
-                if (dictionaries != null) {
-                    Iterator itr = dictionaries.iterator();
+            } else if (opts.containsKey("databaseinfo")) {
+                String database;
+                database = (String) opts.get("databaseinfo");
+                System.out.println(dictClient.getDatabaseInfo(database));
+            } else if (opts.containsKey("databases")) {
+                databases = dictClient.getDictionaries();
+                if (databases != null) {
+                    Iterator itr = databases.iterator();
                     while (itr.hasNext()) {
-                        Dictionary dictionary = (Dictionary) itr.next();
-                        System.out.println(dictionary);
+                        Database database = (Database) itr.next();
+                        System.out.println(database);
                     }
                 } else {
-                    System.out.println("No dictionaries found.");
+                    System.out.println("No databases found.");
                 }
             } else if (opts.containsKey("strategies")) {
                 strategies = dictClient.getStrategies();
@@ -136,15 +136,15 @@ public class Dict {
                     String word = (String) words.next();
                     if (opts.containsKey("match")) {
                         String strategy = (String) opts.get("match");
-                        if (opts.containsKey("dictionary")) {
-                            String dictionary = (String) opts.get("dictionary");
-                            matches = dictClient.match(word, strategy, dictionary);
+                        if (opts.containsKey("database")) {
+                            String database = (String) opts.get("database");
+                            matches = dictClient.match(word, strategy, database);
                         } else {
                             matches = dictClient.match(word, strategy);
                         }
-                    } else if (opts.containsKey("dictionary")) {
-                        String dictionary = (String) opts.get("dictionary");
-                        definitions = dictClient.define(word, dictionary);
+                    } else if (opts.containsKey("database")) {
+                        String database = (String) opts.get("database");
+                        definitions = dictClient.define(word, database);
                     } else {
                         definitions = dictClient.define(word);
                     }
@@ -193,8 +193,8 @@ public class Dict {
                     if (optname.equals("host")
                             || optname.equals("username")
                             || optname.equals("secret")
-                            || optname.equals("dictionary")
-                            || optname.equals("dictionaryinfo")
+                            || optname.equals("database")
+                            || optname.equals("databaseinfo")
                             || optname.equals("match")) {
                         opts.put(optname, args[++i]);
 
@@ -207,7 +207,7 @@ public class Dict {
                             || optname.equals("banner")
                             || optname.equals("serverinfo")
                             || optname.equals("help")
-                            || optname.equals("dictionaries")
+                            || optname.equals("databases")
                             || optname.equals("strategies")) {
                         opts.put(optname, true);
                     }

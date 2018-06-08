@@ -21,7 +21,7 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * Simple class that represents a DICT dictionary definition.
+ * Simple class that represents a DICT definition.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
@@ -30,24 +30,24 @@ public class Definition {
     /** The word being defined */
     private String word;
 
-    /** The dictionary database the definition was retrieved from */
-    private Dictionary dictionary;
+    /** The database the definition was retrieved from */
+    private Database database;
 
-    /** The definition provided dictionary */
+    /** The definition provided by the database */
     private String definition;
 
     /**
      * Construct a new Definition.
      *
      * @param word the word being defined
-     * @param dictionary the dictionary the definition was retrieved from
-     * @param definition the definition provided by dictionary
+     * @param database the database the definition was retrieved from
+     * @param definition the definition provided by database
      *
      */
-    Definition(String word, Dictionary dictionary, String definition) {
+    Definition(String word, Database database, String definition) {
         super();
         this.word = word;
-        this.dictionary = dictionary;
+        this.database = database;
         this.definition = definition;
     }
 
@@ -62,13 +62,13 @@ public class Definition {
     }
 
     /**
-     * Get dictionary that defined the word.
+     * Get database that defined the word.
      *
-     * @return the Dictionary where the definition was found
+     * @return the Database where the definition was found
      *
      */
-    public Dictionary getDictionary() {
-        return dictionary;
+    public Database getDatabase() {
+        return database;
     }
 
     /**
@@ -85,7 +85,7 @@ public class Definition {
     public Definition clone() {
         Definition definition = new Definition(
                 getWord(),
-                getDictionary(),
+                getDatabase(),
                 getDefinition()
         );
 
@@ -94,6 +94,6 @@ public class Definition {
 
     @Override
     public String toString() {
-        return dictionary + "\n" + definition;
+        return database + "\n" + definition;
     }
 }

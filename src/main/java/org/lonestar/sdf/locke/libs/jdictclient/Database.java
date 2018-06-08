@@ -21,63 +21,63 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 /**
- * Simple class that represents a DICT dictionary database.
+ * Simple class that represents a DICT database.
  *
  * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
  *
  */
-public class Dictionary extends Element {
+public class Database extends Element {
     /** Database source, copyright and licensing information */
-    private String databaseInfo;
+    private String info;
 
     /**
-     * Construct a new Dictionary.
+     * Construct a new Database.
      *
      * @param database    the dictionary database name
      * @param description description of the dictionary database
      *
      */
-    public Dictionary(String database, String description) {
+    public Database(String database, String description) {
         super(database, description);
     }
 
     /**
-     * Construct a new Dictionary with Database Info.
+     * Construct a new Database with database information.
      *
      * @param database     the dictionary database name
      * @param description  description of the dictionary database
      * @param databaseInfo string describing full database information
      *
      */
-    public Dictionary(String database, String description, String databaseInfo) {
+    public Database(String database, String description, String databaseInfo) {
         super(database, description);
-        this.databaseInfo = databaseInfo;
+        info = databaseInfo;
     }
 
     /**
-     * Construct a new Dictionary from an Element.
+     * Construct a new Database from an Element.
      *
-     * @param element the Element to convert into a Dictionary
+     * @param element the Element to convert into a Database
      *
      */
-    public Dictionary(Element element) {
+    public Database(Element element) {
         super(element.getKey(), element.getValue());
     }
 
     /**
-     * Get Dictionary database name.
+     * Get Database name.
      *
-     * @return the Dictionary name
+     * @return the Database name
      *
      */
-    public String getDatabase() {
+    public String getName() {
         return getKey();
     }
 
     /**
-     * Get Dictionary database description.
+     * Get Database description.
      *
-     * @return Dictionary description
+     * @return Database description
      *
      */
     public String getDescription() {
@@ -85,35 +85,35 @@ public class Dictionary extends Element {
     }
 
     /**
-     * Get Dictionary database information.
+     * Get Database information.
      * <p>
      * Source, copyright, licensing information, etc.
      *
-     * @return Dictionary information
+     * @return Database information
      *
      */
-    public String getDatabaseInfo() {
-        return databaseInfo;
+    public String getInfo() {
+        return info;
     }
 
     /**
-     * Set Dictionary database information.
+     * Set Database information.
      *
      * @param databaseInfo database information string
      *
      */
     void setDatabaseInfo(String databaseInfo) {
-        this.databaseInfo = databaseInfo;
+        info = databaseInfo;
     }
 
     @Override
-    public Dictionary clone() {
-        Dictionary dict = new Dictionary(
+    public Database clone() {
+        Database dict = new Database(
                 getKey(),
                 getValue()
         );
 
-        dict.setDatabaseInfo(this.getDatabaseInfo());
+        dict.setDatabaseInfo(getInfo());
         return dict;
     }
 }

@@ -30,12 +30,12 @@ public class Match extends Element {
     /**
      * Construct a new Match.
      *
-     * @param dictionary the dictionary the match was found in
-     * @param word       the word matching the query
+     * @param database the database the match was found in
+     * @param word     the word matching the query
      *
      */
-    public Match(String dictionary, String word) {
-        super(dictionary, word);
+    public Match(String database, String word) {
+        super(database, word);
     }
 
     /**
@@ -49,14 +49,14 @@ public class Match extends Element {
     }
 
     /**
-     * Get match dictionary name
+     * Get match database name
      * <p>
      * An alias for getKey().
      *
-     * @return the dictionary with the matching word
+     * @return the database with the matching word
      *
      */
-    public String getDictionary() {
+    public String getDatabase() {
         return getKey();
     }
 

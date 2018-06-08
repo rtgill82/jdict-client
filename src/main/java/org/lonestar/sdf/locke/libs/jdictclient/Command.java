@@ -248,7 +248,8 @@ public class Command {
                   "DEFINE, MATCH, and SHOW_INFO commands."
                 );
 
-            command.database = database;
+            if (database != null)
+              command.database = database;
             return this;
         }
 

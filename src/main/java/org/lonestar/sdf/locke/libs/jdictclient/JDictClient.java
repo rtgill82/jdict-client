@@ -393,12 +393,7 @@ public class JDictClient {
      *
      */
     public List<Match> match(String word, String strategy) throws IOException {
-        Command command = commandBuilder(MATCH)
-                            .setParamString(word)
-                            .setStrategy(strategy)
-                            .build();
-        List<Response> responses = command.execute(connection);
-        return (List<Match>) responses.get(0).getData();
+        return match(word, strategy, null);
     }
 
     /**

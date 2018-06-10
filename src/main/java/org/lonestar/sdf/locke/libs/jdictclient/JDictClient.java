@@ -193,6 +193,16 @@ public class JDictClient {
     }
 
     /**
+     * Get the client connection.
+     *
+     * @return the current connection
+     *
+     */
+    public Connection getConnection() {
+        return connection;
+    }
+
+    /**
      * Set the client string sent to the server.
      * <p>
      * Identify the client to the server with the provided string. It is

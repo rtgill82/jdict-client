@@ -57,7 +57,7 @@ public class Dict {
     }
 
     public static void main(String[] args) {
-        JDictClient dictClient;
+        JDictClient client;
         Hashtable opts;
 
         List<Database> databases;
@@ -79,13 +79,13 @@ public class Dict {
                 return;
             }
 
-            dictClient = JDictClient.connect(
+            client = JDictClient.connect(
                     (String) opts.get("host"),
                     (Integer) opts.get("port")
             );
 
             if (opts.containsKey("username") && opts.containsKey("secret")) {
-                boolean rv = dictClient.authenticate(
+                boolean rv = client.authenticate(
                         (String) opts.get("username"),
                         (String) opts.get("secret")
                 );
@@ -96,17 +96,17 @@ public class Dict {
             }
 
             if (opts.containsKey("help")) {
-                System.out.println(dictClient.getHelp());
+                System.out.println(client.getHelp());
             } else if (opts.containsKey("banner")) {
-                System.out.println(dictClient.getBanner());
+                System.out.println(client.getBanner());
             } else if (opts.containsKey("serverinfo")) {
-                System.out.println(dictClient.getServerInfo());
+                System.out.println(client.getServerInfo());
             } else if (opts.containsKey("databaseinfo")) {
                 String database;
                 database = (String) opts.get("databaseinfo");
-                System.out.println(dictClient.getDatabaseInfo(database));
+                System.out.println(client.getDatabaseInfo(database));
             } else if (opts.containsKey("databases")) {
-                databases = dictClient.getDictionaries();
+                databases = client.getDictionaries();
                 if (databases != null) {
                     for (Database database : databases) {
                         System.out.println(database);
@@ -115,7 +115,7 @@ public class Dict {
                     System.out.println("No databases found.");
                 }
             } else if (opts.containsKey("strategies")) {
-                strategies = dictClient.getStrategies();
+                strategies = client.getStrategies();
                 if (strategies != null) {
                     for (Strategy strategy : strategies) {
                         System.out.println(strategy);
@@ -130,15 +130,15 @@ public class Dict {
                         String strategy = (String) opts.get("match");
                         if (opts.containsKey("database")) {
                             String database = (String) opts.get("database");
-                            matches = dictClient.match(word, strategy, database);
+                            matches = client.match(word, strategy, database);
                         } else {
-                            matches = dictClient.match(word, strategy);
+                            matches = client.match(word, strategy);
                         }
                     } else if (opts.containsKey("database")) {
                         String database = (String) opts.get("database");
-                        definitions = dictClient.define(word, database);
+                        definitions = client.define(word, database);
                     } else {
-                        definitions = dictClient.define(word);
+                        definitions = client.define(word);
                     }
                     if (matches != null) {
                         for (Match match : matches) {
@@ -158,7 +158,7 @@ public class Dict {
             }
 
             System.out.flush();
-            dictClient.close();
+            client.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

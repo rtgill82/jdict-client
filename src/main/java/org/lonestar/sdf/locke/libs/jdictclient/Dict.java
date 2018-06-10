@@ -22,7 +22,6 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -63,8 +62,6 @@ public class Dict {
 
         List<Database> databases;
         List<Strategy> strategies;
-        Definition definition;
-        Match match;
 
         List<Definition> definitions = null;
         List<Match> matches = null;
@@ -111,9 +108,7 @@ public class Dict {
             } else if (opts.containsKey("databases")) {
                 databases = dictClient.getDictionaries();
                 if (databases != null) {
-                    Iterator itr = databases.iterator();
-                    while (itr.hasNext()) {
-                        Database database = (Database) itr.next();
+                    for (Database database : databases) {
                         System.out.println(database);
                     }
                 } else {
@@ -122,18 +117,15 @@ public class Dict {
             } else if (opts.containsKey("strategies")) {
                 strategies = dictClient.getStrategies();
                 if (strategies != null) {
-                    Iterator itr = strategies.iterator();
-                    while (itr.hasNext()) {
-                        Strategy strategy = (Strategy) itr.next();
+                    for (Strategy strategy : strategies) {
                         System.out.println(strategy);
                     }
                 } else {
                     System.out.println("No strategies found.");
                 }
             } else if (opts.containsKey("words")) {
-                Iterator words = ((ArrayList) opts.get("words")).iterator();
-                while (words.hasNext()) {
-                    String word = (String) words.next();
+                ArrayList<String> words = (ArrayList<String>) opts.get("words");
+                for (String word : words) {
                     if (opts.containsKey("match")) {
                         String strategy = (String) opts.get("match");
                         if (opts.containsKey("database")) {
@@ -149,15 +141,11 @@ public class Dict {
                         definitions = dictClient.define(word);
                     }
                     if (matches != null) {
-                        Iterator itr = matches.iterator();
-                        while (itr.hasNext()) {
-                            match = (Match) itr.next();
+                        for (Match match : matches) {
                             System.out.println(match);
                         }
                     } else if (definitions != null) {
-                        Iterator itr = definitions.iterator();
-                        while (itr.hasNext()) {
-                            definition = (Definition) itr.next();
+                        for (Definition definition : definitions) {
                             System.out.println(definition);
                         }
                     } else {
@@ -213,7 +201,6 @@ public class Dict {
                     }
                 } else {
                     words.add(args[i]);
-                    opts.put("words", args[i]);
                 }
             }
 

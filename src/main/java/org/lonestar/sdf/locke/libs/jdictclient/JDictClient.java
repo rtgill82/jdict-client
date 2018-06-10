@@ -295,7 +295,7 @@ public class JDictClient {
      * @return list of dictionaries
      *
      */
-    public List<Database> getDictionaries() throws IOException {
+    public List<Database> getDatabases() throws IOException {
         Command command = commandBuilder(SHOW_DATABASES).build();
         List<Response> responses = command.execute(connection);
         return (List<Database>) responses.get(0).getData();

@@ -106,7 +106,7 @@ public class Dict {
                 database = (String) opts.get("databaseinfo");
                 System.out.println(client.getDatabaseInfo(database));
             } else if (opts.containsKey("databases")) {
-                databases = client.getDictionaries();
+                databases = client.getDatabases();
                 if (databases != null) {
                     for (Database database : databases) {
                         System.out.println(database);

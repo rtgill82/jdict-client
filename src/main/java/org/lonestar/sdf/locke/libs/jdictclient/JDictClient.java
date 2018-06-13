@@ -42,8 +42,8 @@ public class JDictClient {
     private static String libraryName;
     private static String libraryVendor;
     private static String libraryVersion;
+    private static String clientString;
 
-    private String clientString;
     private String host;
     private int port;
     private int timeout;
@@ -58,11 +58,12 @@ public class JDictClient {
      *
      */
     public JDictClient(String host, int port, int timeout) {
-        setClientString(getLibraryName() + " " + getLibraryVersion());
-
         this.host = host;
         this.port = port;
         this.timeout = timeout;
+        if (clientString == null) {
+            setClientString(getLibraryName() + " " + getLibraryVersion());
+        }
     }
 
     /**
@@ -193,16 +194,6 @@ public class JDictClient {
     }
 
     /**
-     * Get the client connection.
-     *
-     * @return the current connection
-     *
-     */
-    public Connection getConnection() {
-        return connection;
-    }
-
-    /**
      * Set the client string sent to the server.
      * <p>
      * Identify the client to the server with the provided string. It is
@@ -213,9 +204,18 @@ public class JDictClient {
      * @param clientString client string to send to DICT server
      *
      */
-    public void setClientString(String clientString) {
-        if (this.clientString == null)
-          this.clientString = clientString;
+    public static void setClientString(String clientString) {
+        JDictClient.clientString = clientString;
+    }
+
+    /**
+     * Get the client connection.
+     *
+     * @return the current connection
+     *
+     */
+    public Connection getConnection() {
+        return connection;
     }
 
     /**

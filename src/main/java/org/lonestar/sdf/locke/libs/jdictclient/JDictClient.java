@@ -75,9 +75,7 @@ public class JDictClient {
      *
      */
     public static JDictClient connect(String host) throws IOException {
-        JDictClient dictClient =
-          JDictClient.connect(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
-        return dictClient;
+        return connect(host, DEFAULT_PORT, DEFAULT_TIMEOUT);
     }
 
     /**
@@ -91,9 +89,7 @@ public class JDictClient {
      */
     public static JDictClient connect(String host, int port)
           throws IOException  {
-        JDictClient dictClient = new JDictClient(host, port, DEFAULT_TIMEOUT);
-        dictClient.connect();
-        return dictClient;
+        return connect(host, port, DEFAULT_TIMEOUT);
     }
 
     /**
@@ -108,9 +104,9 @@ public class JDictClient {
      */
     public static JDictClient connect(String host, int port, int timeout)
           throws IOException {
-        JDictClient dictClient = new JDictClient(host, port, timeout);
-        dictClient.connect();
-        return dictClient;
+        JDictClient client = new JDictClient(host, port, timeout);
+        client.connect();
+        return client;
     }
 
     /**

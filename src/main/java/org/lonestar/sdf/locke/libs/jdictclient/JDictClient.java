@@ -39,9 +39,9 @@ public class JDictClient {
     public static final int DEFAULT_PORT = Connection.DEFAULT_PORT;
     public static final int DEFAULT_TIMEOUT = Connection.DEFAULT_TIMEOUT;
 
-    private static String libraryName;
-    private static String libraryVendor;
-    private static String libraryVersion;
+    final private static String libraryName = getResource("library.name");
+    final private static String libraryVendor = getResource("library.vendor");
+    final private static String libraryVersion = getResource("library.version");
     private static String clientString;
 
     private String host;
@@ -62,7 +62,7 @@ public class JDictClient {
         this.port = port;
         this.timeout = timeout;
         if (clientString == null) {
-            setClientString(getLibraryName() + " " + getLibraryVersion());
+            setClientString(libraryName + " " + libraryVersion);
         }
     }
 
@@ -155,11 +155,6 @@ public class JDictClient {
      *
      */
     public static String getLibraryName() {
-        if (libraryName == null) {
-            String packageName = JDictClient.class.getPackage().getName();
-            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            libraryName = rb.getString("library.name");
-        }
         return libraryName;
     }
 
@@ -170,11 +165,6 @@ public class JDictClient {
      *
      */
     public static String getLibraryVersion() {
-        if (libraryVersion == null) {
-            String packageName = JDictClient.class.getPackage().getName();
-            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            libraryVersion = rb.getString("library.version");
-        }
         return libraryVersion;
     }
 
@@ -185,11 +175,6 @@ public class JDictClient {
      *
      */
     public static String getLibraryVendor() {
-        if (libraryVendor == null) {
-            String packageName = JDictClient.class.getPackage().getName();
-            ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
-            libraryVendor = rb.getString("library.vendor");
-        }
         return libraryVendor;
     }
 
@@ -438,6 +423,12 @@ public class JDictClient {
         Command command = commandBuilder(QUIT).build();
         List<Response> responses = command.execute(connection);
         return responses.get(0);
+    }
+
+    private static String getResource(String name) {
+        String packageName = JDictClient.class.getPackage().getName();
+        ResourceBundle rb = ResourceBundle.getBundle(packageName + ".library");
+        return rb.getString(name);
     }
 
     private ArrayList<Definition> collect_definitions(List<Response> responses)

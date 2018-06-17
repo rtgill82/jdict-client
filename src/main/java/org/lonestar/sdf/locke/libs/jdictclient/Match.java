@@ -71,9 +71,4 @@ public class Match extends Element {
     public String getWord() {
         return getValue();
     }
-
-    @Override
-    public Match clone() {
-        return new Match(getKey(), getValue());
-    }
 }

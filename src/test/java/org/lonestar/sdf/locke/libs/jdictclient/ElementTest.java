@@ -44,21 +44,6 @@ public class ElementTest {
     }
 
     /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Element#clone()}.
-     */
-    @Test
-    public void testElementClone() {
-        Element element1;
-        Element element2;
-
-        element1 = new Element(KEY, VALUE);
-        element2 = element1.clone();
-        assertNotSame(element1, element2);
-        assertEquals(KEY, element2.getKey());
-        assertEquals(VALUE, element2.getValue());
-    }
-
-    /**
      * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Element#toString()}.
      */
     @Test

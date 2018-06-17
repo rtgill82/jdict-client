@@ -66,18 +66,4 @@ public class DatabaseTest {
         db.setDatabaseInfo("info\ninfo");
         assertEquals("info\ninfo", db.getInfo());
     }
-
-    /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Database#clone()}.
-     */
-    @Test
-    public void testDatabaseClone() {
-        Database db1, db2;
-        db1 = new Database(DATABASE, DESCRIPTION);
-        db2 = db1.clone();
-        assertNotSame(db1, db2);
-        assertEquals(DATABASE, db2.getName());
-        assertEquals(DESCRIPTION, db2.getDescription());
-        assertNull(db2.getInfo());
-    }
 }

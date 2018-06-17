@@ -52,17 +52,4 @@ public class MatchTest {
         assertEquals(DATABASE, match.getDatabase());
         assertEquals(WORD, match.getWord());
     }
-
-    /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Match#clone()}.
-     */
-    @Test
-    public void testMatchClone() {
-        Match match1, match2;
-        match1 = new Match(DATABASE, WORD);
-        match2 = match1.clone();
-        assertNotSame(match1, match2);
-        assertEquals(DATABASE, match2.getDatabase());
-        assertEquals(WORD, match2.getWord());
-    }
 }

@@ -71,9 +71,4 @@ public class Strategy extends Element {
     public String getDescription() {
         return getValue();
     }
-
-    @Override
-    public Strategy clone() {
-        return new Strategy(getKey(), getValue());
-    }
 }

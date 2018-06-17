@@ -105,9 +105,4 @@ public class Database extends Element {
     void setDatabaseInfo(String databaseInfo) {
         mInfo = databaseInfo;
     }
-
-    @Override
-    public Database clone() {
-        return new Database(getKey(), getValue(), getInfo());
-    }
 }

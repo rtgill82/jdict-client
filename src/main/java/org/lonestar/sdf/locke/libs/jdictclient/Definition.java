@@ -81,15 +81,6 @@ public class Definition {
     }
 
     @Override
-    public Definition clone() {
-        return new Definition(
-          getWord(),
-          getDatabase(),
-          getDefinition()
-        );
-    }
-
-    @Override
     public String toString() {
         return mDatabase + "\n" + mDefinition;
     }

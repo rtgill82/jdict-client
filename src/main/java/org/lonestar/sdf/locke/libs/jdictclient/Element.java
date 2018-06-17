@@ -76,11 +76,6 @@ public class Element {
     }
 
     @Override
-    public Element clone() {
-        return new Element(getKey(), getValue());
-    }
-
-    @Override
     public String toString() {
         return mKey + " \"" + mValue + '"';
     }

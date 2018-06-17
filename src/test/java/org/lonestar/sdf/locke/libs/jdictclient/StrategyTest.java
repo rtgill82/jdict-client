@@ -52,19 +52,4 @@ public class StrategyTest {
         assertEquals(NAME, strat.getName());
         assertEquals(DESCRIPTION, strat.getDescription());
     }
-
-    /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Strategy#clone()}.
-     */
-    @Test
-    public void testStrategyClone() {
-        Strategy strat1;
-        Strategy strat2;
-
-        strat1 = new Strategy(NAME, DESCRIPTION);
-        strat2 = strat1.clone();
-        assertNotSame(strat1, strat2);
-        assertEquals(NAME, strat2.getName());
-        assertEquals(DESCRIPTION, strat2.getDescription());
-    }
 }

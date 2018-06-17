@@ -49,18 +49,4 @@ public class DefinitionTest {
         assertEquals(DICTDB, def.getDatabase());
         assertEquals(DEFINITION, def.getDefinition());
     }
-
-    /**
-     * Test method for {@link org.lonestar.sdf.locke.libs.jdictclient.Definition#clone()}.
-     */
-    @Test
-    public void testDefinitionClone() {
-        Definition def1, def2;
-        def1 = new Definition(WORD, DICTDB, DEFINITION);
-        def2 = def1.clone();
-        assertNotSame(def1, def2);
-        assertEquals(WORD, def2.getWord());
-        assertEquals(DICTDB, def2.getDatabase());
-        assertEquals(DEFINITION, def2.getDefinition());
-    }
 }

@@ -46,7 +46,8 @@ public class Connection {
     private final String mHost;
     private final int mPort;
     private final int mTimeout;
-    private final Socket mSocket;
+
+    private Socket mSocket;
     private Banner mBanner;
 
     private BufferedReader mIn;

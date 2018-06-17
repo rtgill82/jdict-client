@@ -178,27 +178,31 @@ public class Dict {
                 if (args[i].charAt(0) == '-') {
                     optName = args[i].substring(1);
 
-                /* String options */
-                    if (optName.equals("host")
-                            || optName.equals("username")
-                            || optName.equals("secret")
-                            || optName.equals("database")
-                            || optName.equals("databaseinfo")
-                            || optName.equals("match")) {
+                    /* String options */
+                    switch (optName) {
+                      case "host":
+                      case "username":
+                      case "secret":
+                      case "database":
+                      case "databaseinfo":
+                      case "match":
                         opts.put(optName, args[++i]);
+                        break;
 
-                    /* Integer options */
-                    } else if (optName.equals("port")) {
+                      /* Integer options */
+                      case "port":
                         opts.put(optName, Integer.parseInt(args[++i]));
+                        break;
 
-                    /* Flag options */
-                    } else if (optName.equals("version")
-                            || optName.equals("banner")
-                            || optName.equals("serverinfo")
-                            || optName.equals("help")
-                            || optName.equals("databases")
-                            || optName.equals("strategies")) {
+                      /* Flag options */
+                      case "version":
+                      case "banner":
+                      case "serverinfo":
+                      case "help":
+                      case "databases":
+                      case "strategies":
                         opts.put(optName, true);
+                        break;
                     }
                 } else {
                     words.add(args[i]);

@@ -28,13 +28,13 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Definition {
     /** The word being defined */
-    private String mWord;
+    private final String mWord;
 
     /** The database the definition was retrieved from */
-    private Database mDatabase;
+    private final Database mDatabase;
 
     /** The definition provided by the database */
-    private String mDefinition;
+    private final String mDefinition;
 
     /**
      * Construct a new Definition.

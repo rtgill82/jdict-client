@@ -27,6 +27,5 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  *
  */
 public interface ResponseHandler {
-    public abstract boolean handle(Response response)
-          throws DictException;
+    boolean handle(Response response) throws DictException;
 }

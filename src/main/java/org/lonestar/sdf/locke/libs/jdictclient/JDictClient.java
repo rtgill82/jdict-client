@@ -44,9 +44,9 @@ public class JDictClient {
     private static final String sLibraryVersion = getResource("library.version");
     private static String sClientString;
 
-    private String mHost;
-    private int mPort;
-    private int mTimeout;
+    private final String mHost;
+    private final int mPort;
+    private final int mTimeout;
     private Connection mConnection;
 
     /**
@@ -130,18 +130,13 @@ public class JDictClient {
      * Close connection to the DICT server.
      *
      * @throws IOException from associated Connection Socket
-     * @return true if successful, false if closed by remote
      *
      */
-    public boolean close() throws IOException {
-        boolean rv = true;
-
+    public void close() throws IOException {
         Response resp = quit();
         if (resp.getStatus() != 221)
           throw new DictException(mHost, resp.getStatus(), resp.getMessage());
-
         mConnection.close();
-        return rv;
     }
 
     /**
@@ -430,7 +425,7 @@ public class JDictClient {
     private ArrayList<Definition> collect_definitions(List<Response> responses)
     {
         ListIterator<Response> itr = responses.listIterator(1);
-        ArrayList<Definition> definitions = new ArrayList<Definition>();
+        ArrayList<Definition> definitions = new ArrayList<>();
         while (itr.hasNext()) {
             Response response = itr.next();
             if (response.getStatus() == 151)

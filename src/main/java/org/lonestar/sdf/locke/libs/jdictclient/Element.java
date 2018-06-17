@@ -38,10 +38,10 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Element {
     /** Key used to identify the element */
-    private String mKey;
+    private final String mKey;
 
     /** Value of the element (often a description) */
-    private String mValue;
+    private final String mValue;
 
     /**
      * Construct a new Element.

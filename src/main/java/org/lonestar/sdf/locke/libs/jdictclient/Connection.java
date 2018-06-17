@@ -43,11 +43,10 @@ public class Connection {
     /** The default connection timeout in milliseconds. */
     public static final int DEFAULT_TIMEOUT = 10000;
 
-    private String mHost;
-    private int mPort;
-    private int mTimeout;
-
-    private Socket mSocket;
+    private final String mHost;
+    private final int mPort;
+    private final int mTimeout;
+    private final Socket mSocket;
     private Banner mBanner;
 
     private BufferedReader mIn;
@@ -198,11 +197,11 @@ public class Connection {
           return mHost;
     }
 
-    String getHost() {
+    public String getHost() {
         return mHost;
     }
 
-    int getPort() {
+    public int getPort() {
         return mPort;
     }
 

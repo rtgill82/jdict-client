@@ -28,19 +28,19 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Response {
     /** The status code of the response.  */
-    private int mStatus;
+    private final int mStatus;
 
     /** The text of the response.  */
-    private String mText;
+    private final String mText;
 
     /** The full response message (including initial status code).  */
-    private String mMessage;
+    private final String mMessage;
 
     /** The raw text data following the response message, if applicable.  */
-    private String mRawData;
+    private final String mRawData;
 
     /** Parsed response data.  */
-    private Object mData;
+    private final Object mData;
 
     /**
      * Construct a new Response.

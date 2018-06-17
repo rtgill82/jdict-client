@@ -31,10 +31,10 @@ import java.net.ProtocolException;
  */
 public class DictException extends ProtocolException {
     /** DICT protocol response status code */
-    private Integer mStatus;
+    private final Integer mStatus;
 
     /** Entire DICT protocol response message */
-    private String mMessage;
+    private final String mMessage;
 
     /**
      * Construct a new DictException.

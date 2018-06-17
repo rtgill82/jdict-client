@@ -62,7 +62,7 @@ public class Command {
         OTHER
     }
 
-    private Type type;
+    private final Type type;
     private String param;
     private String database;
     private String strategy;
@@ -143,21 +143,20 @@ public class Command {
 
     private String digest_secret(Connection connection, String secret) {
         try {
-            MessageDigest authdigest = MessageDigest.getInstance("MD5");
-            String authstring = connection.getId() + secret;
-            String md5str = (new HexBinaryAdapter())
-                              .marshal(authdigest.digest());
-            return md5str;
+            MessageDigest authDigest = MessageDigest.getInstance("MD5");
+            String authString = connection.getId() + secret;
+            return new HexBinaryAdapter()
+              .marshal(authDigest.digest(authString.getBytes()));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
     private List<Response> readResponses(Connection connection)
-          throws DictConnectionException, IOException {
+          throws IOException {
         ResponseParser responseParser =
           new ResponseParser(connection, numCommands);
-        LinkedList<Response> responses = new LinkedList<Response>();
+        LinkedList<Response> responses = new LinkedList<>();
         while (responseParser.hasNext()) {
             boolean rv = true;
             Response response = responseParser.parse();
@@ -174,7 +173,7 @@ public class Command {
      *
      */
     public static class Builder {
-        private Command mCommand;
+        private final Command mCommand;
 
         /**
          * Construct a new Command.Builder.
@@ -291,7 +290,7 @@ public class Command {
         /**
          * Set the password for an AUTH Command.
          *
-         * @param password the authenticaton password
+         * @param password the authentication password
          * @return the command builder in progress
          *
          */

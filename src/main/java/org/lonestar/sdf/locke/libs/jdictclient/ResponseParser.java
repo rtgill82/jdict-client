@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -49,21 +50,9 @@ public class ResponseParser implements Iterator<Response> {
         152  // MATCH response; list of matches follows
     };
 
-    /** Regex used to match DICT protocol banner */
-    private final String BANNER_REGEX =
-        "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
-
-    /** REGEX matches a 151 status line preceding definition text */
-    private final String DEFINITION_REGEX =
-        "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
-
-    /** REGEX matches a single line matching 'key "value"' */
-    private final String ELEMENT_REGEX =
-        "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
-
-    private Connection mConnection;
+    private final Connection mConnection;
+    private final BufferedReader mResponseBuffer;
     private int mNumCommands;
-    private BufferedReader mResponseBuffer;
     private Status mStatus;
 
     /**
@@ -96,7 +85,7 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     public static Response parse(Connection connection)
-          throws DictConnectionException, IOException {
+          throws IOException {
         return new ResponseParser(connection).parse();
     }
 
@@ -109,7 +98,7 @@ public class ResponseParser implements Iterator<Response> {
      * @return the parsed server Response for the most recent Command
      *
      */
-    public Response parse() throws DictConnectionException, IOException {
+    public Response parse() throws IOException {
         mStatus = readStatusLine();
         String rawData = readData(mStatus);
         Object data = parseData(mStatus, rawData);
@@ -134,9 +123,7 @@ public class ResponseParser implements Iterator<Response> {
 
     @Override
     public boolean hasNext() {
-        if (mStatus != null)
-          return mStatus.hasNext();
-        return true;
+        return mStatus == null || mStatus.hasNext();
     }
 
     /**
@@ -153,7 +140,7 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     private Status readStatusLine()
-          throws DictConnectionException, IOException {
+          throws IOException {
         String line = mResponseBuffer.readLine();
         if (line == null)
           throw new DictConnectionException();
@@ -172,15 +159,15 @@ public class ResponseParser implements Iterator<Response> {
           throws IOException {
         for (int i : DATA_RESPONSES) {
             if (status.code == i) {
-                String data = new String();
+                StringBuilder stringBuilder = new StringBuilder();
                 String line = mResponseBuffer.readLine();
                 while (!line.equals(".")) {
                     if (line.equals(".."))
                       line = ".";
-                    data += line + "\n";
+                    stringBuilder.append(line).append("\n");
                     line = mResponseBuffer.readLine();
                 }
-                return data;
+                return stringBuilder.toString();
             }
         }
         return null;
@@ -203,6 +190,9 @@ public class ResponseParser implements Iterator<Response> {
     }
 
     private Banner readBanner(Status status) {
+        /* Regex used to match DICT protocol banner */
+        String BANNER_REGEX = "^220 (.*) <((\\w+\\.?)+)> (<.*>)$";
+
         Banner banner = null;
         String message = status.message;
         Pattern pattern = Pattern.compile(BANNER_REGEX);
@@ -210,12 +200,11 @@ public class ResponseParser implements Iterator<Response> {
         if (matcher.find()) {
             String text = message.substring(matcher.start(1), matcher.end(1));
             String id = message.substring(matcher.start(4), matcher.end(4));
-            ArrayList<String> capabilities = new ArrayList<String>();
-            String capstring =
+            String capString =
               message.substring(matcher.start(2), matcher.end(2));
-            String[] caparray = capstring.split("\\.");
-            for (int i = 0; i < caparray.length; i++)
-              capabilities.add(caparray[i]);
+            String[] capArray = capString.split("\\.");
+            ArrayList<String> capabilities =
+              new ArrayList<>(Arrays.asList(capArray));
             banner = new Banner(message, text, id, capabilities);
         }
         return banner;
@@ -234,9 +223,11 @@ public class ResponseParser implements Iterator<Response> {
      */
     private List<Element> readElements(Status status, BufferedReader buffer)
           throws IOException {
+        /* REGEX matches a single line matching 'key "value"' */
+        String ELEMENT_REGEX = "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
+
         String key, value;
         ArrayList<Element> arrayList;
-
         try {
             Constructor<? extends Element> con;
             Class<? extends Element> clazz = status.getResponseDataClass();
@@ -273,6 +264,10 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     private Definition readDefinition(Status status, String rawData) {
+        /* REGEX matches a 151 status line preceding definition text */
+        String DEFINITION_REGEX =
+          "^151 \"(.+)\" ([^\000-\037 '\"\\\\]+) \"(.+)\"$";
+
         Pattern pattern = Pattern.compile(DEFINITION_REGEX);
         String message = status.message;
         Matcher matcher = pattern.matcher(message);
@@ -294,9 +289,8 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     private BufferedReader stringBuffer(String str) {
-        StringReader sreader = new StringReader(str);
-        BufferedReader breader = new BufferedReader(sreader);
-        return breader;
+        StringReader stringReader = new StringReader(str);
+        return new BufferedReader(stringReader);
     }
 
     private class Status {

@@ -89,7 +89,7 @@ public class Dict {
                         (String) opts.get("username"),
                         (String) opts.get("secret")
                 );
-                if (rv == false)
+                if (!rv)
                     System.out.println("Authentication failed.");
                 else
                     System.out.println("Authentication success.");
@@ -166,9 +166,9 @@ public class Dict {
     }
 
     private static Hashtable parseOptions(String[] args) {
-        String optname = null;
-        Hashtable<String, Object> opts = new Hashtable<String, Object>();
-        ArrayList<String> words = new ArrayList<String>();
+        String optName = null;
+        Hashtable<String, Object> opts = new Hashtable<>();
+        ArrayList<String> words = new ArrayList<>();
 
         opts.put("host", "test.dict.org");
         opts.put("port", 2628);
@@ -176,29 +176,29 @@ public class Dict {
         try {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].charAt(0) == '-') {
-                    optname = args[i].substring(1);
+                    optName = args[i].substring(1);
 
                 /* String options */
-                    if (optname.equals("host")
-                            || optname.equals("username")
-                            || optname.equals("secret")
-                            || optname.equals("database")
-                            || optname.equals("databaseinfo")
-                            || optname.equals("match")) {
-                        opts.put(optname, args[++i]);
+                    if (optName.equals("host")
+                            || optName.equals("username")
+                            || optName.equals("secret")
+                            || optName.equals("database")
+                            || optName.equals("databaseinfo")
+                            || optName.equals("match")) {
+                        opts.put(optName, args[++i]);
 
                     /* Integer options */
-                    } else if (optname.equals("port")) {
-                        opts.put(optname, Integer.parseInt(args[++i]));
+                    } else if (optName.equals("port")) {
+                        opts.put(optName, Integer.parseInt(args[++i]));
 
                     /* Flag options */
-                    } else if (optname.equals("version")
-                            || optname.equals("banner")
-                            || optname.equals("serverinfo")
-                            || optname.equals("help")
-                            || optname.equals("databases")
-                            || optname.equals("strategies")) {
-                        opts.put(optname, true);
+                    } else if (optName.equals("version")
+                            || optName.equals("banner")
+                            || optName.equals("serverinfo")
+                            || optName.equals("help")
+                            || optName.equals("databases")
+                            || optName.equals("strategies")) {
+                        opts.put(optName, true);
                     }
                 } else {
                     words.add(args[i]);
@@ -209,7 +209,7 @@ public class Dict {
                 opts.put("words", words);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error: " + optname + " expects an argument.");
+            System.out.println("Error: " + optName + " expects an argument.");
             System.exit(1);
         }
 

@@ -28,13 +28,13 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Definition {
     /** The word being defined */
-    private String word;
+    private String mWord;
 
     /** The database the definition was retrieved from */
-    private Database database;
+    private Database mDatabase;
 
     /** The definition provided by the database */
-    private String definition;
+    private String mDefinition;
 
     /**
      * Construct a new Definition.
@@ -45,10 +45,9 @@ public class Definition {
      *
      */
     Definition(String word, Database database, String definition) {
-        super();
-        this.word = word;
-        this.database = database;
-        this.definition = definition;
+        mWord = word;
+        mDatabase = database;
+        mDefinition = definition;
     }
 
     /**
@@ -58,7 +57,7 @@ public class Definition {
      *
      */
     public String getWord() {
-        return word;
+        return mWord;
     }
 
     /**
@@ -68,7 +67,7 @@ public class Definition {
      *
      */
     public Database getDatabase() {
-        return database;
+        return mDatabase;
     }
 
     /**
@@ -78,22 +77,20 @@ public class Definition {
      *
      */
     public String getDefinition() {
-        return definition;
+        return mDefinition;
     }
 
     @Override
     public Definition clone() {
-        Definition definition = new Definition(
-                getWord(),
-                getDatabase(),
-                getDefinition()
+        return new Definition(
+          getWord(),
+          getDatabase(),
+          getDefinition()
         );
-
-        return definition;
     }
 
     @Override
     public String toString() {
-        return database + "\n" + definition;
+        return mDatabase + "\n" + mDefinition;
     }
 }

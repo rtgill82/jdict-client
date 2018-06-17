@@ -61,10 +61,10 @@ public class ResponseParser implements Iterator<Response> {
     private final String ELEMENT_REGEX =
         "^([^\000-\037 '\"\\\\]+) \"(.+)\"$";
 
-    private Connection connection;
-    private int numCommands;
-    private BufferedReader responseBuffer;
-    private Status status;
+    private Connection mConnection;
+    private int mNumCommands;
+    private BufferedReader mResponseBuffer;
+    private Status mStatus;
 
     /**
      * Construct a new ResponseParser.
@@ -77,9 +77,9 @@ public class ResponseParser implements Iterator<Response> {
     }
 
     public ResponseParser(Connection connection, int numCommands) {
-        this.connection = connection;
-        this.numCommands = numCommands - 1;
-        this.responseBuffer = connection.getInputReader();
+        mConnection = connection;
+        mNumCommands = numCommands - 1;
+        mResponseBuffer = connection.getInputReader();
     }
 
     /**
@@ -110,13 +110,13 @@ public class ResponseParser implements Iterator<Response> {
      *
      */
     public Response parse() throws DictConnectionException, IOException {
-        status = readStatusLine();
-        String rawData = readData(status);
-        Object data = parseData(status, rawData);
+        mStatus = readStatusLine();
+        String rawData = readData(mStatus);
+        Object data = parseData(mStatus, rawData);
         return new Response(
-            status.code,
-            status.message,
-            status.text,
+            mStatus.code,
+            mStatus.message,
+            mStatus.text,
             rawData, data
           );
     }
@@ -134,8 +134,8 @@ public class ResponseParser implements Iterator<Response> {
 
     @Override
     public boolean hasNext() {
-        if (status != null)
-          return status.hasNext();
+        if (mStatus != null)
+          return mStatus.hasNext();
         return true;
     }
 
@@ -154,7 +154,7 @@ public class ResponseParser implements Iterator<Response> {
      */
     private Status readStatusLine()
           throws DictConnectionException, IOException {
-        String line = responseBuffer.readLine();
+        String line = mResponseBuffer.readLine();
         if (line == null)
           throw new DictConnectionException();
 
@@ -163,7 +163,7 @@ public class ResponseParser implements Iterator<Response> {
             String text = line.substring(4);
             return new Status(code, text, line);
         } catch (NumberFormatException e) {
-            throw new DictException(connection.getHost(), null,
+            throw new DictException(mConnection.getHost(), null,
                                     "Invalid status line: " + line);
         }
     }
@@ -173,12 +173,12 @@ public class ResponseParser implements Iterator<Response> {
         for (int i : DATA_RESPONSES) {
             if (status.code == i) {
                 String data = new String();
-                String line = responseBuffer.readLine();
+                String line = mResponseBuffer.readLine();
                 while (!line.equals(".")) {
                     if (line.equals(".."))
                       line = ".";
                     data += line + "\n";
-                    line = responseBuffer.readLine();
+                    line = mResponseBuffer.readLine();
                 }
                 return data;
             }
@@ -189,14 +189,14 @@ public class ResponseParser implements Iterator<Response> {
     private Object parseData(Status status, String rawData)
           throws IOException {
         Object data = null;
-        Class cl = status.getResponseDataClass();
-        if (cl != null && Element.class.isAssignableFrom(cl)) {
+        Class clazz = status.getResponseDataClass();
+        if (clazz != null && Element.class.isAssignableFrom(clazz)) {
             data = readElements(status, stringBuffer(rawData));
-        } else if (cl == Banner.class) {
+        } else if (clazz == Banner.class) {
             data = readBanner(status);
-        } else if (cl == Definition.class) {
+        } else if (clazz == Definition.class) {
             data = readDefinition(status, rawData);
-        } else if (cl == String.class) {
+        } else if (clazz == String.class) {
             data = rawData;
         }
         return data;
@@ -239,8 +239,8 @@ public class ResponseParser implements Iterator<Response> {
 
         try {
             Constructor<? extends Element> con;
-            Class<? extends Element> cl = status.getResponseDataClass();
-            con = cl.getConstructor(String.class, String.class);
+            Class<? extends Element> clazz = status.getResponseDataClass();
+            con = clazz.getConstructor(String.class, String.class);
 
             arrayList = new ArrayList<>();
             Pattern pattern = Pattern.compile(ELEMENT_REGEX);
@@ -312,8 +312,8 @@ public class ResponseParser implements Iterator<Response> {
 
         boolean hasNext() {
             if (code >= 200) {
-                if (numCommands > 0) {
-                    numCommands -= 1;
+                if (mNumCommands > 0) {
+                    mNumCommands -= 1;
                     return true;
                 }
                 return false;
@@ -322,35 +322,35 @@ public class ResponseParser implements Iterator<Response> {
         }
 
         Class getResponseDataClass() {
-            Class cl = null;
+            Class clazz = null;
             switch (code) {
               case 112: // SHOW INFO response
               case 113: // HELP response
               case 114: // SHOW SERVER response
-                cl = String.class;
+                clazz = String.class;
                 break;
 
               case 110: // SHOW DATABASES response
-                cl = Database.class;
+                clazz = Database.class;
                 break;
 
               case 111: // SHOW STRATEGIES response
-                cl = Strategy.class;
+                clazz = Strategy.class;
                 break;
 
               case 151: // DEFINE definition response
-                cl = Definition.class;
+                clazz = Definition.class;
                 break;
 
               case 152: // MATCH response
-                cl = Match.class;
+                clazz = Match.class;
                 break;
 
               case 220: // Connection banner
-                cl = Banner.class;
+                clazz = Banner.class;
                 break;
             }
-            return cl;
+            return clazz;
         }
     }
 }

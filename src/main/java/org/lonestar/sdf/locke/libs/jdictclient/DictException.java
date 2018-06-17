@@ -31,10 +31,10 @@ import java.net.ProtocolException;
  */
 public class DictException extends ProtocolException {
     /** DICT protocol response status code */
-    private Integer status;
+    private Integer mStatus;
 
     /** Entire DICT protocol response message */
-    private String message;
+    private String mMessage;
 
     /**
      * Construct a new DictException.
@@ -46,8 +46,8 @@ public class DictException extends ProtocolException {
      */
     DictException(String host, Integer status, String message) {
         super(host);
-        this.status = status;
-        this.message = message;
+        mStatus = status;
+        mMessage = message;
     }
 
     /**
@@ -67,11 +67,11 @@ public class DictException extends ProtocolException {
      *
      */
     public Integer getStatus() {
-        return status;
+        return mStatus;
     }
 
     @Override
     public String getMessage() {
-        return String.format("%s: %s", super.getMessage(), message);
+        return String.format("%s: %s", super.getMessage(), mMessage);
     }
 }

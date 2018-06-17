@@ -28,7 +28,7 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Database extends Element {
     /** Database source, copyright and licensing information */
-    private String info;
+    private String mInfo;
 
     /**
      * Construct a new Database.
@@ -51,7 +51,7 @@ public class Database extends Element {
      */
     public Database(String database, String description, String databaseInfo) {
         super(database, description);
-        info = databaseInfo;
+        mInfo = databaseInfo;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Database extends Element {
      *
      */
     public String getInfo() {
-        return info;
+        return mInfo;
     }
 
     /**
@@ -103,17 +103,11 @@ public class Database extends Element {
      *
      */
     void setDatabaseInfo(String databaseInfo) {
-        info = databaseInfo;
+        mInfo = databaseInfo;
     }
 
     @Override
     public Database clone() {
-        Database dict = new Database(
-                getKey(),
-                getValue()
-        );
-
-        dict.setDatabaseInfo(getInfo());
-        return dict;
+        return new Database(getKey(), getValue(), getInfo());
     }
 }

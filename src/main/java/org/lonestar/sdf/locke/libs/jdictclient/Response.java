@@ -28,19 +28,19 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Response {
     /** The status code of the response.  */
-    private int status;
+    private int mStatus;
 
     /** The text of the response.  */
-    private String text;
+    private String mText;
 
     /** The full response message (including initial status code).  */
-    private String message;
+    private String mMessage;
 
     /** The raw text data following the response message, if applicable.  */
-    private String rawData;
+    private String mRawData;
 
     /** Parsed response data.  */
-    private Object data;
+    private Object mData;
 
     /**
      * Construct a new Response.
@@ -54,11 +54,11 @@ public class Response {
      */
     Response(int status, String message, String text,
              String rawData, Object data) {
-        this.status = status;
-        this.message = message;
-        this.text = text;
-        this.rawData = rawData;
-        this.data = data;
+        mStatus = status;
+        mMessage = message;
+        mText = text;
+        mRawData = rawData;
+        mData = data;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Response {
      *
      */
     public int getStatus() {
-        return status;
+        return mStatus;
     }
 
     /**
@@ -90,7 +90,7 @@ public class Response {
      *
      */
     public String getText() {
-        return text;
+        return mText;
     }
 
     /**
@@ -100,7 +100,7 @@ public class Response {
      *
      */
     public String getMessage() {
-        return message;
+        return mMessage;
     }
 
     /**
@@ -110,7 +110,7 @@ public class Response {
      *
      */
     public String getRawData() {
-        return rawData;
+        return mRawData;
     }
 
     /**
@@ -120,6 +120,6 @@ public class Response {
      *
      */
     public Object getData() {
-        return data;
+        return mData;
     }
 }

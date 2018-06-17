@@ -39,15 +39,15 @@ public class JDictClient {
     public static final int DEFAULT_PORT = Connection.DEFAULT_PORT;
     public static final int DEFAULT_TIMEOUT = Connection.DEFAULT_TIMEOUT;
 
-    final private static String libraryName = getResource("library.name");
-    final private static String libraryVendor = getResource("library.vendor");
-    final private static String libraryVersion = getResource("library.version");
-    private static String clientString;
+    private static final String sLibraryName = getResource("library.name");
+    private static final String sLibraryVendor = getResource("library.vendor");
+    private static final String sLibraryVersion = getResource("library.version");
+    private static String sClientString;
 
-    private String host;
-    private int port;
-    private int timeout;
-    private Connection connection;
+    private String mHost;
+    private int mPort;
+    private int mTimeout;
+    private Connection mConnection;
 
     /**
      * Construct a new JDictClient.
@@ -58,11 +58,11 @@ public class JDictClient {
      *
      */
     public JDictClient(String host, int port, int timeout) {
-        this.host = host;
-        this.port = port;
-        this.timeout = timeout;
-        if (clientString == null) {
-            setClientString(libraryName + " " + libraryVersion);
+        mHost = host;
+        mPort = port;
+        mTimeout = timeout;
+        if (sClientString == null) {
+            setClientString(sLibraryName + " " + sLibraryVersion);
         }
     }
 
@@ -119,9 +119,9 @@ public class JDictClient {
      *
      */
     public void connect() throws IOException {
-        if (connection == null) {
-            connection = new Connection(host, port, timeout);
-            connection.connect();
+        if (mConnection == null) {
+            mConnection = new Connection(mHost, mPort, mTimeout);
+            mConnection.connect();
             sendClient();
         }
     }
@@ -138,9 +138,9 @@ public class JDictClient {
 
         Response resp = quit();
         if (resp.getStatus() != 221)
-          throw new DictException(host, resp.getStatus(), resp.getMessage());
+          throw new DictException(mHost, resp.getStatus(), resp.getMessage());
 
-        connection.close();
+        mConnection.close();
         return rv;
     }
 
@@ -151,7 +151,7 @@ public class JDictClient {
      *
      */
     public static String getLibraryName() {
-        return libraryName;
+        return sLibraryName;
     }
 
     /**
@@ -161,7 +161,7 @@ public class JDictClient {
      *
      */
     public static String getLibraryVersion() {
-        return libraryVersion;
+        return sLibraryVersion;
     }
 
     /**
@@ -171,7 +171,7 @@ public class JDictClient {
      *
      */
     public static String getLibraryVendor() {
-        return libraryVendor;
+        return sLibraryVendor;
     }
 
     /**
@@ -186,7 +186,7 @@ public class JDictClient {
      *
      */
     public static void setClientString(String clientString) {
-        JDictClient.clientString = clientString;
+        sClientString = clientString;
     }
 
     /**
@@ -196,7 +196,7 @@ public class JDictClient {
      *
      */
     public Connection getConnection() {
-        return connection;
+        return mConnection;
     }
 
     /**
@@ -210,11 +210,11 @@ public class JDictClient {
      */
     private void sendClient() throws IOException {
         Command command = commandBuilder(CLIENT)
-                            .setParamString(clientString).build();
-        List<Response> responses = command.execute(connection);
+                            .setParamString(sClientString).build();
+        List<Response> responses = command.execute(mConnection);
         Response resp = responses.get(0);
         if (resp.getStatus() != 250)
-          throw new DictException(host, resp.getStatus(), resp.getMessage());
+          throw new DictException(mHost, resp.getStatus(), resp.getMessage());
     }
 
     /**
@@ -224,7 +224,7 @@ public class JDictClient {
      *
      */
     public Banner getBanner() {
-        return connection.getBanner();
+        return mConnection.getBanner();
     }
 
     /**
@@ -237,7 +237,7 @@ public class JDictClient {
     public String getServerInfo() throws IOException {
         Command.Builder builder = commandBuilder(SHOW_SERVER);
         Command command = builder.build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return responses.get(0).getRawData();
     }
 
@@ -251,7 +251,7 @@ public class JDictClient {
     public String getHelp() throws IOException {
         Command.Builder builder = commandBuilder(HELP);
         Command command = builder.build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return responses.get(0).getRawData();
     }
 
@@ -271,7 +271,7 @@ public class JDictClient {
                             .setUsername(username)
                             .setPassword(secret)
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         if (responses.get(0).getStatus() == 230)
           rv = true;
         return rv;
@@ -288,7 +288,7 @@ public class JDictClient {
      */
     public List<Database> getDatabases() throws IOException {
         Command command = commandBuilder(SHOW_DATABASES).build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return (List<Database>) responses.get(0).getData();
     }
 
@@ -304,7 +304,7 @@ public class JDictClient {
         Command command = commandBuilder(SHOW_INFO)
                             .setDatabase(database)
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return responses.get(0).getRawData();
     }
 
@@ -320,7 +320,7 @@ public class JDictClient {
         Command command = commandBuilder(SHOW_INFO)
                             .setDatabase(database.getName())
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return responses.get(0).getRawData();
     }
 
@@ -333,7 +333,7 @@ public class JDictClient {
      */
     public List<Strategy> getStrategies() throws IOException {
         Command command = commandBuilder(SHOW_STRATEGIES).build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return (List<Strategy>) responses.get(0).getData();
     }
 
@@ -349,7 +349,7 @@ public class JDictClient {
         Command command = commandBuilder(DEFINE)
                             .setParamString(word)
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         if (responses.get(0).getStatus() == 552) return null;
         return collect_definitions(responses);
     }
@@ -369,7 +369,7 @@ public class JDictClient {
                             .setParamString(word)
                             .setDatabase(database)
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         if (responses.get(0).getStatus() == 552) return null;
         return collect_definitions(responses);
     }
@@ -405,7 +405,7 @@ public class JDictClient {
                             .setStrategy(strategy)
                             .setDatabase(database)
                             .build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return (List<Match>) responses.get(0).getData();
     }
 
@@ -417,7 +417,7 @@ public class JDictClient {
      */
     private Response quit() throws IOException {
         Command command = commandBuilder(QUIT).build();
-        List<Response> responses = command.execute(connection);
+        List<Response> responses = command.execute(mConnection);
         return responses.get(0);
     }
 
@@ -464,7 +464,7 @@ public class JDictClient {
                  *
                  */
               case 420: case 421: case 502: case 503: case 530:
-                throw new DictServerException(host,
+                throw new DictServerException(mHost,
                                               response.getStatus(),
                                               response.getMessage());
 
@@ -481,7 +481,7 @@ public class JDictClient {
                  *
                  */
               case 500: case 501: case 550: case 551:
-                throw new DictSyntaxException(host,
+                throw new DictSyntaxException(mHost,
                                               response.getStatus(),
                                               response.getMessage());
             }

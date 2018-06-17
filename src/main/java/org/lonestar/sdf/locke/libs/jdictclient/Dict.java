@@ -124,7 +124,8 @@ public class Dict {
                     System.out.println("No strategies found.");
                 }
             } else if (opts.containsKey("words")) {
-                ArrayList<String> words = (ArrayList<String>) opts.get("words");
+                ArrayList<String> words =
+                  (ArrayList<String>) opts.get("words");
                 for (String word : words) {
                     if (opts.containsKey("match")) {
                         String strategy = (String) opts.get("match");

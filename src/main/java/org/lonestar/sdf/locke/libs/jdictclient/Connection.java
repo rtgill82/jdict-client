@@ -43,15 +43,15 @@ public class Connection {
     /** The default connection timeout in milliseconds. */
     public static final int DEFAULT_TIMEOUT = 10000;
 
-    private String host;
-    private int port;
-    private int timeout;
+    private String mHost;
+    private int mPort;
+    private int mTimeout;
 
-    private Socket socket;
-    private Banner banner;
+    private Socket mSocket;
+    private Banner mBanner;
 
-    private BufferedReader in;
-    private PrintWriter out;
+    private BufferedReader mIn;
+    private PrintWriter mOut;
 
     /**
      * Construct a new connection.
@@ -62,10 +62,10 @@ public class Connection {
      *
      */
     public Connection(String host, int port, int timeout) {
-        this.host = host;
-        this.port = port;
-        this.timeout = timeout;
-        socket = new Socket();
+        mHost = host;
+        mPort = port;
+        mTimeout = timeout;
+        mSocket = new Socket();
     }
 
     /**
@@ -96,27 +96,27 @@ public class Connection {
      *
      */
     public void connect() throws IOException {
-        if (!socket.isConnected()) {
-            socket.connect(new InetSocketAddress(host, port), timeout);
-            in = new BufferedReader(new InputStreamReader(getInputStream()));
-            out = new PrintWriter(getOutputStream(), true);
+        if (!mSocket.isConnected()) {
+            mSocket.connect(new InetSocketAddress(mHost, mPort), mTimeout);
+            mIn = new BufferedReader(new InputStreamReader(getInputStream()));
+            mOut = new PrintWriter(getOutputStream(), true);
             Response response = ResponseParser.parse(this);
             switch (response.getStatus()) {
               case 220: /* Connection banner */
-                banner = (Banner) response.getData();
+                mBanner = (Banner) response.getData();
                 break;
 
               case 420: /* Server temporarily unavailable */
               case 421: /* Server shutting down at operator request */
               case 530: /* Access denied */
                 throw new DictServerException(
-                    host, response.getStatus(),
+                    mHost, response.getStatus(),
                     response.getMessage()
                   );
 
               default:
                 throw new DictException(
-                    host, response.getStatus(),
+                    mHost, response.getStatus(),
                     "Connection banner expected, received: "
                     + response.getMessage()
                   );
@@ -131,7 +131,7 @@ public class Connection {
      *
      */
     public void close() throws IOException {
-        socket.close();
+        mSocket.close();
     }
 
     /**
@@ -141,7 +141,7 @@ public class Connection {
      *
      */
     public Banner getBanner() {
-        return banner;
+        return mBanner;
     }
 
     /**
@@ -155,8 +155,8 @@ public class Connection {
      *
      */
     public String getId() {
-        if (banner != null)
-          return banner.connectionId;
+        if (mBanner != null)
+          return mBanner.connectionId;
         return null;
     }
 
@@ -171,8 +171,8 @@ public class Connection {
      *
      */
     public List<String> getCapabilities() {
-        if (banner != null)
-          return banner.capabilities;
+        if (mBanner != null)
+          return mBanner.capabilities;
         return null;
     }
 
@@ -192,33 +192,33 @@ public class Connection {
 
     @Override
     public String toString() {
-        if (port != DEFAULT_PORT)
-          return host + ":" + port;
+        if (mPort != DEFAULT_PORT)
+          return mHost + ":" + mPort;
         else
-          return host;
+          return mHost;
     }
 
     String getHost() {
-        return host;
+        return mHost;
     }
 
     int getPort() {
-        return port;
+        return mPort;
     }
 
     InputStream getInputStream() throws IOException {
-        return socket.getInputStream();
+        return mSocket.getInputStream();
     }
 
     OutputStream getOutputStream() throws IOException {
-        return socket.getOutputStream();
+        return mSocket.getOutputStream();
     }
 
     BufferedReader getInputReader() {
-        return in;
+        return mIn;
     }
 
     PrintWriter getOutputWriter() {
-        return out;
+        return mOut;
     }
 }

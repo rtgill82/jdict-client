@@ -74,11 +74,6 @@ public class Match extends Element {
 
     @Override
     public Match clone() {
-        Match match = new Match(
-            getKey(),
-            getValue()
-        );
-
-        return match;
+        return new Match(getKey(), getValue());
     }
 }

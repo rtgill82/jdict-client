@@ -145,7 +145,8 @@ public class Command {
         try {
             MessageDigest authdigest = MessageDigest.getInstance("MD5");
             String authstring = connection.getId() + secret;
-            String md5str = (new HexBinaryAdapter()).marshal(authdigest.digest());
+            String md5str = (new HexBinaryAdapter())
+                              .marshal(authdigest.digest());
             return md5str;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -173,7 +174,7 @@ public class Command {
      *
      */
     public static class Builder {
-        private Command command;
+        private Command mCommand;
 
         /**
          * Construct a new Command.Builder.
@@ -182,7 +183,7 @@ public class Command {
          *
          */
         public Builder(Type type) {
-            command = new Command(type);
+            mCommand = new Command(type);
         }
 
         /**
@@ -195,13 +196,13 @@ public class Command {
          *
          */
         public Builder setCommandString(String command) {
-            if (this.command.type != Type.OTHER)
+            if (mCommand.type != Type.OTHER)
               throw new RuntimeException(
                   "Command string parameter only valid for OTHER commands."
                 );
 
-            this.command.command = command.trim();
-            this.command.numCommands = command.split("\r\n|\r|\n").length;
+            mCommand.command = command.trim();
+            mCommand.numCommands = command.split("\r\n|\r|\n").length;
             return this;
         }
 
@@ -214,7 +215,7 @@ public class Command {
          *
          */
         public Builder setParamString(String param) {
-            command.param = param;
+            mCommand.param = param;
             return this;
         }
 
@@ -241,15 +242,15 @@ public class Command {
          *
          */
         public Builder setDatabase(String database) {
-            if (command.type != Type.DEFINE && command.type != Type.MATCH
-                && command.type != Type.SHOW_INFO)
+            if (mCommand.type != Type.DEFINE && mCommand.type != Type.MATCH
+                && mCommand.type != Type.SHOW_INFO)
               throw new RuntimeException(
                   "Database parameter only valid for " +
                   "DEFINE, MATCH, and SHOW_INFO commands."
                 );
 
             if (database != null)
-              command.database = database;
+              mCommand.database = database;
             return this;
         }
 
@@ -261,12 +262,12 @@ public class Command {
          *
          */
         public Builder setStrategy(String strategy) {
-            if (command.type != Type.MATCH)
+            if (mCommand.type != Type.MATCH)
               throw new RuntimeException(
                   "Strategy parameter only valid for MATCH commands."
                 );
 
-            command.strategy = strategy;
+            mCommand.strategy = strategy;
             return this;
         }
 
@@ -278,12 +279,12 @@ public class Command {
          *
          */
         public Builder setUsername(String username) {
-            if (command.type != Type.AUTH)
+            if (mCommand.type != Type.AUTH)
               throw new RuntimeException(
                   "Username parameter only valid for AUTH commands."
                 );
 
-            command.username = username;
+            mCommand.username = username;
             return this;
         }
 
@@ -295,17 +296,17 @@ public class Command {
          *
          */
         public Builder setPassword(String password) {
-            if (command.type != Type.AUTH)
+            if (mCommand.type != Type.AUTH)
               throw new RuntimeException(
                   "Password parameter only valid for AUTH commands."
                 );
 
-            command.secret = password;
+            mCommand.secret = password;
             return this;
         }
 
         public Builder setResponseHandler(ResponseHandler handler) {
-            command.handler = handler;
+            mCommand.handler = handler;
             return this;
         }
 
@@ -316,41 +317,41 @@ public class Command {
          *
          */
         public Command build() {
-            if (command.type == Type.CLIENT && command.param == null) {
+            if (mCommand.type == Type.CLIENT && mCommand.param == null) {
                 throw new RuntimeException(
                             "CLIENT command requires a parameter string."
                           );
-            } else if (command.type == Type.DEFINE && command.param == null) {
+            } else if (mCommand.type == Type.DEFINE
+                       && mCommand.param == null) {
                 throw new RuntimeException(
                             "DEFINE command requires a word or parameter."
                           );
-            } else if (command.type == Type.MATCH
-                       && command.strategy == null) {
+            } else if (mCommand.type == Type.MATCH
+                       && mCommand.strategy == null) {
                 throw new RuntimeException(
                             "MATCH command requires a strategy."
                           );
-            } else if (command.type == Type.MATCH && command.param == null) {
+            } else if (mCommand.type == Type.MATCH && mCommand.param == null) {
                 throw new RuntimeException(
                             "MATCH command requires a parameter."
                           );
-            } else if (command.type == Type.AUTH && command.username == null
-                       && command.secret == null) {
+            } else if (mCommand.type == Type.AUTH && mCommand.username == null
+                       && mCommand.secret == null) {
                 throw new RuntimeException(
                             "AUTH command requires a username and password."
                           );
-            } else if (command.type == Type.SHOW_INFO
-                       && command.database == null) {
+            } else if (mCommand.type == Type.SHOW_INFO
+                       && mCommand.database == null) {
                 throw new RuntimeException(
                             "SHOW_INFO command requires a database."
                           );
-            } else if (command.type == Type.OTHER
-                       && command.command == null) {
+            } else if (mCommand.type == Type.OTHER
+                       && mCommand.command == null) {
                 throw new RuntimeException(
                             "OTHER command requires a raw command string."
                           );
             }
-
-            return command;
+            return mCommand;
         }
     }
 }

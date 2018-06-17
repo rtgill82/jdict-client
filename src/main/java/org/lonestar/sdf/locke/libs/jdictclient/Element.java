@@ -38,10 +38,10 @@ package org.lonestar.sdf.locke.libs.jdictclient;
  */
 public class Element {
     /** Key used to identify the element */
-    private String key;
+    private String mKey;
 
     /** Value of the element (often a description) */
-    private String value;
+    private String mValue;
 
     /**
      * Construct a new Element.
@@ -51,9 +51,8 @@ public class Element {
      *
      */
     public Element(String key, String value) {
-        super();
-        this.key = key;
-        this.value = value;
+        mKey = key;
+        mValue = value;
     }
 
     /**
@@ -63,7 +62,7 @@ public class Element {
      *
      */
     public String getKey() {
-        return key;
+        return mKey;
     }
 
     /**
@@ -73,21 +72,16 @@ public class Element {
      *
      */
     public String getValue() {
-        return value;
+        return mValue;
     }
 
     @Override
     public Element clone() {
-        Element element = new Element(
-            getKey(),
-            getValue()
-        );
-
-        return element;
+        return new Element(getKey(), getValue());
     }
 
     @Override
     public String toString() {
-        return key + " \"" + value + '"';
+        return mKey + " \"" + mValue + '"';
     }
 }

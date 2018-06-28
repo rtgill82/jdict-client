@@ -23,7 +23,11 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.IllegalAccessException;
+import java.lang.InstantiationException;
+import java.lang.NoSuchMethodException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -31,6 +35,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Parses and returns a DICT protocol response.
@@ -245,7 +250,8 @@ public class ResponseParser implements Iterator<Response> {
                 }
                 line = buffer.readLine();
             }
-        } catch (ReflectiveOperationException e) {
+        } catch (IllegalAccessException | InstantiationException
+                 | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         return arrayList;

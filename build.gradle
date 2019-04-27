@@ -33,7 +33,7 @@ jar {
 task tags(overwrite: true) {
   exec {
     executable 'ctags'
-    args '--tag-relative', '-R', "-f $rootDir/.git/tags", "$rootDir"
+    args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
   }
 }
 

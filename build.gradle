@@ -7,6 +7,11 @@ group    'org.lonestar.sdf.locke.libs.jdictclient'
 project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
 jar.baseName 'jdict-client'
 
+// Build properties
+debugBuild = project.getProperty('debugBuild').toBoolean()
+lintUnchecked = project.getProperty('lintUnchecked').toBoolean()
+commandClient = project.getProperty('commandClient').toBoolean()
+
 processResources {
   filter ReplaceTokens, tokens: [
     'library.name': project.property('name'),
@@ -21,13 +26,19 @@ dependencies {
 }
 
 compileJava {
-  options.debug = project.getProperty('debugBuild').toBoolean()
-  if (project.getProperty('lintUnchecked').toBoolean())
+  options.debug = debugBuild
+  if (lintUnchecked)
     options.compilerArgs << '-Xlint:unchecked'
 }
 
 jar {
-  manifest { attributes 'Main-Class': project.group + ".Dict" }
+  if (commandClient) {
+    manifest { attributes 'Main-Class': project.group + ".Dict" }
+  }
+}
+
+if (!commandClient) {
+  sourceSets.main.java.exclude 'org/lonestar/sdf/locke/libs/jdictclient/Dict.java'
 }
 
 task tags(overwrite: true) {

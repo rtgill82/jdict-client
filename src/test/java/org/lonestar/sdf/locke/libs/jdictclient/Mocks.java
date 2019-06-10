@@ -20,14 +20,10 @@
  */
 package org.lonestar.sdf.locke.libs.jdictclient;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -35,6 +31,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
 /**
@@ -54,9 +53,12 @@ class Mocks {
     public Mocks() {
         MockitoAnnotations.initMocks(this);
         try {
+            when(inetAddress.getHostName()).thenReturn("localhost");
             when(socket.getInputStream()).thenReturn(input);
             when(socket.getOutputStream()).thenReturn(output);
-            when(inetAddress.getHostName()).thenReturn("localhost");
+            when(socket.getInetAddress()).thenReturn(inetAddress);
+            when(socket.getPort()).thenReturn(Connection.DEFAULT_PORT);
+            when(socket.getSoTimeout()).thenReturn(Connection.DEFAULT_TIMEOUT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,12 +67,17 @@ class Mocks {
     /**
      * Create mock Connection.
      *
-     * @param str the string to return when reading from connection.
+     * @param str the String to return when reading from the connection.
      */
     public static Connection mockConnection(String str) {
         return new Mocks().connection(str);
     }
 
+    /**
+     *  Create a mock Socket.
+     *
+     *  @param str the String to return when reading from the socket.
+     */
     public static Socket mockSocket(String str) {
         return new Mocks().socket(str);
     }
@@ -85,9 +92,6 @@ class Mocks {
         try {
             when(socket.getInputStream()).thenReturn(stringStream(str));
             when(socket.isConnected()).thenReturn(true);
-            when(socket.getInetAddress()).thenReturn(inetAddress);
-            when(socket.getPort()).thenReturn(Connection.DEFAULT_PORT);
-            when(socket.getSoTimeout()).thenReturn(Connection.DEFAULT_TIMEOUT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +99,7 @@ class Mocks {
     }
 
     /**
-     * Create buffered reader for String.
+     * Create BufferedReader for a String.
      */
     private BufferedReader stringReader(String str) {
         StringReader sreader = new StringReader(str);
@@ -103,6 +107,9 @@ class Mocks {
         return breader;
     }
 
+    /**
+     * Create InputStream for a String.
+     */
     private InputStream stringStream(String str) {
         try {
             return new ByteArrayInputStream(str.getBytes("UTF-8"));

@@ -23,6 +23,8 @@ package org.lonestar.sdf.locke.libs.jdictclient;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -51,14 +53,22 @@ public class ConnectionTest {
         Connection connection = mockConnection(BANNER);
         try {
             connection.connect();
+            assertConnectionBanner(connection);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        assertEquals(BANNER, connection.getBanner().message);
-        assertEquals("<100@dictd.org>", connection.getId());
-        List capabilities = connection.getCapabilities();
-        assertTrue(capabilities.contains("auth"));
-        assertTrue(capabilities.contains("mime"));
+    }
+
+    @Test
+    public void testSuccessfulSocketConnection() {
+        Socket socket = mockSocket(BANNER);
+        try {
+            Connection connection = new Connection(socket);
+            connection.connect();
+            assertConnectionBanner(connection);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -95,5 +105,25 @@ public class ConnectionTest {
             assertEquals(new Integer(530),
                          ((DictServerException) e).getStatus());
         }
+    }
+
+    @Test
+    public void testUnconnectedSocket() {
+        Socket socket = new Socket();
+        try {
+            Connection connection = new Connection(socket);
+            connection.connect();
+        } catch (IOException e) {
+            assertEquals(SocketException.class, e.getClass());
+            assertEquals(e.getMessage(), "Socket is not connected.");
+        }
+    }
+
+    void assertConnectionBanner(Connection connection) {
+        assertEquals(BANNER, connection.getBanner().message);
+        assertEquals("<100@dictd.org>", connection.getId());
+        List capabilities = connection.getCapabilities();
+        assertTrue(capabilities.contains("auth"));
+        assertTrue(capabilities.contains("mime"));
     }
 }

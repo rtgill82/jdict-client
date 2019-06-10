@@ -44,9 +44,6 @@ public class JDictClient {
     private static final String sLibraryVersion = getResource("library.version");
     private static String sClientString;
 
-    private final String mHost;
-    private final int mPort;
-    private final int mTimeout;
     private Connection mConnection;
 
     /**
@@ -58,9 +55,7 @@ public class JDictClient {
      *
      */
     public JDictClient(String host, int port, int timeout) {
-        mHost = host;
-        mPort = port;
-        mTimeout = timeout;
+        mConnection = new Connection(host, port, timeout);
         if (sClientString == null) {
             setClientString(sLibraryName + " " + sLibraryVersion);
         }
@@ -88,7 +83,7 @@ public class JDictClient {
      *
      */
     public static JDictClient connect(String host, int port)
-          throws IOException  {
+          throws IOException {
         return connect(host, port, DEFAULT_TIMEOUT);
     }
 
@@ -119,11 +114,8 @@ public class JDictClient {
      *
      */
     public void connect() throws IOException {
-        if (mConnection == null) {
-            mConnection = new Connection(mHost, mPort, mTimeout);
-            mConnection.connect();
-            sendClient();
-        }
+        mConnection.connect();
+        sendClient();
     }
 
     /**
@@ -134,8 +126,11 @@ public class JDictClient {
      */
     public void close() throws IOException {
         Response resp = quit();
-        if (resp.getStatus() != 221)
-          throw new DictException(mHost, resp.getStatus(), resp.getMessage());
+        if (resp.getStatus() != 221) {
+            throw new DictException(mConnection.getHost(),
+                                    resp.getStatus(),
+                                    resp.getMessage());
+        }
         mConnection.close();
     }
 
@@ -208,8 +203,11 @@ public class JDictClient {
                             .setParamString(sClientString).build();
         List<Response> responses = command.execute(mConnection);
         Response resp = responses.get(0);
-        if (resp.getStatus() != 250)
-          throw new DictException(mHost, resp.getStatus(), resp.getMessage());
+        if (resp.getStatus() != 250) {
+            throw new DictException(mConnection.getHost(),
+                                    resp.getStatus(),
+                                    resp.getMessage());
+        }
     }
 
     /**
@@ -459,7 +457,7 @@ public class JDictClient {
                  *
                  */
               case 420: case 421: case 502: case 503: case 530:
-                throw new DictServerException(mHost,
+                throw new DictServerException(mConnection.getHost(),
                                               response.getStatus(),
                                               response.getMessage());
 
@@ -476,7 +474,7 @@ public class JDictClient {
                  *
                  */
               case 500: case 501: case 550: case 551:
-                throw new DictSyntaxException(mHost,
+                throw new DictSyntaxException(mConnection.getHost(),
                                               response.getStatus(),
                                               response.getMessage());
             }

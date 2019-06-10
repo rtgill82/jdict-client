@@ -25,11 +25,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +43,7 @@ import static org.mockito.Mockito.*;
  */
 class Mocks {
     @Mock Socket socket;
+    @Mock InetAddress inetAddress;
     @Mock InputStream input;
     @Mock OutputStream output;
     @Mock PrintWriter printWriter;
@@ -52,6 +56,7 @@ class Mocks {
         try {
             when(socket.getInputStream()).thenReturn(input);
             when(socket.getOutputStream()).thenReturn(output);
+            when(inetAddress.getHostName()).thenReturn("localhost");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,18 +71,43 @@ class Mocks {
         return new Mocks().connection(str);
     }
 
+    public static Socket mockSocket(String str) {
+        return new Mocks().socket(str);
+    }
+
     private Connection connection(String str) {
-        when(connection.getInputReader()).thenReturn(stringBuffer(str));
+        when(connection.getInputReader()).thenReturn(stringReader(str));
         when(connection.getOutputWriter()).thenReturn(printWriter);
         return connection;
+    }
+
+    private Socket socket(String str) {
+        try {
+            when(socket.getInputStream()).thenReturn(stringStream(str));
+            when(socket.isConnected()).thenReturn(true);
+            when(socket.getInetAddress()).thenReturn(inetAddress);
+            when(socket.getPort()).thenReturn(Connection.DEFAULT_PORT);
+            when(socket.getSoTimeout()).thenReturn(Connection.DEFAULT_TIMEOUT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return socket;
     }
 
     /**
      * Create buffered reader for String.
      */
-    private BufferedReader stringBuffer(String str) {
+    private BufferedReader stringReader(String str) {
         StringReader sreader = new StringReader(str);
         BufferedReader breader = new BufferedReader(sreader);
         return breader;
+    }
+
+    private InputStream stringStream(String str) {
+        try {
+            return new ByteArrayInputStream(str.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

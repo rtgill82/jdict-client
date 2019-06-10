@@ -21,13 +21,14 @@
 package org.lonestar.sdf.locke.libs.jdictclient;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 
 /**
@@ -90,6 +91,23 @@ public class Connection {
     }
 
     /**
+     * Construct a new connection using an already initialized socket.
+     *
+     * @param socket an already initialized socket
+     *
+     */
+    public Connection(Socket socket) throws IOException {
+        if (!socket.isConnected())
+          throw new SocketException("Socket is not connected.");
+
+        mHost = socket.getInetAddress().getHostName();
+        mPort = socket.getPort();
+        mTimeout = socket.getSoTimeout();
+        mSocket = socket;
+        readBanner();
+    }
+
+    /**
      * Establish a connection to the DICT host.
      *
      * @throws IOException from associated Socket
@@ -98,29 +116,7 @@ public class Connection {
     public void connect() throws IOException {
         if (!mSocket.isConnected()) {
             mSocket.connect(new InetSocketAddress(mHost, mPort), mTimeout);
-            mIn = new BufferedReader(new InputStreamReader(getInputStream()));
-            mOut = new PrintWriter(getOutputStream(), true);
-            Response response = ResponseParser.parse(this);
-            switch (response.getStatus()) {
-              case 220: /* Connection banner */
-                mBanner = (Banner) response.getData();
-                break;
-
-              case 420: /* Server temporarily unavailable */
-              case 421: /* Server shutting down at operator request */
-              case 530: /* Access denied */
-                throw new DictServerException(
-                    mHost, response.getStatus(),
-                    response.getMessage()
-                  );
-
-              default:
-                throw new DictException(
-                    mHost, response.getStatus(),
-                    "Connection banner expected, received: "
-                    + response.getMessage()
-                  );
-            }
+            readBanner();
         }
     }
 
@@ -204,6 +200,40 @@ public class Connection {
 
     public int getPort() {
         return mPort;
+    }
+
+    public int getTimeout() {
+        return mTimeout;
+    }
+
+    public boolean isConnected() {
+        return mSocket.isConnected();
+    }
+
+    void readBanner() throws IOException {
+        mIn = new BufferedReader(new InputStreamReader(getInputStream()));
+        mOut = new PrintWriter(getOutputStream(), true);
+        Response response = ResponseParser.parse(this);
+        switch (response.getStatus()) {
+          case 220: /* Connection banner */
+            mBanner = (Banner) response.getData();
+            break;
+
+          case 420: /* Server temporarily unavailable */
+          case 421: /* Server shutting down at operator request */
+          case 530: /* Access denied */
+            throw new DictServerException(
+                                          mHost, response.getStatus(),
+                                          response.getMessage()
+            );
+
+          default:
+            throw new DictException(
+                                    mHost, response.getStatus(),
+                                    "Connection banner expected, received: "
+                                    + response.getMessage()
+            );
+        }
     }
 
     InputStream getInputStream() throws IOException {

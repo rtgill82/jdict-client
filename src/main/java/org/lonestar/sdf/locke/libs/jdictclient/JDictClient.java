@@ -55,7 +55,17 @@ public class JDictClient {
      *
      */
     public JDictClient(String host, int port, int timeout) {
-        mConnection = new Connection(host, port, timeout);
+        this(new Connection(host, port, timeout));
+    }
+
+    /**
+     * Construct a new JDictClient using an already initialized Connection.
+     *
+     * @param connection the Connection to use
+     *
+     */
+    public JDictClient(Connection connection) {
+        mConnection = connection;
         if (sClientString == null) {
             setClientString(sLibraryName + " " + sLibraryVersion);
         }

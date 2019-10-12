@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.*
 apply plugin: 'java'
 
 version  '0.2.2'
-group    'org.lonestar.sdf.locke.libs.jdictclient'
+group    'com.github.xelkarin.libs.jdictclient'
 project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
 jar.baseName 'jdict-client'
 

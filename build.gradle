@@ -42,9 +42,13 @@ if (!commandClient) {
 }
 
 task tags(overwrite: true) {
-  exec {
-    executable 'ctags'
-    args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
+  try {
+    exec {
+      executable 'ctags'
+      args '--tag-relative=yes', '-R', "-f $rootDir/.git/tags", "$rootDir"
+    }
+  } catch (all) {
+    println("ctags command not avaliable")
   }
 }
 

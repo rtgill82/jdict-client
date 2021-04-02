@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016-2018 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 
-import com.github.xelkarin.libs.jdictclient.Command.Type;
-import static com.github.xelkarin.libs.jdictclient.Command.Type.*;
+import com.github.rtgill82.libs.jdictclient.Command.Type;
+import static com.github.rtgill82.libs.jdictclient.Command.Type.*;
 
 /**
  * JDictClient: <a href="http://dict.org">DICT</a> dictionary client for Java.
  *
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  *
  */
 public class JDictClient {

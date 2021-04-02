@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.Test;
 
@@ -26,14 +26,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  */
 public class DatabaseTest {
     private final String DATABASE = "wn";
     private final String DESCRIPTION = "WordNet (r) 3.0 (2006)";
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Database#Database(java.lang.String, java.lang.String)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Database#Database(java.lang.String, java.lang.String)}.
      */
     @Test
     public void testDatabase() {
@@ -44,7 +44,7 @@ public class DatabaseTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Database#Database(com.github.xelkarin.libs.jdictclient.Element)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Database#Database(com.github.rtgill82.libs.jdictclient.Element)}.
      */
     @Test
     public void testConvertElement() {
@@ -56,7 +56,7 @@ public class DatabaseTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Database#setDatabaseInfo(java.lang.String)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Database#setDatabaseInfo(java.lang.String)}.
      */
     @Test
     public void testSetDatabaseInfo() {

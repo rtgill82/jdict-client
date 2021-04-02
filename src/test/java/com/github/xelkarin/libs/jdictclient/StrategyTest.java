@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,21 +18,21 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  */
 public class StrategyTest {
     private final String NAME = "regexp";
     private final String DESCRIPTION = "Old (basic) regular expressions";
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Strategy#Strategy(java.lang.String, java.lang.String)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Strategy#Strategy(java.lang.String, java.lang.String)}.
      */
     @Test
     public void testStrategy() {
@@ -42,7 +42,7 @@ public class StrategyTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Strategy#Strategy(com.github.xelkarin.libs.jdictclient.Element)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Strategy#Strategy(com.github.rtgill82.libs.jdictclient.Element)}.
      */
     @Test
     public void testConvertElement() {

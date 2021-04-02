@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,14 +18,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  */
 public class DefinitionTest {
     private final String DATABASE = "wn";
@@ -39,7 +39,7 @@ public class DefinitionTest {
             "     with information about them [syn: {dictionary}, {lexicon}]";
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.Definition#Definition(java.lang.String, com.github.xelkarin.libs.jdictclient.Database, java.lang.String)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.Definition#Definition(java.lang.String, com.github.rtgill82.libs.jdictclient.Database, java.lang.String)}.
      */
     @Test
     public void testDefinition() {

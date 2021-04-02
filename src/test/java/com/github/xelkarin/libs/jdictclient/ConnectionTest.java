@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2018 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.Test;
 
@@ -28,11 +28,11 @@ import java.net.SocketException;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static com.github.xelkarin.libs.jdictclient.Mocks.*;
-import static com.github.xelkarin.libs.jdictclient.ResponseStrings.*;
+import static com.github.rtgill82.libs.jdictclient.Mocks.*;
+import static com.github.rtgill82.libs.jdictclient.ResponseStrings.*;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  *
  */
 public class ConnectionTest {

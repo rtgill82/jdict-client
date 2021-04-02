@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,7 +18,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,13 +28,13 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  */
 public class JDictClientTest {
     private static String LIBRARY_VERSION;
     private static String LIBRARY_NAME = "jdict-client";
     private static String LIBRARY_VENDOR =
-            "Robert Gill <locke@sdf.lonestar.org>";
+            "Robert Gill <rtgill82@gmail.com>";
 
     @BeforeClass
     public static void oneTimeSetUp() {
@@ -44,7 +44,7 @@ public class JDictClientTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.JDictClient#getLibraryName()}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.JDictClient#getLibraryName()}.
      */
     @Test
     public void testLibraryName() {
@@ -52,7 +52,7 @@ public class JDictClientTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.JDictClient#getLibraryVersion()}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.JDictClient#getLibraryVersion()}.
      */
     @Test
     public void testLibraryVersion() {
@@ -60,7 +60,7 @@ public class JDictClientTest {
     }
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.JDictClient#getLibraryVendor()}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.JDictClient#getLibraryVendor()}.
      */
     @Test
     public void testLibraryVendor() {

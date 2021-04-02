@@ -3,8 +3,8 @@ import org.apache.tools.ant.filters.*
 apply plugin: 'java'
 
 version  '0.2.2'
-group    'com.github.xelkarin.libs.jdictclient'
-project.ext.set('vendor', 'Robert Gill <locke@sdf.lonestar.org>')
+group    'com.github.rtgill82.libs.jdictclient'
+project.ext.set('vendor', 'Robert Gill <rtgill82@gmail.com>')
 jar.baseName 'jdict-client'
 
 // Build properties

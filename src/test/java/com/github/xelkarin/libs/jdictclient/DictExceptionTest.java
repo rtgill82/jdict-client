@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Gill <locke@sdf.lonestar.org>
+ * Copyright (C) 2016 Robert Gill <rtgill82@gmail.com>
  *
  * This file is part of jdict-client.
  *
@@ -18,14 +18,14 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.github.xelkarin.libs.jdictclient;
+package com.github.rtgill82.libs.jdictclient;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Robert Gill &lt;locke@sdf.lonestar.org&gt;
+ * @author Robert Gill &lt;rtgill82@gmail.com&gt;
  */
 public class DictExceptionTest {
     private final String HOST = "test.dict.org";
@@ -34,7 +34,7 @@ public class DictExceptionTest {
     private final String MESSAGE = HOST + ": " + RESPONSE;
 
     /**
-     * Test method for {@link com.github.xelkarin.libs.jdictclient.DictException#DictException(java.lang.String, int, java.lang.String)}.
+     * Test method for {@link com.github.rtgill82.libs.jdictclient.DictException#DictException(java.lang.String, int, java.lang.String)}.
      */
     @Test
     public void testDictException() {

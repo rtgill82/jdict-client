@@ -3,9 +3,9 @@ import org.apache.tools.ant.filters.*
 apply plugin: 'java'
 
 version  '0.2.2'
-group    'com.github.rtgill82.libs.jdictclient'
+archivesBaseName = 'jdict-client'
+group 'com.github.rtgill82.libs.jdictclient'
 project.ext.set('vendor', 'Robert Gill <rtgill82@gmail.com>')
-jar.baseName 'jdict-client'
 
 // Build properties
 debugBuild = project.getProperty('debugBuild').toBoolean()
@@ -21,8 +21,8 @@ processResources {
 }
 
 dependencies {
-  testCompile group: 'junit', name: 'junit', version: '4.8.2'
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.+'
+  testImplementation group: 'junit', name: 'junit', version: '4.+'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
 }
 
 compileJava {
@@ -38,10 +38,10 @@ jar {
 }
 
 if (!commandClient) {
-  sourceSets.main.java.exclude 'org/lonestar/sdf/locke/libs/jdictclient/Dict.java'
+  sourceSets.main.java.exclude 'com/github/rtgill82/libs/jdictclient/Dict.java'
 }
 
-task tags(overwrite: true) {
+task tags() {
   try {
     exec {
       executable 'ctags'
